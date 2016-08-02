@@ -10,9 +10,10 @@ template<int... groups>
 class bitfields
 {
 public:
-    bitfields(uint8_t* data): m_data(data)
+    bitfields(uint8_t* data, uint64_t bits):
+    m_data(data),
+    m_bits(bits)
     {
-        m_bits = m_data.size() * 8;
     }
 
     template<int group>
@@ -28,11 +29,16 @@ public:
     }
 
     template<typename return_type, int group>
-    return_type get_group()
+    return_type get()
     {
         auto group_size = group_size<group>();
         auto offset = offset<group>();
         return read_bits_from_offset<return_type>(group_size, offset);
+    }
+
+    uint64_t size()
+    {
+        return size<groups...>();
     }
 
 
@@ -82,7 +88,7 @@ private:
         return_type result = 0;
         for(uint64_t i = 0; i < bits; ++i)
         {
-            result |= read_bit_at_offset(offset + i);
+            result |= read_bit_at_offset(offset + i) << (bits - i - 1);
         }
         return result;
     }
@@ -93,6 +99,18 @@ private:
         auto byte = offset / 8;
         auto position = 7 - (offset % 8);
         return (m_data[byte] << position) & 0x1;
+    }
+
+    template<int group, int... input_groups>
+    uint64_t size_()
+    {
+        return group + size_<input_groups...>();
+    }
+
+    template<int group>
+    uint64_t size_()
+    {
+        return group;
     }
 
 

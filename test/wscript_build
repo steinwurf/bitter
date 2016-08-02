@@ -1,0 +1,8 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+bld.program(
+    features='cxx test',
+    source=bld.path.ant_glob('**/*.cpp'),
+    target='bitter_tests',
+    use=['hex_includes', 'gtest'])

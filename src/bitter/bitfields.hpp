@@ -19,7 +19,7 @@ public:
     template<int group>
     uint64_t group_size()
     {
-        return group_size<group, groups...>();
+        return group_size_<group, groups...>();
     }
 
     template<int group>
@@ -31,14 +31,14 @@ public:
     template<typename return_type, int group>
     return_type get()
     {
-        auto group_size = group_size<group>();
-        auto offset = offset<group>();
-        return read_bits_from_offset<return_type>(group_size, offset);
+        auto current_group_size = group_size<group>();
+        auto current_offset = offset<group>();
+        return read_bits_from_offset<return_type>(current_group_size, current_offset);
     }
 
     uint64_t size()
     {
-        return size<groups...>();
+        return size_<groups...>();
     }
 
 
@@ -46,7 +46,7 @@ private:
     template<int group, int next_group, int... input_groups>
     uint64_t group_size_()
     {
-        if((sizeof...(groups) - group + 1) == sizeof...(input_groups))
+        if((sizeof...(groups) - group - 1) == sizeof...(input_groups))
         {
             return next_group;
         }
@@ -65,7 +65,7 @@ private:
     template<int group, int next_group, int... input_groups>
     uint64_t offset_()
     {
-        if((sizeof...(groups) - group + 1)) == sizeof...(input_groups)
+        if((sizeof...(groups) - group + 1) == sizeof...(input_groups))
         {
             return 0;
         }

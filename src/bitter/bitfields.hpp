@@ -33,6 +33,7 @@ public:
     {
         auto current_group_size = group_size<group>();
         auto current_offset = offset<group>();
+        //std::cout << "internal offset " << current_offset << std::endl;
         return read_bits_from_offset<return_type>(current_group_size, current_offset);
     }
 
@@ -46,7 +47,7 @@ private:
     template<int group, int next_group, int... input_groups>
     uint64_t group_size_()
     {
-        if((sizeof...(groups) - group - 1) == sizeof...(input_groups))
+        if((sizeof...(groups) - group) == sizeof...(input_groups) + 1)
         {
             return next_group;
         }
@@ -65,7 +66,7 @@ private:
     template<int group, int next_group, int... input_groups>
     uint64_t offset_()
     {
-        if((sizeof...(groups) - group + 1) == sizeof...(input_groups))
+        if((sizeof...(groups) - group) == sizeof...(input_groups) + 1)
         {
             return 0;
         }
@@ -98,7 +99,7 @@ private:
         assert(offset < m_bits);
         auto byte = offset / 8;
         auto position = 7 - (offset % 8);
-        return (m_data[byte] << position) & 0x1;
+        return (m_data[byte] >> position) & 0x1;
     }
 
     template<int group, int... input_groups>

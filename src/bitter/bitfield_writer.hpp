@@ -55,7 +55,17 @@ namespace bitter
                 }
                 else
                 {
-                    
+                    auto bits = amount_of_bits_for_prior_byte(group_offset, size);
+                    if((size - bits) % 8 = 0)
+                    {
+                        uint8_t prior_data = data >> (size - bits);
+                        write_bits
+                        if(size - bit == 16)
+                        {
+                            uint16_t next_data = (data << bits) >> bits;
+
+                        }
+                    }
                 }
             }
             else
@@ -149,11 +159,12 @@ namespace bitter
                 {
                     temp++;
                 }
+                return temp;
             }
 
-            template<typename Type>
-            void split_data_for_writing(Type data, uint64_t size, uint64_t offset)
+            uint64_t split_data_for_writing(uint64_t size, uint64_t offset)
             {
+
                 if((offset + size))
                 {
 

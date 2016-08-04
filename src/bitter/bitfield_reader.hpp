@@ -115,8 +115,6 @@ private:
         return Group;
     }
 
-
-
 private:
     uint8_t* m_data;
     uint64_t m_bits;

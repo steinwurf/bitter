@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #include <cstdint>
 #include <cassert>
+#include <vector>
 
 namespace bitter
 {
@@ -21,57 +22,134 @@ namespace bitter
         template<int Group>
         uint64_t group_size()
         {
-            return group_size_<Group, Groups>()
+            return group_size_<Group, Groups...>();
         }
 
         template<int Group>
-        uint64_t offset()
+        uint64_t group_offset()
         {
             return offset_<Group, Groups...>();
         }
 
-        // Written most significant bit first
-        template<int Group, typename InputType>
-        void write<Group>(InputType data)
-        {
-            auto group_offset = offset<Group>();
-            auto index = calculated_index(offset);
-            auto size = group_size<Group>();
 
-            // Check if data fits in a byte
-            if((group_offset + size) / 8 != 1)
+        template<int Group, typename Type>
+        void write(Type data)
+        {
+            auto size = group_size<Group>();
+            auto offset = group_offset<Group>();
+            auto index = calculated_index(offset);
+            if((offset + size) / 8 != 1)
             {
-                if((group_offset + size) % 8  == 0)
+                if((offset + size) % 8 == 0)
                 {
                     auto data_vector =
-                    split_data_fitting_byte_size(data, group_offset, size);
-
-                    for(uint8_t entry : data_vector)
-                    {
-                        auto index = calculated_index(group_offset);
-                        write_bits(entry, 7, index);
-                        group_offset += 8;
-                    }
+                         split_data_fitting_byte_size(data, offset, size);
+                    write_data_vector(data_vector);
                 }
                 else
                 {
-                    auto bits = amount_of_bits_for_prior_byte(group_offset, size);
-                    if((size - bits) % 8 = 0)
+                    auto bits = amount_of_bits_for_prior_byte(offset, size);
+                    uint8_t prior_data = data >> (size - bits);
+                    data = (data << bits) >> bits; // clear away the new bits
+                    if((size - bits) % 8 == 0)
                     {
-                        uint8_t prior_data = data >> (size - bits);
-                        write_bits
-                        if(size - bit == 16)
+                        write_bits(prior_data, offset, index);
+                        auto data_vector =
+                             split_data_fitting_byte_size(
+                                                          data,
+                                                          offset + bits);
+                        write_data_vector(data, offset + bits, index + 1);
+                    }
+                    else
+                    {
+                        auto trailing_bits =
+                            amount_of_bits_for_prior_byte(offset
+                                                          + bits,
+                                                          size - bits);
+
+                        // Clear away all data but trailing
+                        uint8_t trailing_data = (data << (size - trailing_bits))
+                                                 >> (size - trailing_bits);
+                        uint64_t next_index = index;
+                        // clear trailing data away
+                        if(size - bits - trailing_bits == 16)
                         {
-                            uint16_t next_data = (data << bits) >> bits;
+                            uint16_t remaing_data = data >> trailing;
+                            write_data_vector(data, offset + bits, index + 1);
+                            offset += 16;
+                            next_index += 3;
 
                         }
+                        else if(size - bits - trailing_bits == 32)
+                        {
+                            uint32_t remaing_data = data >> trailing;
+                            write_data_vector(data, offset + bits, index + 1);
+                            next_index += 5;
+                            offset += 32;
+                        }
+                        else
+                        {
+                            uint64_t remaing_data = data >> trailing;
+                            write_data_vector(data, offset + bits, index + 1);
+                            offset += 64;
+                            next_index += 9;
+                        }
+                        writer_bits(trailing, offset, next_index);
                     }
                 }
             }
             else
             {
-                write_bits(data, offset, index)
+                writer_bits(data, offset, index);
             }
+        }
+
+        // // Written most significant bit first
+        // template<int Group, typename InputType>
+        // void write(InputType data)
+        // {
+        //     auto group_offset = offset<Group>();
+        //     auto index = calculated_index(group_offset);
+        //     auto size = group_size<Group>();
+        //
+        //     // Check if data fits in a byte
+        //     if((group_offset + size) / 8 != 1)
+        //     {
+        //         if((group_offset + size) % 8  == 0)
+        //         {
+        //             auto data_vector =
+        //             split_data_fitting_byte_size(data, group_offset, size);
+        //             write_data_vector(data_vector, group_offset);
+        //         }
+        //         else
+        //         {
+        //             auto bits = amount_of_bits_for_prior_byte(group_offset, size);
+        //             if((size - bits) % 8 == 0)
+        //             {
+        //                 uint8_t prior_data = data >> (size - bits);
+        //                 write_bits(prior_data, group_offset, index);
+        //                 if(size - bits == 16)
+        //                 {
+        //                     //uint16_t next_data = (data << bits) >> bits;
+        //
+        //                 }
+        //             }
+        //             else
+        //             {
+        //                 auto end_bits = amount_of_bits_for_prior_byte(group_offset, (size - bits));
+        //
+        //             }
+        //         }
+        //     }
+        //     else
+        //     {
+        //         write_bits(data, group_offset, index);
+        //     }
+        // }
+
+        uint8_t* data()
+        {
+            return m_data;
         }
 
             //     if(size / 16 == 1)
@@ -111,7 +189,7 @@ namespace bitter
             {
                 // give correct offset in current byte
                 uint64_t shift = 7 - (offset - (index * 8));
-                m_data[index] = m_index |= data << shift;
+                m_data[index] = m_data[index] |= data << shift;
 
             }
 
@@ -128,8 +206,8 @@ namespace bitter
                 }
             }
 
-            template<Group, int NextGroup, int... InputGroups>
-            uint64_t offset_()
+            template<int Group, int NextGroup, int... InputGroups>
+            uint64_t group_offset_()
             {
                 if(sizeof...(Groups) - Group == sizeof...(InputGroups) + 1)
                 {
@@ -137,11 +215,11 @@ namespace bitter
                 }
                 else
                 {
-                    return NextGroup + offset_<Group, InputGroups...>();
+                    return NextGroup + group_offset_<Group, InputGroups...>();
                 }
             }
 
-            template<Group>
+            template<int Group>
             uint64_t offset_()
             {
                 return 0;
@@ -152,29 +230,21 @@ namespace bitter
                 return offset / 8;
             }
 
-            uint64_t amount_of_bits_for_prior_byte(uint64_t offset, uint64_t size)
+            uint64_t amount_of_bits_for_prior_byte(uint64_t offset,
+                                                   uint64_t size)
             {
-                uint64_t temp = 0
-                while(((group_offset + size) - temp) / 8 != 1)
+                uint64_t temp = 0;
+                while(((offset + size) - temp) / 8 != 1)
                 {
                     temp++;
                 }
                 return temp;
             }
 
-            uint64_t split_data_for_writing(uint64_t size, uint64_t offset)
-            {
-
-                if((offset + size))
-                {
-
-                }
-            }
-
             template<typename Type>
-            std::vector<uint8_t> v; split_data_fitting_byte_size(Type data, uint64_t offset, uint64_t size)
+            std::vector<uint8_t> split_data_fitting_byte_size(Type data, uint64_t size)
             {
-                std::std::vector<uint8_t> data_vector;
+                std::vector<uint8_t> data_vector;
                 if(size == 16)
                 {
                     data_vector.push_back(data >> 8);
@@ -202,12 +272,16 @@ namespace bitter
                 return data_vector;
             }
 
-            template<typename Type, typename ComparedType>
-            bool is_same_type()
+            void write_data_vector(std::vector<uint8_t> data_vector,
+                                   uint64_t group_offset)
             {
-                return Type == ComparedType;
+                for(uint8_t entry : data_vector)
+                {
+                    auto index = calculated_index(group_offset);
+                    write_bits(entry, 7, index);
+                    group_offset += 8;
+                }
             }
-
 
 
         private:

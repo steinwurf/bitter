@@ -56,3 +56,4 @@ def build(bld):
         # i.e. not when included as a dependency
         bld.recurse('test')
         bld.recurse('examples/bitfields')
+        bld.recurse('examples/bitfield_simple_writer')

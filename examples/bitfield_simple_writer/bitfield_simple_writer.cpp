@@ -11,11 +11,12 @@ int main()
     std::ios state(NULL);
     state.copyfmt(std::cout);
 
-    std::vector<uint8_t> dummy(1);
-    auto writer = bitter::bitfield_writer<8>(dummy.data(), 8);
+    std::vector<uint8_t> dummy(2);
+    auto writer = bitter::bitfield_writer<1, 8>(dummy.data(), 9);
     //writer.write<1, bool>(true);
     //writer.write<2, uint8_t>(254);
-    writer.write<0, uint8_t>(64U);
+    writer.write<1, uint8_t>(34U);
+    writer.write<0, bool>(true);
     auto z = writer.data();
 
     std::cout << std::hex << static_cast<int>(z[0]) << std::endl;

@@ -21,6 +21,6 @@ TEST(test_bit_writer, write_bit_1)
 
     uint64_t bits = 8;
     auto writer = bitter::bitfield_writer<8>(data_vector.data(), bits);
-        writer.write<0, uint8_t>(64U);
-    EXPECT_EQ(writer.data()[0], 64U);
+        writer.write<0, uint8_t>(32U);
+    EXPECT_EQ(writer.data()[0], 32U);
 }

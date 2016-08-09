@@ -26,17 +26,28 @@ public:
     {
 
         auto size = group_size<Group>();
-        assert(size <= 64);
+        // assert(sizeof(data) <= );
         auto offset = group_offset<Group>();
 
-
-        if((offset + size) / 8 != 1 && !std::is_same<Type, bool>::value)
+        if((offset + size) / 8 <= 1 && !std::is_same<Type, bool>::value)
         {
             // Is data just larger than a single byte
             if(size % 8 != 0)
             {
-                auto splitted_data = data_split_to_byte<Type>(data, size);
-                write_vector(splitted_data, offset);
+                if(size / 8 == 1)
+                {
+                    std::cout << "deo" << std::endl;
+                    auto prior_bits = overflowing_bits(offset, size);
+                    uint8_t prior_data = data >> (size - prior_bits);
+                    uint8_t following_data = data << prior_bits;
+                    write_<Type>(prior_data, offset);
+                    write_<Type>(following_data, offset + prior_bits);
+                }
+                else
+                {
+                    auto splitted_data = data_split_to_byte<Type>(data, size);
+                    write_vector(splitted_data, offset);
+                }
             }
             else
             {
@@ -53,7 +64,6 @@ public:
         }
         else
         {
-
             if(std::is_same<Type, bool>::value)
             {
                 if(data)
@@ -134,9 +144,12 @@ private:
     template<typename Type>
     void write_(Type data, uint64_t offset)
     {
+        std::cout << "Offset: " << offset << std::endl;
         auto index = offset / 8;
+        std::cout << "index: " << static_cast<int>(index) << std::endl;
         auto shift = 7 - (offset - (index * 8));
-        m_data[index] = m_data[index] |= (data << shift);
+        uint8_t x = m_data[index] = (data);
+        m_data[index] = m_data[index] | data;
     }
 
     void write_vector(std::vector<uint8_t> data, uint64_t offset)

@@ -14,7 +14,7 @@ template<int... Groups>
 class bitfield_writer
 {
 public:
-    bitfield_writer(uint8_t* data, uint64_t bits):
+    bitfield_writer(std::vector<uint8_t> data, uint64_t bits):
     m_data(data),
     m_bits(bits)
     {
@@ -24,67 +24,27 @@ public:
     template<int Group, typename Type>
     void write(Type data)
     {
-
-        auto size = group_size<Group>();
-        // assert(sizeof(data) <= );
         auto offset = group_offset<Group>();
-
-        if((offset + size) / 8 <= 1 && !std::is_same<Type, bool>::value)
+        auto size = group_size<Group>();
+        if(std::is_same<Type, bool>::value)
         {
-            // Is data just larger than a single byte
-            if(size % 8 != 0)
+            if(data)
             {
-                if(size / 8 == 1)
-                {
-                    std::cout << "deo" << std::endl;
-                    auto prior_bits = overflowing_bits(offset, size);
-                    uint8_t prior_data = data >> (size - prior_bits);
-                    uint8_t following_data = data << prior_bits;
-                    write_<Type>(prior_data, offset);
-                    write_<Type>(following_data, offset + prior_bits);
-                }
-                else
-                {
-                    auto splitted_data = data_split_to_byte<Type>(data, size);
-                    write_vector(splitted_data, offset);
-                }
+                write_data<uint8_t>(1U, offset, size);
             }
             else
             {
-                auto prior_bits = overflowing_bits(offset, size);
-                uint8_t prior_data = data >> (size - prior_bits);
-                write_<uint8_t>(prior_data, offset);
-                data = (data << prior_bits) >> prior_bits;
-                auto splitted_data =
-                     data_split_to_byte<Type>(data, offset + prior_bits);
-                write_vector(splitted_data, offset + prior_bits);
-
+                write_data<uint8_t>(0U, offset, size);
             }
-
         }
         else
         {
-            if(std::is_same<Type, bool>::value)
-            {
-                if(data)
-                {
-
-                    write_<uint8_t>(1U, offset);
-                }
-                else
-                {
-                    write_<uint8_t>(0U, offset);
-                }
-            }
-            else
-            {
-                write_<Type>(data, offset);
-            }
+            write_data<Type>(data, offset, size);
         }
 
     }
 
-    uint8_t* data()
+    std::vector<uint8_t> data()
     {
         return m_data;
     }
@@ -141,70 +101,65 @@ private:
         return 0;
     }
 
-    template<typename Type>
-    void write_(Type data, uint64_t offset)
-    {
-        std::cout << "Offset: " << offset << std::endl;
-        auto index = offset / 8;
-        std::cout << "index: " << static_cast<int>(index) << std::endl;
-        auto shift = 7 - (offset - (index * 8));
-        uint8_t x = m_data[index] = (data);
-        m_data[index] = m_data[index] | data;
-    }
-
-    void write_vector(std::vector<uint8_t> data, uint64_t offset)
-    {
-        for(uint8_t entry : data)
-        {
-            write_<uint8_t>(entry, offset);
-            offset += 8;
-        }
-    }
-
-    template<typename Type>
-    std::vector<uint8_t> data_split_to_byte(Type data, uint64_t size)
+    uint64_t create_mask(uint32_t size)
     {
         assert(size <= 64);
-        std::vector<uint8_t> splitted_data(size / 8);
-        if(size == 16)
-        {
-            splitted_data.push_back((data >> 8) & 0x00FF);
-            splitted_data.push_back(data & 0x00FF);
-        }
-        else if(size == 32)
-        {
-            splitted_data.push_back((data >> 24) & 0x00FF);
-            splitted_data.push_back((data >> 16) & 0x00FF);
-            splitted_data.push_back((data >> 8) & 0x00FF);
-            splitted_data.push_back(data & 0x00FF);
-        }
-        else
-        {
-            splitted_data.push_back((data >> 56) & 0x00FF);
-            splitted_data.push_back((data >> 48) & 0x00FF);
-            splitted_data.push_back((data >> 40) & 0x00FF);
-            splitted_data.push_back((data >> 32) & 0x00FF);
-            splitted_data.push_back((data >> 24) & 0x00FF);
-            splitted_data.push_back((data >> 16) & 0x00FF);
-            splitted_data.push_back((data >> 8) & 0x00FF);
-            splitted_data.push_back(data & 0x00FF);
-        }
-        return splitted_data;
+        return ~(0xFFFFFFFFFFFFFFFF >> (64 - size));
     }
 
-    uint64_t overflowing_bits(uint64_t offset, uint64_t size)
+    void write_bit(uint8_t value, uint8_t& dest, uint8_t position)
     {
-        uint64_t bits = 0;
-        while(((offset + size) - bits) % 8 != 0)
+        assert(value == 0 || value == 1);
+        uint8_t mask = 0x001 << (7 - position);
+
+        if(value == 0)
         {
-            bits++;
+            dest &= ~mask;
         }
-        return bits;
+        else if(value == 1)
+        {
+            dest |= mask;
+        }
     }
 
+    template<typename Type>
+    void write_data(Type value_to_write, uint64_t offset, uint64_t size)
+    {
+
+        uint64_t checker_mask = create_mask(size);
+        assert((checker_mask & value_to_write) == 0);
+
+        value_to_write = value_to_write << ((sizeof(value_to_write) * 8) - size);
+
+        uint8_t* data_to_write = (uint8_t*) &value_to_write;
+        uint32_t data_to_write_size = sizeof(value_to_write);
+
+        uint64_t current_offset = offset;
+        for(int i = data_to_write_size - 1; i >= 0; --i)
+        {
+            auto data_to_write_element = data_to_write[i];
+
+            for(int j = 0; j < 8; j++)
+            {
+                auto position = 7 - j;
+                auto bit = (data_to_write_element >> position) & 0x1;
+
+                uint64_t byte_offset = current_offset / 8;
+                uint64_t bit_offset = current_offset % 8;
+                auto& value = m_data[byte_offset];
+
+                write_bit(bit, value, bit_offset);
+                ++current_offset;
+                if((current_offset - offset) > size)
+                {
+                    return;
+                }
+            }
+        }
+    }
 
 private:
-    uint8_t* m_data;
+    std::vector<uint8_t> m_data;
     uint64_t m_bits;
 };
 }

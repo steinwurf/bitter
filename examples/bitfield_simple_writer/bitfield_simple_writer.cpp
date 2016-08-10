@@ -23,8 +23,8 @@ int main()
     state.copyfmt(std::cout);
 
     std::vector<uint8_t> dummy;
-    dummy.resize(4);
-    auto writer = bitter::bitfield_writer<16, 8, 1>(dummy, 24);
+    dummy.resize(5);
+    auto writer = bitter::bitfield_writer<16, 8, 1>(dummy);
     //writer.write<1, bool>(true);
     //writer.write<2, uint8_t>(254);
 

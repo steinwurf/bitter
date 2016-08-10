@@ -10,24 +10,31 @@
 
 namespace bitter
 {
-template<int... Groups>
+template<uint32_t... Groups>
 class bitfield_writer
 {
 public:
-    bitfield_writer(std::vector<uint8_t> data, uint64_t bits):
-    m_data(data),
-    m_bits(bits)
+    bitfield_writer(std::vector<uint8_t> data):
+    m_data(data)
     {
-
+        m_number_of_groups = sizeof...(Groups);
     }
 
-    template<int Group, typename Type>
+    template<uint32_t Group, typename Type>
     void write(Type data)
     {
+        // Check if Group actually exists
+        //std::cout << "number of groups" << m_number_of_groups << std::endl;
+        assert(Group < m_number_of_groups);
+
+        // Determine offset for group and size for the group
         auto offset = group_offset<Group>();
         auto size = group_size<Group>();
+
         if(std::is_same<Type, bool>::value)
         {
+            // If the bool value is true, write 0000 0001
+            // If the bool value is false, write 0000 0000
             if(data)
             {
                 write_data<uint8_t>(1U, offset, size);
@@ -51,13 +58,14 @@ public:
 
 private:
 
-    template<int Group>
+
+    template<uint32_t Group>
     uint64_t group_size()
     {
         return group_size_<Group, Groups...>();
     }
 
-    template<int Group, int NextGroup, int... InputGroups>
+    template<uint32_t Group, uint32_t NextGroup, uint32_t... InputGroups>
     uint64_t group_size_()
     {
         if(sizeof...(Groups) - Group == sizeof...(InputGroups) + 1)
@@ -70,19 +78,19 @@ private:
         }
     }
 
-    template<int Group>
+    template<uint32_t Group>
     uint64_t group_size_()
     {
         return 0;
     }
 
-    template<int Group>
+    template<uint32_t Group>
     uint64_t group_offset()
     {
         return group_offset_<Group, Groups...>();
     }
 
-    template <int Group, int NextGroup, int... InputGroups>
+    template <uint32_t Group, uint32_t NextGroup, uint32_t... InputGroups>
     uint64_t group_offset_()
     {
         if(sizeof...(Groups) - Group == sizeof...(InputGroups) + 1)
@@ -95,7 +103,7 @@ private:
         }
     }
 
-    template<int Group>
+    template<uint32_t Group>
     uint64_t group_offset_()
     {
         return 0;
@@ -160,6 +168,7 @@ private:
 
 private:
     std::vector<uint8_t> m_data;
-    uint64_t m_bits;
+    uint64_t m_size;
+    uint32_t m_number_of_groups;
 };
 }

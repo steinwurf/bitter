@@ -6,7 +6,7 @@
 #include <cassert>
 namespace bitter
 {
-template<int... Groups>
+template<uint32_t... Groups>
 class bitfield_reader
 {
 public:
@@ -16,19 +16,19 @@ public:
     {
     }
 
-    template<int Group>
+    template<uint32_t Group>
     uint64_t group_size()
     {
         return group_size_<Group, Groups...>();
     }
 
-    template<int Group>
+    template<uint32_t Group>
     uint64_t offset()
     {
         return offset_<Group, Groups...>();
     }
 
-    template<typename ReturnType, int Group>
+    template<typename ReturnType, uint32_t Group>
     ReturnType get()
     {
         auto current_group_size = group_size<Group>();
@@ -44,7 +44,7 @@ public:
 
 
 private:
-    template<int Group, int NextGroup, int... InputGroups>
+    template<uint32_t Group, uint32_t NextGroup, uint32_t... InputGroups>
     uint64_t group_size_()
     {
         if((sizeof...(Groups) - Group) == sizeof...(InputGroups) + 1)
@@ -57,13 +57,13 @@ private:
         }
     }
 
-    template<int Group>
+    template<uint32_t Group>
     uint64_t group_size_()
     {
         return 0;
     }
 
-    template<int Group, int NextGroup, int... InputGroups>
+    template<uint32_t Group, uint32_t NextGroup, uint32_t... InputGroups>
     uint64_t offset_()
     {
         if((sizeof...(Groups) - Group) == sizeof...(InputGroups) + 1)
@@ -76,7 +76,7 @@ private:
         }
     }
 
-    template<int Group>
+    template<uint32_t Group>
     uint64_t offset_()
     {
         return 0;
@@ -103,13 +103,13 @@ private:
         return (m_data[byte] >> position) & 0x1;
     }
 
-    template<int Group, int... InputGroups>
+    template<uint32_t Group, uint32_t... InputGroups>
     uint64_t size_()
     {
         return Group + size_<InputGroups...>();
     }
 
-    template<int Group>
+    template<uint32_t Group>
     uint64_t size_()
     {
         return Group;

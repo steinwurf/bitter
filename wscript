@@ -57,3 +57,4 @@ def build(bld):
         bld.recurse('test')
         bld.recurse('examples/bitfields')
         bld.recurse('examples/bitfield_simple_writer')
+        bld.recurse('examples/tcp_header_writer')

@@ -30,8 +30,9 @@
 // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 class tcp_header_writer
 {
+public:
     using header_fields =
-          bitfields::bitfield_writer<
+          bitter::bitfield_writer<
                                 16, 16, 32, 32,
                                 4, 6, 1, 1, 1,
                                 1, 1, 1, 16,
@@ -63,96 +64,103 @@ public:
     {
 
     }
-    tcp_header_writer(std::vector<uint8_t> data)
+
+    tcp_header_writer(std::vector<uint8_t> data):
+    m_writer(header_fields(data))
     {
-        m_writer = bitter::bitfield_writer(data);
+
     }
 
     void source_port(uint16_t value)
     {
-        m_writer.write<field::source_port>(value);
+        m_writer.write<(uint32_t) field::source_port>(value);
     }
 
     void destination_port(uint16_t value)
     {
-        m_writer.write<field::destination_port, uint16_t>(value);
+        m_writer.write<(uint32_t) field::destination_port>(value);
     }
 
     void sequence_number(uint32_t value)
     {
-        m_writer.write<field::sequence_number, uint32>(value);
+        m_writer.write<(uint32_t) field::sequence_number>(value);
     }
 
     void acknowledgment_number(uint32_t value)
     {
-        m_writer.write<field::acknowledgment_number, uint32>(value);
+        m_writer.write<(uint32_t) field::acknowledgment_number>(value);
     }
 
     // As the best fiting data type for a nibble is a byte
     // As it cannot fit in a bool
     void data_offset(uint8_t value)
     {
-        m_writer.write<field::data_offset, uint8_t>(value);
+        m_writer.write<(uint32_t) field::data_offset>(value);
     }
 
     void reserverd(uint8_t value)
     {
-        m_writer.write<field::data_offset, uint8_t>(value);
+        m_writer.write<(uint32_t) field::data_offset>(value);
     }
 
     void urg(bool value)
     {
-        m_writer.write<field::urg, bool>(value);
+        m_writer.write<(uint32_t) field::urg>(value);
     }
 
     void ack(bool value)
     {
-        m_writer.write<field::ack, bool>(value);
+        m_writer.write<(uint32_t) field::ack>(value);
     }
     void psh(bool value)
     {
-        m_writer.write<field::psh, bool>(value);
+        m_writer.write<(uint32_t) field::psh>(value);
     }
     void rst(bool value)
     {
-        m_writer.write<field::rst, bool>(value);
+        m_writer.write<(uint32_t) field::rst>(value);
     }
     void syn(bool value)
     {
-        m_writer.write<field::syn, bool>(value);
+        m_writer.write<(uint32_t) field::syn>(value);
     }
     void fin(bool value)
     {
-        m_writer.write<field::fin, bool>(value);
+        m_writer.write<(uint32_t) field::fin>(value);
     }
 
     void window(uint16_t value)
     {
-        m_writer.write<field::window,uint16_t>(value);
+        m_writer.write<(uint32_t) field::window>(value);
     }
 
     void checksum(uint16_t value)
     {
-        m_writer.write<field::checksum,uint16_t>(value);
+        m_writer.write<(uint32_t) field::checksum>(value);
     }
 
     void urgent_pointer(uint16_t value)
     {
-        m_writer.write<field::urgent_pointer,uint16_t>(value);
+        m_writer.write<(uint32_t) field::urgent_pointer>(value);
     }
 
     // As uint16_t, might not be enough to handle options, we set it to uint32_t
     // As the size of options is 24
     void options(uint32_t value)
     {
-        m_writer.write<field::options, uint32_t>(value);
+        m_writer.write<(uint32_t) field::options>(value);
     }
 
     void padding(uint8_t value)
     {
-        m_writer.write<field::padding, uint8_t>(value);
+        m_writer.write<(uint32_t) field::padding>(value);
+    }
+
+    std::vector<uint8_t> data()
+    {
+        return m_writer.data();
     }
 
 private:
-    header_fields m_writer
+    header_fields m_writer;
 };

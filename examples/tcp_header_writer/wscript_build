@@ -2,6 +2,6 @@
 # encoding: utf-8
 
 bld.program(features='cxx',
-            source='block_encode_decode.cpp',
-            target='block_encode_decode',
+            source='tcp_header_example.cpp',
+            target='tcp_header_writer',
             use=['bitter_includes'])

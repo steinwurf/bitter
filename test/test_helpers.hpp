@@ -1,3 +1,8 @@
+// Copyright (c) Steinwurf ApS 2016.
+// All Rights Reserved
+//
+// Distributed under the "BSD License". See the accompanying LICENSE.rst file.
+
 void print_byte(uint8_t byte)
 {
     for(int i = 0; i  < 8; ++i)

@@ -1,4 +1,8 @@
-#include <bitter/bitfields.hpp>
+// Copyright (c) Steinwurf ApS 2016.
+// All Rights Reserved
+//
+// Distributed under the "BSD License". See the accompanying LICENSE.rst file
+#include <bitter/bitfield_reader.hpp>
 
 // 32 bit with
 // TCP Header format source: http://www.freesoft.org/CIE/Course/Section4/8.htm
@@ -27,7 +31,7 @@
 class tcp_header
 {
     using header_fields =
-          bitfields::bitfields<
+          bitfields::bitfield_reader<
                                 16, 16, 32, 32,
                                 4, 6, 1, 1, 1,
                                 1, 1, 1, 16,

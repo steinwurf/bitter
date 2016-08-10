@@ -2,7 +2,6 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
-
 #include <cstdint>
 #include <vector>
 #include <cassert>
@@ -19,6 +18,33 @@ public:
     {
         m_number_of_groups = sizeof...(Groups);
     }
+
+    // template<uint32_t Group>
+    // void write(group_type<group_size<Group>()>::type value)
+    // {
+    //     assert(Group < m_number_of_groups);
+    //
+    //     auto offset = group_offset<Group>();
+    //     auto size = group_size<Group>();
+    //
+    //     if(std::is_same<group_type<group_size<Group>()>::type, bool>::value)
+    //     {
+    //         // If the bool value is true, write 0000 0001
+    //         // If the bool value is false, write 0000 0000
+    //         if(data)
+    //         {
+    //             write_data<uint8_t>(1U, offset, size);
+    //         }
+    //         else
+    //         {
+    //             write_data<uint8_t>(0U, offset, size);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         write_data<Type>(data, offset, size);
+    //     }
+    // }
 
     template<uint32_t Group, typename Type>
     void write(Type data)
@@ -46,7 +72,22 @@ public:
         }
         else
         {
-            write_data<Type>(data, offset, size);
+            if(size <= 8)
+            {
+                write_data<uint8_t>(data, offset, size);
+            }
+            else if(size <= 16)
+            {
+                write_data<uint16_t>(data, offset, size);
+            }
+            else if(size <= 32)
+            {
+                write_data<uint32_t>(data, offset, size);
+            }
+            else if(size <= 64)
+            {
+                write_data<uint64_t>(data, offset, size);
+            }
         }
 
     }
@@ -57,8 +98,6 @@ public:
     }
 
 private:
-
-
     template<uint32_t Group>
     uint64_t group_size()
     {

@@ -18,7 +18,7 @@ TEST(test_bit_writer, write_bit)
     data_vector.resize(1);
 
     auto writer = bitter::bitfield_writer<1>(data_vector);
-    writer.write<0, bool>(true);
+    writer.write<0>(true);
     EXPECT_EQ(writer.data()[0], 128U);
 }
 
@@ -28,7 +28,7 @@ TEST(test_bit_writer, write_bit_1)
     data_vector.resize(1);
 
     auto writer = bitter::bitfield_writer<8>(data_vector);
-    writer.write<0, uint8_t>(32U);
+    writer.write<0>(32U);
     EXPECT_EQ(writer.data()[0], 32U);
 }
 
@@ -39,7 +39,7 @@ TEST(test_bit_writer, write_bit_2)
     data_vector.resize(2);
 
     auto writer = bitter::bitfield_writer<16>(data_vector);
-    writer.write<0, uint16_t>(2050U);
+    writer.write<0>(2050U);
     EXPECT_EQ(writer.data()[0], 8U);
     EXPECT_EQ(writer.data()[1], 2U);
 }
@@ -50,7 +50,7 @@ TEST(test_bit_writer, write_bit_4)
     data_vector.resize(4);
 
     auto writer = bitter::bitfield_writer<32>(data_vector);
-    writer.write<0, uint32_t>(323794U);
+    writer.write<0>(323794U);
 
     EXPECT_EQ(writer.data()[0], 0U);
     EXPECT_EQ(writer.data()[1], 4U);
@@ -64,16 +64,16 @@ TEST(test_bit_writer, write_bit_3)
     data_vector.resize(8);
 
     auto writer = bitter::bitfield_writer<64>(data_vector);
-    writer.write<0, uint32_t>(323794U);
+    writer.write<0>(323794U);
 
     EXPECT_EQ(writer.data()[0], 0U);
-    EXPECT_EQ(writer.data()[1], 4U);
-    EXPECT_EQ(writer.data()[2], 240U);
-    EXPECT_EQ(writer.data()[3], 210U);
+    EXPECT_EQ(writer.data()[1], 0U);
+    EXPECT_EQ(writer.data()[2], 0U);
+    EXPECT_EQ(writer.data()[3], 0U);
     EXPECT_EQ(writer.data()[4], 0U);
-    EXPECT_EQ(writer.data()[5], 0U);
-    EXPECT_EQ(writer.data()[6], 0U);
-    EXPECT_EQ(writer.data()[7], 0U);
+    EXPECT_EQ(writer.data()[5], 4U);
+    EXPECT_EQ(writer.data()[6], 240U);
+    EXPECT_EQ(writer.data()[7], 210U);
 }
 
 TEST(test_bit_writer, write_multiple_bit_fields_1)
@@ -83,9 +83,9 @@ TEST(test_bit_writer, write_multiple_bit_fields_1)
 
     auto writer = bitter::bitfield_writer<1, 8>(data_vector);
 
-    writer.write<0, bool>(true);
+    writer.write<0>(true);
     EXPECT_EQ(writer.data()[0], 128U);
-    writer.write<1, uint64_t>(128U);
+    writer.write<1>(128U);
 
     EXPECT_EQ(writer.data()[0], 192U);
     EXPECT_EQ(writer.data()[1], 0U);
@@ -98,9 +98,9 @@ TEST(test_bit_writer, write_multiple_bit_fields_2)
 
     auto writer = bitter::bitfield_writer<1, 64>(data_vector);
 
-    writer.write<0, bool>(true);
+    writer.write<0>(true);
     EXPECT_EQ(writer.data()[0], 128U);
-    writer.write<1, uint64_t>(64U);
+    writer.write<1>(64U);
 
     EXPECT_EQ(writer.data()[0], 128U);
     EXPECT_EQ(writer.data()[1], 0U);

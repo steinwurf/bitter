@@ -2,13 +2,11 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
-
 #pragma once
 
 #include <cstdint>
 #include <vector>
 #include <cassert>
-#include <iostream>
 
 namespace bitter
 {
@@ -48,7 +46,7 @@ public:
         }
         else
         {
-            // Based 
+            // Based
             if(size <= 8)
             {
                 write_data<uint8_t>(data, offset, size);

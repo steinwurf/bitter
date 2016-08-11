@@ -6,16 +6,19 @@
 
 #include <cstdint>
 #include <cassert>
+#include <vector>
+#include <iostream>
+
 namespace bitter
 {
 template<uint32_t... Groups>
 class bitfield_reader
 {
 public:
-    bitfield_reader(uint8_t* data, uint64_t bits):
-    m_data(data),
-    m_bits(bits)
+    bitfield_reader(std::vector<uint8_t> data):
+    m_data(data)
     {
+        m_bits = data.size() * 8;
     }
 
     template<uint32_t Group>
@@ -31,7 +34,7 @@ public:
     }
 
     template<typename ReturnType, uint32_t Group>
-    ReturnType get()
+    ReturnType read()
     {
         auto current_group_size = group_size<Group>();
         auto current_offset = offset<Group>();
@@ -39,9 +42,9 @@ public:
         return read_bits_from_offset<ReturnType>(current_group_size, current_offset);
     }
 
-    uint64_t size()
+    uint64_t size() const
     {
-        return size_<Groups...>();
+        return sizeof...(Groups);
     }
 
 
@@ -105,20 +108,8 @@ private:
         return (m_data[byte] >> position) & 0x1;
     }
 
-    template<uint32_t Group, uint32_t... InputGroups>
-    uint64_t size_()
-    {
-        return Group + size_<InputGroups...>();
-    }
-
-    template<uint32_t Group>
-    uint64_t size_()
-    {
-        return Group;
-    }
-
 private:
-    uint8_t* m_data;
+    std::vector<uint8_t> m_data;
     uint64_t m_bits;
 };
 }

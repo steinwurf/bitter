@@ -20,7 +20,7 @@ TEST(test_bit_reader, read_bit)
     };
 
     auto reader =
-         bitter::bitfield_reader<8,8,8,8,8>(data.data(), data.size() * 8);
+         bitter::bitfield_reader<8,8,8,8,8>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -36,19 +36,19 @@ TEST(test_bit_reader, read_bit)
     EXPECT_EQ(8U, reader.group_size<3>());
     EXPECT_EQ(8U, reader.group_size<4>());
 
-    auto value = reader.get<uint8_t, 0>();
+    auto value = reader.read<uint8_t, 0>();
     EXPECT_EQ(0U, value);
 
-    value = reader.get<uint8_t, 1>();
+    value = reader.read<uint8_t, 1>();
     EXPECT_EQ(255U, value);
 
-    value = reader.get<uint8_t, 2>();
+    value = reader.read<uint8_t, 2>();
     EXPECT_EQ(240U, value);
 
-    value = reader.get<uint8_t, 3>();
+    value = reader.read<uint8_t, 3>();
     EXPECT_EQ(15U, value);
 
-    value = reader.get<uint8_t, 4>();
+    value = reader.read<uint8_t, 4>();
     EXPECT_EQ(165U, value);
 }
 
@@ -65,7 +65,7 @@ TEST(test_bit_reader, read_bit2)
     };
 
     auto reader =
-         bitter::bitfield_reader<16,16,16>(data.data(), data.size() * 8);
+         bitter::bitfield_reader<16,16,16>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -77,13 +77,13 @@ TEST(test_bit_reader, read_bit2)
     EXPECT_EQ(16U, reader.group_size<1>());
     EXPECT_EQ(16U, reader.group_size<2>());
 
-    auto value = reader.get<uint16_t, 0>();
+    auto value = reader.read<uint16_t, 0>();
     EXPECT_EQ(255U, value);
 
-    value = reader.get<uint16_t, 1>();
+    value = reader.read<uint16_t, 1>();
     EXPECT_EQ(61455U, value);
 
-    value = reader.get<uint16_t, 2>();
+    value = reader.read<uint16_t, 2>();
     EXPECT_EQ(42480U, value);
 }
 
@@ -102,7 +102,7 @@ TEST(test_bit_reader, read_bit3)
     };
 
     auto reader =
-         bitter::bitfield_reader<32,32>(data.data(), data.size() * 8);
+         bitter::bitfield_reader<32,32>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -112,10 +112,10 @@ TEST(test_bit_reader, read_bit3)
     EXPECT_EQ(32U, reader.group_size<0>());
     EXPECT_EQ(32U, reader.group_size<1>());
 
-    auto value = reader.get<uint32_t, 0>();
+    auto value = reader.read<uint32_t, 0>();
     EXPECT_EQ(16773135U, value);
 
-    value = reader.get<uint32_t, 1>();
+    value = reader.read<uint32_t, 1>();
     EXPECT_EQ(2783973285U, value);
 }
 
@@ -134,7 +134,7 @@ TEST(test_bit_reader, read_bit4)
     };
 
     auto reader =
-         bitter::bitfield_reader<64>(data.data(), data.size() * 8);
+         bitter::bitfield_reader<64>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -143,7 +143,7 @@ TEST(test_bit_reader, read_bit4)
     EXPECT_EQ(64U, reader.group_size<0>());
     //
     //
-    auto value = reader.get<uint64_t, 0>();
+    auto value = reader.read<uint64_t, 0>();
     EXPECT_EQ(72040069060366245U, value);
 }
 
@@ -155,7 +155,7 @@ TEST(test_bit_reader, read_bit5)
     };
 
     auto reader =
-         bitter::bitfield_reader<1>(data.data(), data.size() * 8);
+         bitter::bitfield_reader<1>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -163,7 +163,7 @@ TEST(test_bit_reader, read_bit5)
     // Test that groups have correct size
     EXPECT_EQ(1U, reader.group_size<0>());
 
-     auto value = reader.get<bool, 0>();
+     auto value = reader.read<bool, 0>();
     EXPECT_EQ(true, value);
 }
 
@@ -175,7 +175,7 @@ TEST(test_bit_reader, read_bit6)
     };
 
     auto reader =
-         bitter::bitfield_reader<1>(data.data(), data.size() * 8);
+         bitter::bitfield_reader<1>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -183,6 +183,6 @@ TEST(test_bit_reader, read_bit6)
     // Test that groups have correct size
     EXPECT_EQ(1U, reader.group_size<0>());
 
-     auto value = reader.get<bool, 0>();
+     auto value = reader.read<bool, 0>();
     EXPECT_EQ(false, value);
 }

@@ -98,6 +98,7 @@ public:
         m_writer.write<(uint32_t) field::data_offset>(value);
     }
 
+    // In a TCP header these 6 bits are reserverd and must be set to 0
     void reserverd()
     {
         m_writer.write<(uint32_t) field::data_offset>(0);

@@ -4,6 +4,9 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file
 #include <bitter/bitfield_reader.hpp>
 
+#include <vector>
+#include <cstdint>
+
 // 32 bit with
 // TCP Header format source: http://www.freesoft.org/CIE/Course/Section4/8.htm
 // 0                   1                   2                   3
@@ -28,10 +31,11 @@
 
 
 
-class tcp_header
+class tcp_header_reader
 {
+public:
     using header_fields =
-          bitfields::bitfield_reader<
+          bitter::bitfield_reader<
                                 16, 16, 32, 32,
                                 4, 6, 1, 1, 1,
                                 1, 1, 1, 16,
@@ -58,41 +62,37 @@ class tcp_header
     };
 
 public:
-    tcp_header(header_fields bitfield) :
+    tcp_header_reader(header_fields bitfield):
     m_bitfield(bitfield)
     {
 
     }
 
-    tcp_header(uint8_t* data, uint64_t size)
+    tcp_header_reader(std::vector<uint8_t> data):
+    m_bitfield(header_fields(data))
     {
-        m_bitfield = header_fields(data);
-        assert(m_bitfield.size() == size);
+
+        assert(m_bitfield.size() == (uint64_t) data.size());
     }
 
-    uint16_t source_port
+    uint16_t source_port()
     {
-        return m_bitfield.get<uint16_t, field::source_port>();
+        return m_bitfield.read<uint16_t, (uint32_t)field::source_port>();
     }
 
     uint16_t destination_port()
     {
-        return m_bitfield.get<uint16_t, field::destination_port>();
+        return m_bitfield.read<uint16_t, (uint32_t)field::destination_port>();
     }
 
     uint32_t sequence_number()
     {
-        return m_bitfield.get<uint32_t, field::sequence_number>();
-    }
-
-    uint32_t sequence_number()
-    {
-        return m_bitfield.get<uint32_t, field::sequence_number>();
+        return m_bitfield.read<uint32_t, (uint32_t)field::sequence_number>();
     }
 
     uint32_t acknowledgment_number()
     {
-        return m_bitfield.get<uint32_t, field::acknowledgment_number>();
+        return m_bitfield.read<uint32_t, (uint32_t)field::acknowledgment_number>();
     }
 
     // If a field does not fit neatly into a byte or multiple bytes use the
@@ -102,69 +102,69 @@ public:
     {
         // Bitter will figure out, the correct size of the field and not retrivew
         // more data than requested.
-        return m_bitfield.get<uint8_t, field::data_offset>();
+        return m_bitfield.read<uint8_t, (uint32_t)field::data_offset>();
     }
 
     uint8_t reserverd()
     {
-        return m_bitfield.get<uint8_t, field::reserverd>();
+        return m_bitfield.read<uint8_t, (uint32_t)field::reserverd>();
     }
 
     // Fields owhich have the size of a single bool, can be containeed
     // in a bool
     bool urg()
     {
-        return m_bitfield.get<bool, field::urg>();
+        return m_bitfield.read<bool, (uint32_t)field::urg>();
     }
 
     bool ack()
     {
-        return m_bitfield.get<bool, field::ack>();
+        return m_bitfield.read<bool, (uint32_t)field::ack>();
     }
 
     bool psh()
     {
-        return m_bitfield.get<bool, field::psh>();
+        return m_bitfield.read<bool, (uint32_t)field::psh>();
     }
 
     bool rst()
     {
-        return m_bitfield.get<bool, field::rst>();
+        return m_bitfield.read<bool, (uint32_t)field::rst>();
     }
 
     bool syn()
     {
-        return m_bitfield.get<bool, field::syn>();
+        return m_bitfield.read<bool, (uint32_t)field::syn>();
     }
 
     bool fin()
     {
-        return m_bitfield.get<bool, field::fin>();
+        return m_bitfield.read<bool, (uint32_t)field::fin>();
     }
 
     uint16_t window()
     {
-        return m_bitfield.get<uint16_t, field::window>();
+        return m_bitfield.read<uint16_t, (uint32_t)field::window>();
     }
 
     uint16_t checksum()
     {
-        return m_bitfield.get<uint16_t, field::checksum>();
+        return m_bitfield.read<uint16_t, (uint32_t)field::checksum>();
     }
 
     uint16_t urgent_pointer()
     {
-        return m_bitfield.get<uint16_t, field::urgent_pointer>();
+        return m_bitfield.read<uint16_t, (uint32_t)field::urgent_pointer>();
     }
 
     uint32_t options()
     {
-        return m_bitfield.get<uint16_t, field::options>();
+        return m_bitfield.read<uint16_t, (uint32_t)field::options>();
     }
 
     uint8_t padding()
     {
-        return m_bitfield.get<uint8_t, field::padding>();
+        return m_bitfield.read<uint8_t, (uint32_t)field::padding>();
     }
 private:
     header_fields m_bitfield;

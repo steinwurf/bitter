@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file
 
 #include "tcp_header_writer.hpp"
+#include "tcp_header_reader.hpp"
 
 #include <iostream>
 
@@ -48,6 +49,9 @@ int main()
     }
 
     std::cout << "" << std::endl;
+
+    auto reader = tcp_header_reader(writer.data());
+
 
     return 0;
 }

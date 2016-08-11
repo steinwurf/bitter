@@ -39,11 +39,11 @@ int main()
     std::ios state(NULL);
     state.copyfmt(std::cout);
 
-    auto bf = bitter::bitfield_reader<8,16,32,64>(data.data(), data.size() * 8);
-    auto group_zero = bf.get<uint8_t, 0>();
-    auto group_one = bf.get<uint16_t, 1>();
-    auto group_two = bf.get<uint32_t, 2>();
-    auto group_three = bf.get<uint64_t, 3>();
+    auto bf = bitter::bitfield_reader<8,16,32,64>(data);
+    auto group_zero = bf.read<uint8_t, 0>();
+    auto group_one = bf.read<uint16_t, 1>();
+    auto group_two = bf.read<uint32_t, 2>();
+    auto group_three = bf.read<uint64_t, 3>();
     std::cout << "Group 0 size: " << bf.group_size<0>() << " offset: " << bf.offset<0>() << std::endl;
     std::cout << "Group " << 0 << ": " << std::hex << static_cast<int>(group_zero) << std::endl;
     std::cout.copyfmt(state);

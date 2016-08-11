@@ -98,9 +98,9 @@ public:
         m_writer.write<(uint32_t) field::data_offset>(value);
     }
 
-    void reserverd(uint8_t value)
+    void reserverd()
     {
-        m_writer.write<(uint32_t) field::data_offset>(value);
+        m_writer.write<(uint32_t) field::data_offset>(0);
     }
 
     void urg(bool value)

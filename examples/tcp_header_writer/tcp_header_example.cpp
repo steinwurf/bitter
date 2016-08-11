@@ -29,7 +29,7 @@ int main()
     writer.sequence_number(4096);
     writer.acknowledgment_number(2048);
     writer.data_offset(4);
-    writer.reserverd(6);
+    writer.reserverd();
     writer.urg(1);
     writer.ack(0);
     writer.psh(1);

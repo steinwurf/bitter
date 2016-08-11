@@ -24,6 +24,7 @@ int main()
     std::vector<uint8_t> data_vector;
     data_vector.resize(24);
 
+    std::cout << "We are filling the writer with data: " << std::endl;
     auto writer = tcp_header_writer(data_vector);
     writer.source_port(128);
     writer.destination_port(255);
@@ -49,8 +50,12 @@ int main()
     }
 
     std::cout << "" << std::endl;
-
+    std::cout << "We read the data written in the writer" << std::endl;
     auto reader = tcp_header_reader(writer.data());
+    auto src_port = reader.source_port();
+    std::cout << "Source port: " << static_cast<int>(src_port) << std::endl;
+    auto dest_port = reader.destination_port();
+    auto seq_number = reader.sequence_number();
 
 
     return 0;

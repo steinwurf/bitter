@@ -44,7 +44,7 @@ public:
 
     uint64_t size() const
     {
-        return sizeof...(Groups);
+        return m_bits;
     }
 
 

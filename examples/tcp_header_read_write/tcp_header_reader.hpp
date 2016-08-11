@@ -72,7 +72,9 @@ public:
     m_bitfield(header_fields(data))
     {
 
-        assert(m_bitfield.size() == (uint64_t) data.size());
+        std::cout << "m " << m_bitfield.size() << std::endl;
+        std::cout << "n " << data.size() << m_bitfield.size() << std::endl;
+        assert(m_bitfield.size() == (uint64_t) data.size() * 8);
     }
 
     uint16_t source_port()

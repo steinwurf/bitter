@@ -1,0 +1,7 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+bld.program(features='cxx',
+            source='tcp_header_example.cpp',
+            target='tcp_header_writer_reader',
+            use=['bitter_includes'])

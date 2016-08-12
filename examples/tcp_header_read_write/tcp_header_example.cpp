@@ -55,8 +55,17 @@ int main()
     auto src_port = reader.source_port();
     std::cout << "Source port: " << static_cast<int>(src_port) << std::endl;
     auto dest_port = reader.destination_port();
+    std::cout << "Destination port: " << static_cast<int>(dest_port) << std::endl;
     auto seq_number = reader.sequence_number();
-
+    std::cout << "Sequence Number: " << static_cast<int>(seq_number) << std::endl;
+    auto ack_number = reader.acknowledgment_number();
+    std::cout << "Acknowledgment Number: " << static_cast<int>(ack_number) << std::endl;
+    auto data_offset = reader.data_offset();
+    std::cout << "Data offset: " << static_cast<int>(data_offset) << std::endl;
+    auto reserverd = reader.reserverd();
+    std::cout << "Reserved: " << static_cast<int>(reserverd) << std::endl;
+    auto urg = reader.urg();
+    std::cout << "Urg: " << urg << std::endl;
 
     return 0;
 }

@@ -5,9 +5,8 @@
 #pragma once
 
 #include <cstdint>
-#include <cassert>
 #include <vector>
-#include <iostream>
+#include <cassert>
 
 namespace bitter
 {
@@ -38,7 +37,6 @@ public:
     {
         auto current_group_size = group_size<Group>();
         auto current_offset = offset<Group>();
-        //std::cout << "internal offset " << current_offset << std::endl;
         return read_bits_from_offset<ReturnType>(current_group_size, current_offset);
     }
 

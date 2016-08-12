@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <iostream>
 
 // 32 bit with
 // TCP Header format source: http://www.freesoft.org/CIE/Course/Section4/8.htm

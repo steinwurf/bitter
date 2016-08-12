@@ -3,5 +3,5 @@
 
 bld.program(features='cxx',
             source='tcp_header_example.cpp',
-            target='tcp_header_writer',
+            target='tcp_header_writer_reader',
             use=['bitter_includes'])

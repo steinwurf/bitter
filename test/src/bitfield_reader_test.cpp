@@ -164,7 +164,7 @@ TEST(test_bit_reader, read_bit5)
     EXPECT_EQ(1U, reader.group_size<0>());
 
      auto value = reader.read<bool, 0>();
-    EXPECT_EQ(true, value);
+    EXPECT_EQ(true, (bool)value);
 }
 
 TEST(test_bit_reader, read_bit6)
@@ -183,6 +183,6 @@ TEST(test_bit_reader, read_bit6)
     // Test that groups have correct size
     EXPECT_EQ(1U, reader.group_size<0>());
 
-     auto value = reader.read<bool, 0>();
+    auto value = reader.read<bool, 0>();
     EXPECT_EQ(false, value);
 }

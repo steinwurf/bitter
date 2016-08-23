@@ -7,10 +7,14 @@
 #include <cstdint>
 #include <vector>
 #include <cassert>
+#include <type_traits>
+
+#include <endian/big_endian.hpp>
+#include <endian/little_endian.hpp>
 
 namespace bitter
 {
-template<uint32_t... Groups>
+template<class EndianType, uint32_t... Groups>
 class bitfield_writer
 {
 public:
@@ -30,6 +34,13 @@ public:
         // Determine offset for group and size for the group
         auto offset = group_offset<Group>();
         auto size = group_size<Group>();
+
+        if(is_endian_shift_needed<Type, size>())
+        {
+            data = data << (sizeof(Type) - size);
+        }
+
+
 
         if(std::is_same<Type, bool>::value)
         {
@@ -180,9 +191,27 @@ private:
         }
     }
 
+    template<typename Type, uint32_t size>
+    bool is_endian_shift_needed()
+    {
+        if(std::is_same<m_endian, endian::little_endian>())
+        {
+            if(size < (sizeof(Type) * 8))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+
 private:
     std::vector<uint8_t> m_data;
     uint64_t m_size;
     uint32_t m_number_of_groups;
+    EndianType m_endian;
 };
 }

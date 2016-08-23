@@ -7,10 +7,14 @@
 #include <cstdint>
 #include <vector>
 #include <cassert>
+#include <typeinfo>
+
+#include <endian/big_endian.hpp>
+#include <endian/little_endian.hpp>
 
 namespace bitter
 {
-template<uint32_t... Groups>
+template<class EndianType, uint32_t... Groups>
 class bitfield_reader
 {
 public:
@@ -106,8 +110,22 @@ private:
         return (m_data[byte] >> position) & 0x1;
     }
 
+    <uint32_t Group>
+    bool is_endian_shift_needed()
+    {
+        if(typeid(m_endian) == typeid(little_endian))
+        {
+            auto size = group_size<Group>();
+            if(size == 8 || size == 16 || size == 32 || size == 64)
+
+
+        }
+        return false;
+    }
+
 private:
     std::vector<uint8_t> m_data;
     uint64_t m_bits;
+    EndianType m_endian;
 };
 }

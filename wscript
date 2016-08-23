@@ -31,6 +31,11 @@ def resolve(ctx):
             git_repository='github.com/steinwurf/gtest.git',
             major=3))
 
+        ctx.add_dependency(resolve.ResolveVersion(
+            name='endian',
+            git_repository='github.com/steinwurf/endian.git',
+            major=3))
+
 
 def configure(conf):
 

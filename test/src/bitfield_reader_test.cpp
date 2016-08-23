@@ -8,6 +8,8 @@
 
 #include <gtest/gtest.h>
 
+#include <typeinfo>
+
 TEST(test_bit_reader, read_bit)
 {
     std::vector<uint8_t> data
@@ -163,8 +165,8 @@ TEST(test_bit_reader, read_bit5)
     // Test that groups have correct size
     EXPECT_EQ(1U, reader.group_size<0>());
 
-     auto value = reader.read<bool, 0>();
-    EXPECT_EQ(true, (bool)value);
+    auto value = reader.read<bool, 0>();
+    EXPECT_TRUE(value);
 }
 
 TEST(test_bit_reader, read_bit6)
@@ -184,5 +186,5 @@ TEST(test_bit_reader, read_bit6)
     EXPECT_EQ(1U, reader.group_size<0>());
 
     auto value = reader.read<bool, 0>();
-    EXPECT_EQ(false, value);
+    EXPECT_FALSE(value);
 }

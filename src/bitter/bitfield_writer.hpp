@@ -35,7 +35,7 @@ public:
         auto offset = group_offset<Group>();
         auto size = group_size<Group>();
 
-        if(is_endian_shift_needed<Type, size>())
+        if(is_endian_shift_needed<Type>(size))
         {
             data = data << (sizeof(Type) - size);
         }
@@ -191,10 +191,10 @@ private:
         }
     }
 
-    template<typename Type, uint32_t size>
-    bool is_endian_shift_needed()
+    template<typename Type>
+    bool is_endian_shift_needed(uint64_t size)
     {
-        if(std::is_same<m_endian, endian::little_endian>())
+        if(std::is_same<EndianType, endian::little_endian()>())
         {
             if(size < (sizeof(Type) * 8))
             {
@@ -212,6 +212,5 @@ private:
     std::vector<uint8_t> m_data;
     uint64_t m_size;
     uint32_t m_number_of_groups;
-    EndianType m_endian;
 };
 }

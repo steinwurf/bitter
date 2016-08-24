@@ -2,6 +2,7 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file
+#include <endian/little_endian.hpp>
 #include <bitter/bitfield_reader.hpp>
 
 #include <cstdint>
@@ -21,8 +22,9 @@ TEST(test_bit_reader, read_bit)
         0xA5, //1010 0101
     };
 
+
     auto reader =
-         bitter::bitfield_reader<8,8,8,8,8>(data);
+         bitter::bitfield_reader<endian::little_endian, 8,8,8,8,8>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -67,7 +69,7 @@ TEST(test_bit_reader, read_bit2)
     };
 
     auto reader =
-         bitter::bitfield_reader<16,16,16>(data);
+         bitter::bitfield_reader<endian::little_endian, 16,16,16>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -104,7 +106,7 @@ TEST(test_bit_reader, read_bit3)
     };
 
     auto reader =
-         bitter::bitfield_reader<32,32>(data);
+         bitter::bitfield_reader<endian::little_endian, 32,32>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -136,7 +138,7 @@ TEST(test_bit_reader, read_bit4)
     };
 
     auto reader =
-         bitter::bitfield_reader<64>(data);
+         bitter::bitfield_reader<endian::little_endian, 64>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -157,7 +159,7 @@ TEST(test_bit_reader, read_bit5)
     };
 
     auto reader =
-         bitter::bitfield_reader<1>(data);
+         bitter::bitfield_reader<endian::little_endian, 1>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());
@@ -177,7 +179,7 @@ TEST(test_bit_reader, read_bit6)
     };
 
     auto reader =
-         bitter::bitfield_reader<1>(data);
+         bitter::bitfield_reader<endian::little_endian, 1>(data);
 
     // Test that groups have correct offset
     EXPECT_EQ(0U, reader.offset<0>());

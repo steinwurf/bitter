@@ -110,15 +110,20 @@ private:
         return (m_data[byte] >> position) & 0x1;
     }
 
-    <uint32_t Group>
+    template<uint32_t Group>
     bool is_endian_shift_needed()
     {
-        if(typeid(m_endian) == typeid(little_endian))
+        if(std::is_same<EndianType, endian::little_endian()>())
         {
             auto size = group_size<Group>();
             if(size == 8 || size == 16 || size == 32 || size == 64)
-
-
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -126,6 +131,5 @@ private:
 private:
     std::vector<uint8_t> m_data;
     uint64_t m_bits;
-    EndianType m_endian;
 };
 }

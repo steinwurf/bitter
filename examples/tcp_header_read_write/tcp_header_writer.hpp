@@ -4,6 +4,8 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file
 #include <bitter/bitfield_writer.hpp>
 
+#include <endian/little_endian.hpp>
+
 #include <vector>
 #include <cstdint>
 
@@ -32,7 +34,7 @@ class tcp_header_writer
 {
 public:
     using header_fields =
-          bitter::bitfield_writer<
+          bitter::bitfield_writer<endian::little_endian,
                                 16, 16, 32, 32,
                                 4, 6, 1, 1, 1,
                                 1, 1, 1, 16,

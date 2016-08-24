@@ -4,6 +4,8 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #include <bitter/bitfield_reader.hpp>
 
+#include <endian/little_endian.hpp>
+
 #include <vector>
 #include <cstdint>
 #include <iostream>
@@ -15,7 +17,8 @@ int main()
     data.push_back(129U);
     data.push_back(255U);
 
-    auto reader = bitter::bitfield_reader<1,1,1,1,
+    auto reader = bitter::bitfield_reader<endian::little_endian,
+                                          1,1,1,1,
                                           1,1,1,1,
                                           8>(data);
 

@@ -4,6 +4,8 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file
 #include <bitter/bitfield_reader.hpp>
 
+#include <endian/little_endian.hpp>
+
 #include <vector>
 #include <cstdint>
 #include <iostream>
@@ -36,7 +38,7 @@ class tcp_header_reader
 {
 public:
     using header_fields =
-          bitter::bitfield_reader<
+          bitter::bitfield_reader<endian::little_endian,
                                 16, 16, 32, 32,
                                 4, 6, 1, 1, 1,
                                 1, 1, 1, 16,

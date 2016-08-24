@@ -53,7 +53,8 @@ def build(bld):
 
     bld(name='bitter_includes',
         includes='./src',
-        export_includes='./src')
+        export_includes='./src',
+        use=['endian_includes'])
 
     if bld.is_toplevel():
 

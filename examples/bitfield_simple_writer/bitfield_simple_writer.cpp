@@ -2,8 +2,9 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
-
 #include <bitter/bitfield_writer.hpp>
+
+#include <endian/little_endian.hpp>
 
 #include <cstdint>
 #include <vector>
@@ -29,7 +30,8 @@ int main()
 
     std::vector<uint8_t> dummy;
     dummy.resize(5);
-    auto writer = bitter::bitfield_writer<16, 8, 1>(dummy);
+    auto writer = bitter::bitfield_writer<endian::little_endian,
+                                          16, 8, 1>(dummy);
     //writer.write<1, bool>(true);
     //writer.write<2, uint8_t>(254);
 

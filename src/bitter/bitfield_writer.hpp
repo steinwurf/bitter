@@ -167,6 +167,18 @@ private:
         uint8_t* data_to_write = (uint8_t*) &value_to_write;
         uint32_t data_to_write_size = sizeof(value_to_write);
 
+        // If we want little endian, this will convert data to little endian
+        if(is_little_endian())
+        {
+            auto offset_value = (((sizeof(value_to_write) * 8) - size) / 8);
+            EndianType::template put<Type>(value_to_write, data_to_write);
+            // Do so the pointer only takes needed data
+            // This is for removing unwanted zeros in pointer
+            data_to_write = data_to_write + offset_value;
+            data_to_write_size -= offset_value;
+        }
+
+
         uint64_t current_offset = offset;
         for(int i = data_to_write_size - 1; i >= 0; --i)
         {
@@ -194,7 +206,7 @@ private:
     template<typename Type>
     bool is_endian_shift_needed(uint64_t size)
     {
-        if(std::is_same<EndianType, endian::little_endian()>())
+        if(is_little_endian())
         {
             if(size < (sizeof(Type) * 8))
             {
@@ -206,6 +218,11 @@ private:
             }
         }
         return false;
+    }
+
+    bool is_little_endian()
+    {
+        return std::is_same<EndianType, endian::little_endian()>();
     }
 
 private:

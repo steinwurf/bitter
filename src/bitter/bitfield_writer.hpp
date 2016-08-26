@@ -78,6 +78,46 @@ public:
 
     }
 
+    template<uint32_t Group, typename Type>
+    void write_as_vector(Type data)
+    {
+        // Ensure that group actually exists
+        assert(Group < m_number_of_groups);
+
+        auto offset = group_offset<Group>();
+        auto size = group_size<Group>();
+
+        if (std::is_same<Type, bool>::value)
+        {
+            uint8_t* data_vector;
+            if (data)
+            {
+                EndianType::template put<uint8_t>(1U, data_vector);
+            }
+            else
+            {
+                EndianType::template put<uint8_t>(0U, data_vector);
+            }
+            write_as_vector(data_vector, offset, size);
+        }
+        else
+        {
+            if (size < (sizeof(Type) * 8))
+            {
+                data = data << (sizeof(Type) * 8) - size;
+            }
+            uint8_t* data_vector;
+            EndianType::template put<Type>(data, data_vector);
+
+            if (is_little_endian() && size < (sizeof(Type) * 8))
+            {
+                auto offset_value = (((sizeof(data) * 8) - size) / 8);
+                data_vector = data_vector + offset_value;
+            }
+            write_as_vector(data_vector, offset, size);
+        }
+    }
+
     std::vector<uint8_t> data()
     {
         return m_data;
@@ -168,7 +208,7 @@ private:
         uint32_t data_to_write_size = sizeof(value_to_write);
 
         // If we want little endian, this will convert data to little endian
-        if(is_little_endian())
+        if (is_little_endian())
         {
             auto offset_value = (((sizeof(value_to_write) * 8) - size) / 8);
             EndianType::template put<Type>(value_to_write, data_to_write);
@@ -196,6 +236,33 @@ private:
                 write_bit(bit, value, bit_offset);
                 ++current_offset;
                 if((current_offset - offset) > size)
+                {
+                    return;
+                }
+            }
+        }
+    }
+
+    void write_data_vector(uint8_t* vector_to_write,
+                           uint64_t offset,
+                           uint64_t size)
+    {
+        auto current_offset = offset;
+        for (int i = sizeof(vector_to_write) - 1; i >= 0; --i)
+        {
+            auto data_to_write_element = vector_to_write[i];
+
+            for (int j = 0; j < 8; ++j)
+            {
+                auto position = 7 - j;
+                auto bit = (data_to_write_element >> position) & 0x1;
+
+                auto byte_offset = current_offset / 8;
+                auto bit_offset = current_offset % 8;
+                auto& value = m_data[byte_offset];
+                write_bit(bit, value, bit_offset);
+                ++current_offset;
+                if ((current_offset - offset) > size)
                 {
                     return;
                 }

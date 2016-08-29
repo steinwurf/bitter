@@ -113,7 +113,7 @@ private:
         if(not_exactly_bytes)
         {
             auto current_data = data[bytes - 1];
-            current_data = (current_data >> ((bits / 8) - bits % 8)) << ((bits / 8) - bits % 8;
+            current_data = (current_data >> ((bits / 8) - bits % 8)) << ((bits / 8) - bits % 8);
             data[bytes - 1] = current_data;
         }
 
@@ -123,20 +123,21 @@ private:
         }
 
         return EndianType::template get<ReturnType>(data);
-    //
-    //
-    //
-    //     for(uint64_t i = 0; i < bits; ++i)
-    //     {
-    //         ReturnType bit = read_bit_at_offset(offset + i);
-    //         result |=  bit << (bits - i - 1);
-    //     }
-    //
-    //
-    //
-    //     //EndianType::template get<ReturnType>();
-    //     return result;
-    // }
+        //
+        //
+        //
+        //     for(uint64_t i = 0; i < bits; ++i)
+        //     {
+        //         ReturnType bit = read_bit_at_offset(offset + i);
+        //         result |=  bit << (bits - i - 1);
+        //     }
+        //
+        //
+        //
+        //     //EndianType::template get<ReturnType>();
+        //     return result;
+        // }
+    }
 
     uint8_t read_bit_at_offset(uint8_t offset)
     {

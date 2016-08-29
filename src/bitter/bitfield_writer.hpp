@@ -89,32 +89,36 @@ public:
 
         if (std::is_same<Type, bool>::value)
         {
-            uint8_t* data_vector;
+            std::vector<uint8_t> data_vector;
+            data_vector.resize(1);
             if (data)
             {
-                EndianType::template put<uint8_t>(1U, data_vector);
+                EndianType::template put<uint8_t>(1U, data_vector.data());
             }
             else
             {
-                EndianType::template put<uint8_t>(0U, data_vector);
+                EndianType::put(static_cast<uint8_t>(0U), data_vector.data());
             }
-            write_as_vector(data_vector, offset, size);
+            write_data_vector(data_vector.data(), offset, size);
         }
         else
         {
             if (size < (sizeof(Type) * 8))
             {
-                data = data << (sizeof(Type) * 8) - size;
+                data = data << ((sizeof(Type) * 8) - size);
             }
-            uint8_t* data_vector;
-            EndianType::template put<Type>(data, data_vector);
+            std::vector<uint8_t> data_vector;
+            data_vector.resize(sizeof(Type));
+            EndianType::put(data, data_vector.data());
 
             if (is_little_endian() && size < (sizeof(Type) * 8))
             {
                 auto offset_value = (((sizeof(data) * 8) - size) / 8);
-                data_vector = data_vector + offset_value;
+                write_data_vector(data_vector.data() + offset_value, offset, size);
             }
-            write_as_vector(data_vector, offset, size);
+            else{
+                write_data_vector(data_vector.data(), offset, size);
+            }
         }
     }
 

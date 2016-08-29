@@ -82,7 +82,7 @@ TEST(test_bit_reader, read_bit2)
     EXPECT_EQ(16U, reader.group_size<2>());
 
     auto value = reader.read<uint16_t, 0>();
-    EXPECT_EQ(255U, value);
+    EXPECT_EQ(65280U, value);
 
     value = reader.read<uint16_t, 1>();
     EXPECT_EQ(61455U, value);

@@ -99,6 +99,13 @@ private:
             ReturnType bit = read_bit_at_offset(offset + i);
             result |=  bit << (bits - i - 1);
         }
+
+        if(std::is_same<ReturnType, bool>()::value)
+        {
+
+        }
+        
+        EndianType::template get
         return result;
     }
 

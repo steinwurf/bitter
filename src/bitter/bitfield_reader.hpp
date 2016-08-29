@@ -100,12 +100,12 @@ private:
             result |=  bit << (bits - i - 1);
         }
 
-        if(std::is_same<ReturnType, bool>()::value)
-        {
+        // if(std::is_same<ReturnType, bool>()::value)
+        // {
+        //
+        // }
 
-        }
-        
-        EndianType::template get
+        //EndianType::template get<ReturnType>();
         return result;
     }
 

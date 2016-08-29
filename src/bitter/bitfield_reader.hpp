@@ -93,21 +93,50 @@ private:
     ReturnType read_bits_from_offset(uint64_t bits, uint64_t offset)
     {
         assert(bits <= 64);
-        ReturnType result = 0;
-        for(uint64_t i = 0; i < bits; ++i)
+
+        uint64_t bytes = bits / 8;
+        bool not_exactly_bytes = bits % 8 != 0;
+
+        if(not_exactly_bytes)
         {
-            ReturnType bit = read_bit_at_offset(offset + i);
-            result |=  bit << (bits - i - 1);
+            ++bytes;
         }
 
-        // if(std::is_same<ReturnType, bool>()::value)
-        // {
-        //
-        // }
+        // NOTE: Discuss solution to usage of new
+        uint8_t* data = new uint8_t[bytes];
 
-        //EndianType::template get<ReturnType>();
-        return result;
-    }
+        for(uint64_t i = 0; i < bytes; ++i)
+        {
+            data[i] = m_data[offset + i];
+        }
+
+        if(not_exactly_bytes)
+        {
+            auto current_data = data[bytes - 1];
+            current_data = (current_data >> ((bits / 8) - bits % 8)) << ((bits / 8) - bits % 8;
+            data[bytes - 1] = current_data;
+        }
+
+        if(std::is_same<ReturnType, bool>())
+        {
+            return (bool) EndianType::template get<uint8_t>(data);
+        }
+
+        return EndianType::template get<ReturnType>(data);
+    //
+    //
+    //
+    //     for(uint64_t i = 0; i < bits; ++i)
+    //     {
+    //         ReturnType bit = read_bit_at_offset(offset + i);
+    //         result |=  bit << (bits - i - 1);
+    //     }
+    //
+    //
+    //
+    //     //EndianType::template get<ReturnType>();
+    //     return result;
+    // }
 
     uint8_t read_bit_at_offset(uint8_t offset)
     {

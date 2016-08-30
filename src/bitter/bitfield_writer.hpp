@@ -250,16 +250,6 @@ private:
         }
     }
 
-    void print_byte(uint8_t byte)
-    {
-        for(int i = 0; i  < 8; ++i)
-        {
-            auto position = 7 - i;
-            auto bit = (byte >> position) & 0x1;
-            std::cout << static_cast<uint32_t>(bit);
-        }
-        std::cout << " ";
-    }
 
     template<typename Type>
     void write_data_vector(uint8_t* vector_to_write,
@@ -273,8 +263,6 @@ private:
         for (int i = 0; i < static_cast<int>(data_to_write_size); ++i)
         {
             auto data_to_write_element = vector_to_write[i];
-            // print_byte(data_to_write_element);
-            // std::cout << "" << std::endl;
 
             for (int j = 0; j < 8; ++j)
             {

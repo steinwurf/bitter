@@ -42,7 +42,9 @@ TEST(test_bit_writer_big_endian, write_bit_2)
 
     auto writer = bitter::bitfield_writer<endian::big_endian,
                                           16>(data_vector);
-    writer.write_as_vector<0>(2050U);
+
+    uint16_t data = 2050u;
+    writer.write_as_vector<0>(data);
     EXPECT_EQ(writer.data()[0], 8U);
     EXPECT_EQ(writer.data()[1], 2U);
 }
@@ -55,7 +57,8 @@ TEST(test_bit_writer_big_endian, write_bit_3)
 
     auto writer = bitter::bitfield_writer<endian::big_endian,
                                           64>(data_vector);
-        writer.write_as_vector<0>(323794U);
+    uint64_t data = 323794U;
+    writer.write_as_vector<0>(data);
 
     EXPECT_EQ(writer.data()[0], 0U);
     EXPECT_EQ(writer.data()[1], 0U);
@@ -74,7 +77,8 @@ TEST(test_bit_writer_big_endian, write_bit_4)
 
     auto writer = bitter::bitfield_writer<endian::big_endian,
     32>(data_vector);
-    writer.write_as_vector<0>(323794U);
+    uint32_t data = 323794U;
+    writer.write_as_vector<0>(data);
 
     EXPECT_EQ(writer.data()[3], 210U);
     EXPECT_EQ(writer.data()[2], 240U);
@@ -92,7 +96,9 @@ TEST(test_bit_writer_big_endian, write_multiple_bit_fields_1)
 
     writer.write_as_vector<0>(true);
     EXPECT_EQ(writer.data()[0], 128U);
-    writer.write_as_vector<1>(128U);
+
+    uint8_t data = 128U;
+    writer.write_as_vector<1>(data);
 
     EXPECT_EQ(writer.data()[0], 192U);
     EXPECT_EQ(writer.data()[1], 0U);
@@ -108,7 +114,8 @@ TEST(test_bit_writer_big_endian, write_multiple_bit_fields_2)
 
     writer.write_as_vector<0>(true);
     EXPECT_EQ(writer.data()[0], 128U);
-    writer.write_as_vector<1>(64U);
+    uint64_t data = 64U;
+    writer.write_as_vector<1>(data);
 
     EXPECT_EQ(writer.data()[0], 128U);
     EXPECT_EQ(writer.data()[1], 0U);

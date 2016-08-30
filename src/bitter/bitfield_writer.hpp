@@ -91,12 +91,11 @@ public:
 
         if (std::is_same<Type, bool>())
         {
-            std::cout << "john" << std::endl;
             std::vector<uint8_t> data_vector;
             data_vector.resize(1);
             if (value)
             {
-                EndianType::template put<uint8_t>(1U, data_vector.data());
+                EndianType::template put<uint8_t>(128U, data_vector.data());
             }
             else
             {
@@ -271,16 +270,11 @@ private:
         uint32_t data_to_write_size = sizeof(Type);
         auto current_offset = offset;
 
-        std::cout << "BYTE" << std::endl;
-        for(int i = data_to_write_size - 1; i >= 0; --i)
-        {
-            print_byte(vector_to_write[i]);
-        }
-        std::cout << "" << std::endl;
-
-        for (int i = data_to_write_size - 1; i >= 0; --i)
+        for (int i = 0; i < static_cast<int>(data_to_write_size); ++i)
         {
             auto data_to_write_element = vector_to_write[i];
+            // print_byte(data_to_write_element);
+            // std::cout << "" << std::endl;
 
             for (int j = 0; j < 8; ++j)
             {

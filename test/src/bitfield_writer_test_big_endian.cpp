@@ -29,7 +29,8 @@ TEST(test_bit_writer_big_endian, write_bit_1)
 
     auto writer = bitter::bitfield_writer<endian::big_endian,
                                           8>(data_vector);
-    writer.write_as_vector<0>(32U);
+    uint8_t data = 32U;
+    writer.write_as_vector<0>(data);
     EXPECT_EQ(writer.data()[0], 32U);
 }
 

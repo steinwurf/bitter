@@ -9,6 +9,8 @@
 #include <cassert>
 #include <type_traits>
 
+#include <iostream>
+
 #include <endian/big_endian.hpp>
 #include <endian/little_endian.hpp>
 
@@ -25,7 +27,7 @@ public:
     }
 
     template<uint32_t Group, typename Type>
-    void write(Type data)
+    void write(Type value)
     {
         // Check if Group actually exists
         //std::cout << "number of groups" << m_number_of_groups << std::endl;
@@ -37,7 +39,7 @@ public:
 
         if(is_endian_shift_needed<Type>(size))
         {
-            data = data << (sizeof(Type) - size);
+            value = value << (sizeof(Type) - size);
         }
 
 
@@ -46,7 +48,7 @@ public:
         {
             // If the bool value is true, write 0000 0001
             // If the bool value is false, write 0000 0000
-            if(data)
+            if(value)
             {
                 write_data<uint8_t>(1U, offset, size);
             }
@@ -60,26 +62,26 @@ public:
             // Based
             if(size <= 8)
             {
-                write_data<uint8_t>(data, offset, size);
+                write_data<uint8_t>(value, offset, size);
             }
             else if(size <= 16)
             {
-                write_data<uint16_t>(data, offset, size);
+                write_data<uint16_t>(value, offset, size);
             }
             else if(size <= 32)
             {
-                write_data<uint32_t>(data, offset, size);
+                write_data<uint32_t>(value, offset, size);
             }
             else if(size <= 64)
             {
-                write_data<uint64_t>(data, offset, size);
+                write_data<uint64_t>(value, offset, size);
             }
         }
 
     }
 
     template<uint32_t Group, typename Type>
-    void write_as_vector(Type data)
+    void write_as_vector(Type value)
     {
         // Ensure that group actually exists
         assert(Group < m_number_of_groups);
@@ -87,11 +89,12 @@ public:
         auto offset = group_offset<Group>();
         auto size = group_size<Group>();
 
-        if (std::is_same<Type, bool>::value)
+        if (std::is_same<Type, bool>())
         {
+            std::cout << "john" << std::endl;
             std::vector<uint8_t> data_vector;
             data_vector.resize(1);
-            if (data)
+            if (value)
             {
                 EndianType::template put<uint8_t>(1U, data_vector.data());
             }
@@ -99,25 +102,26 @@ public:
             {
                 EndianType::put(static_cast<uint8_t>(0U), data_vector.data());
             }
-            write_data_vector(data_vector.data(), offset, size);
+            write_data_vector<uint8_t>(data_vector.data(), offset, size);
+
         }
         else
         {
             if (size < (sizeof(Type) * 8))
             {
-                data = data << ((sizeof(Type) * 8) - size);
+                value = value << ((sizeof(Type) * 8) - size);
             }
             std::vector<uint8_t> data_vector;
             data_vector.resize(sizeof(Type));
-            EndianType::put(data, data_vector.data());
+            EndianType::put(value, data_vector.data());
 
             if (is_little_endian() && size < (sizeof(Type) * 8))
             {
-                auto offset_value = (((sizeof(data) * 8) - size) / 8);
-                write_data_vector(data_vector.data() + offset_value, offset, size);
+                auto offset_value = (((sizeof(value) * 8) - size) / 8);
+                write_data_vector<Type>(data_vector.data() + offset_value, offset, size);
             }
             else{
-                write_data_vector(data_vector.data(), offset, size);
+                write_data_vector<Type>(data_vector.data(), offset, size);
             }
         }
     }
@@ -247,12 +251,34 @@ private:
         }
     }
 
+    void print_byte(uint8_t byte)
+    {
+        for(int i = 0; i  < 8; ++i)
+        {
+            auto position = 7 - i;
+            auto bit = (byte >> position) & 0x1;
+            std::cout << static_cast<uint32_t>(bit);
+        }
+        std::cout << " ";
+    }
+
+    template<typename Type>
     void write_data_vector(uint8_t* vector_to_write,
                            uint64_t offset,
                            uint64_t size)
     {
+
+        uint32_t data_to_write_size = sizeof(Type);
         auto current_offset = offset;
-        for (int i = sizeof(vector_to_write) - 1; i >= 0; --i)
+
+        std::cout << "BYTE" << std::endl;
+        for(int i = data_to_write_size - 1; i >= 0; --i)
+        {
+            print_byte(vector_to_write[i]);
+        }
+        std::cout << "" << std::endl;
+
+        for (int i = data_to_write_size - 1; i >= 0; --i)
         {
             auto data_to_write_element = vector_to_write[i];
 

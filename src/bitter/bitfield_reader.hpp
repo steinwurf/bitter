@@ -93,13 +93,62 @@ private:
     ReturnType read_bits_from_offset(uint64_t bits, uint64_t offset)
     {
         assert(bits <= 64);
-        ReturnType result = 0;
-        for(uint64_t i = 0; i < bits; ++i)
+
+        auto elements = bits / 8;
+        if(bits % 8 != 0)
         {
-            ReturnType bit = read_bit_at_offset(offset + i);
-            result |=  bit << (bits - i - 1);
+            ++elements;
         }
-        return result;
+
+        std::vector<uint8_t> data_vector;
+
+        auto current_offset = offset;
+        uint32_t count = 0;
+        // Only works for bits % 8 == 0
+        while((current_offset + 8) < offset + bits)
+        {
+            uint8_t current_byte = 0;
+            for(int i = 0; i < 8; ++i)
+            {
+                uint8_t bit = read_bit_at_offset;
+                current_byte |= bit << 7 - i;
+            }
+            data_vector.push_back(current_byte);
+            ++count;
+
+            // idea is to determine missing bytes and read them out
+            if(!((current_offset + 8) < offset + bits))
+            {
+                uint8_t end_data = 0;
+                for(int i = 0; i < (current_offset - bits); ++i)
+                {
+                    uint8_t bit = read_bit_at_offset;
+                    end_data = |= bit << 7 - i;
+                }
+                data_vector.push_back(end_data);
+            }
+
+
+            current_offset += 8;
+        }
+    }
+        // for(uint64_t i = 0; i < bits; ++i)
+        // {
+        //     for(int j = 0; j < 8; ++j)
+        //     {
+        //
+        //     }
+        // }
+        //
+        //
+        //
+        // ReturnType result = 0;
+        // for(uint64_t i = 0; i < bits; ++i)
+        // {
+        //     ReturnType bit = read_bit_at_offset(offset + i);
+        //     result |=  bit << (bits - i - 1);
+        // }
+        // return result;
         // assert(bits <= 64);
         //
         // uint64_t bytes = bits / 8;
@@ -145,7 +194,7 @@ private:
         //     //EndianType::template get<ReturnType>();
         //     return result;
         // }
-    }
+
 
     uint8_t read_bit_at_offset(uint8_t offset)
     {

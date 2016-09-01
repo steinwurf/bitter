@@ -24,29 +24,29 @@ void print_byte(uint8_t byte)
 
 int main()
 {
-    // Set up stream for print and used for reset
-    std::ios state(NULL);
-    state.copyfmt(std::cout);
-
-    std::vector<uint8_t> dummy;
-    dummy.resize(5);
-    auto writer = bitter::bitfield_writer<endian::little_endian,
-                                          16, 8, 1>(dummy);
-    //writer.write<1, bool>(true);
-    //writer.write<2, uint8_t>(254);
-
-    writer.write<0, uint16_t>(34U);
-    writer.write<1, uint8_t>(12U);
-    writer.write<2, bool>(true);
-    //writer.write<0, bool>(true);
-
-    auto z = writer.data();
-
-    for(auto x : z)
-    {
-        print_byte(x);
-    }
-    std::cout << "" << std::endl;
+    // // Set up stream for print and used for reset
+    // std::ios state(NULL);
+    // state.copyfmt(std::cout);
+    //
+    // std::vector<uint8_t> dummy;
+    // dummy.resize(5);
+    // auto writer = bitter::bitfield_writer<endian::little_endian,
+    //                                       16, 8, 1>(dummy);
+    // //writer.write<1, bool>(true);
+    // //writer.write<2, uint8_t>(254);
+    //
+    // writer.write<0, uint16_t>(34U);
+    // writer.write<1, uint8_t>(12U);
+    // writer.write<2, bool>(true);
+    // //writer.write<0, bool>(true);
+    //
+    // auto z = writer.data();
+    //
+    // for(auto x : z)
+    // {
+    //     print_byte(x);
+    // }
+    // std::cout << "" << std::endl;
 
     return 0;
 }

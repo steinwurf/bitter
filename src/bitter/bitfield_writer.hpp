@@ -81,8 +81,8 @@ public:
     template<typename Type>
     Type data_as_uint()
     {
-        assert(sizeof(type) == m_size / 8);
-        return EndianType::get<Type>(m_data.data());
+        assert(sizeof(Type) == m_size / 8);
+        return EndianType::template get<Type>(m_data.data());
     }
 
 
@@ -192,12 +192,6 @@ private:
                 }
             }
         }
-    }
-
-    bool is_same_endianness()
-    {
-        bool endian_type = std::is_same<EndianType, endian::big_endian>();
-        return is_big_endian == endian_type;
     }
 
 

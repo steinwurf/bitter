@@ -24,10 +24,9 @@ public:
     bitfield_writer():
         m_data(0),
         m_data_ptr((uint8_t*)&m_data),
-        m_data_size(sizeof(Type))
+        m_data_size(sizeof(DataType))
     {
         m_size = total_size_of_groups();
-        m_data.resize(m_size / 8);
         m_number_of_groups = sizeof...(Groups);
     }
 
@@ -78,9 +77,14 @@ public:
 
     }
 
-    std::vector<uint8_t> data()
+    DataType data()
     {
         return m_data;
+    }
+
+    uint8_t* data_as_pointer()
+    {
+        return m_data_ptr;
     }
 
 
@@ -177,7 +181,6 @@ private:
     template<typename Type>
     void write_data(Type value_to_write, uint64_t offset, uint64_t size)
     {
-        std::cout << "Jeppe write data" << std::endl;
         uint64_t checker_mask = create_mask(size);
         assert((checker_mask & value_to_write) == 0);
 
@@ -200,7 +203,7 @@ private:
 
                 uint64_t byte_offset = current_offset / 8;
                 uint64_t bit_offset = current_offset % 8;
-                auto& value = m_data[byte_offset];
+                auto& value = m_data_ptr[byte_offset];
 
                 std::cout << "Current bit offset: " << bit_offset << std::endl;
                 write_bit(bit, value, bit_offset);
@@ -219,9 +222,9 @@ private:
     DataType m_data;
     uint8_t* m_data_ptr;
     uint32_t m_data_size;
+    uint64_t m_size;
+    uint32_t m_number_of_groups;
     //
     // std::vector<uint8_t> m_data;
-    // uint64_t m_size;
-    // uint32_t m_number_of_groups;
 };
 }

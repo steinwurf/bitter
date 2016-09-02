@@ -36,9 +36,12 @@ int main()
     writer.write<3>(larger_value);
 
 
-    for(auto byte : writer.data())
+    std::cout << "Data as number: " << writer.data() << std::endl;
+    auto data_pointer = writer.data_as_pointer();
+
+    for (uint32_t i = 0; i < sizeof(uint32_t); ++i)
     {
-        print_byte(byte);
+        print_byte(data_pointer[i]);
     }
     return 0;
 }

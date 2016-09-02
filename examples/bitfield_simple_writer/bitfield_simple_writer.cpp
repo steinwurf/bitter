@@ -24,15 +24,11 @@ void print_byte(uint8_t byte)
 
 int main()
 {
-
-    uint32_t size = 32;
-    std::vector<uint8_t> dummy;
-    dummy.resize(size/8);
-    auto writer = bitter::bitfield_writer<endian::little_endian, 1, 7, 8, 16>(dummy, size);
+    auto writer = bitter::bitfield_writer<endian::little_endian, 1, 7, 8, 16>();
 
     bool first = true;
     writer.write<0>(first);
-    uint8_t value = 16U;
+    uint8_t value = 32U;
     writer.write<1>(value);
     value = 128U;
     writer.write<2>(value);

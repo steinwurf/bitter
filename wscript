@@ -62,5 +62,5 @@ def build(bld):
         # i.e. not when included as a dependency
     #    bld.recurse('test')
         bld.recurse('examples/bitfield_simple_writer')
-    #    bld.recurse('examples/bitfield_simple_reader')
+        bld.recurse('examples/bitfield_simple_reader')
     #    bld.recurse('examples/tcp_header_read_write')

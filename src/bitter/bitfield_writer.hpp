@@ -21,10 +21,10 @@ template<class EndianType, uint32_t... Groups>
 class bitfield_writer
 {
 public:
-    bitfield_writer(std::vector<uint8_t> data, uint64_t size):
-    m_data(data),
-    m_size(size)
+    bitfield_writer()
     {
+        m_size = total_size_of_groups();
+        m_data.resize(m_size / 8);
         m_number_of_groups = sizeof...(Groups);
     }
 
@@ -89,6 +89,23 @@ public:
 
 
 private:
+    uint32_t total_size_of_groups()
+    {
+        return total_size_of_groups_<Groups...>();
+    }
+
+    template<uint32_t Group, uint32_t InputGroup, uint32_t... InputGroups>
+    uint32_t total_size_of_groups_()
+    {
+        return Group + total_size_of_groups_<InputGroup, InputGroups...>();
+    }
+
+    template<uint32_t Group>
+    uint32_t total_size_of_groups_()
+    {
+        return Group;
+    }
+
     template<uint32_t Group>
     uint64_t group_size()
     {
@@ -189,6 +206,7 @@ private:
                 uint64_t bit_offset = current_offset % 8;
                 auto& value = m_data[byte_offset];
 
+                std::cout << "Current bit offset: " << bit_offset << std::endl;
                 write_bit(bit, value, bit_offset);
                 ++current_offset;
                 ++bit_written;

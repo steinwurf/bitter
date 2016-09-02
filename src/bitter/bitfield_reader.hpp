@@ -20,7 +20,8 @@ class bitfield_reader
 public:
     bitfield_reader(InputType value)
     {
-        assert(sizeof(InputType) == total_size_of_groups / 8);
+
+        assert(sizeof(InputType) == total_size_of_groups() / 8);
         m_data.resize(sizeof(InputType));
         EndianType::template put<InputType>(value, m_data.data());
     }
@@ -33,22 +34,27 @@ public:
         return read_bits_from_offset<Type>(current_group_size, current_offset);
     }
 
+    std::vector<uint8_t> data()
+    {
+        return m_data;
+    }
+
 private:
     uint32_t total_size_of_groups()
     {
         return total_size_of_groups_<Groups...>();
     }
 
-    template<uint32_t Group, uint32_t... InputGroups>
+    template<uint32_t Group, uint32_t InputGroup, uint32_t... InputGroups>
     uint32_t total_size_of_groups_()
     {
-        return Group + total_size_of_groups_<InputGroups...>();
+        return Group + total_size_of_groups_<InputGroup, InputGroups...>();
     }
 
     template<uint32_t Group>
     uint32_t total_size_of_groups_()
     {
-        return 0;
+        return Group;
     }
 
     template<uint32_t Group>

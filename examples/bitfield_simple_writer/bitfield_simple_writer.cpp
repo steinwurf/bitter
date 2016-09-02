@@ -24,29 +24,25 @@ void print_byte(uint8_t byte)
 
 int main()
 {
-    // // Set up stream for print and used for reset
-    // std::ios state(NULL);
-    // state.copyfmt(std::cout);
-    //
-    // std::vector<uint8_t> dummy;
-    // dummy.resize(5);
-    // auto writer = bitter::bitfield_writer<endian::little_endian,
-    //                                       16, 8, 1>(dummy);
-    // //writer.write<1, bool>(true);
-    // //writer.write<2, uint8_t>(254);
-    //
-    // writer.write<0, uint16_t>(34U);
-    // writer.write<1, uint8_t>(12U);
-    // writer.write<2, bool>(true);
-    // //writer.write<0, bool>(true);
-    //
-    // auto z = writer.data();
-    //
-    // for(auto x : z)
-    // {
-    //     print_byte(x);
-    // }
-    // std::cout << "" << std::endl;
 
+    uint32_t size = 32;
+    std::vector<uint8_t> dummy;
+    dummy.resize(size/8);
+    auto writer = bitter::bitfield_writer<endian::little_endian, 1, 7, 8, 16>(dummy, size);
+
+    bool first = true;
+    writer.write<0>(first);
+    uint8_t value = 16U;
+    writer.write<1>(value);
+    value = 128U;
+    writer.write<2>(value);
+    uint32_t larger_value = 2050;
+    writer.write<3>(larger_value);
+
+
+    for(auto byte : writer.data())
+    {
+        print_byte(byte);
+    }
     return 0;
 }

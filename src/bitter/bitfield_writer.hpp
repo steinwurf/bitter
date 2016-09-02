@@ -4,6 +4,8 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
+#include <iostream>
+
 #include <cstdint>
 #include <vector>
 #include <cassert>
@@ -145,8 +147,9 @@ private:
 
     void write_bit(uint8_t value, uint8_t& dest, uint8_t position)
     {
+        std::cout << "postion: " << static_cast<int>(position) << std::endl;
         assert(value == 0 || value == 1);
-        uint8_t mask = 0x001 << (7 - position);
+        uint8_t mask = 0x001 << ( 7 - position);
 
         if(value == 0)
         {
@@ -161,7 +164,7 @@ private:
     template<typename Type>
     void write_data(Type value_to_write, uint64_t offset, uint64_t size)
     {
-
+        std::cout << "Jeppe write data" << std::endl;
         uint64_t checker_mask = create_mask(size);
         assert((checker_mask & value_to_write) == 0);
 
@@ -171,6 +174,8 @@ private:
         uint32_t data_to_write_size = sizeof(value_to_write);
 
         uint64_t current_offset = offset;
+        uint32_t bit_written = 0;
+
         for(int i = data_to_write_size - 1; i >= 0; --i)
         {
             auto data_to_write_element = data_to_write[i];
@@ -186,7 +191,8 @@ private:
 
                 write_bit(bit, value, bit_offset);
                 ++current_offset;
-                if((current_offset - offset) > size)
+                ++bit_written;
+                if((current_offset - offset) > size || bit_written == size)
                 {
                     return;
                 }

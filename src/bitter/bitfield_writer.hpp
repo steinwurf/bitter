@@ -17,11 +17,14 @@
 
 namespace bitter
 {
-template<class EndianType, uint32_t... Groups>
+template<typename DataType, uint32_t... Groups>
 class bitfield_writer
 {
 public:
-    bitfield_writer()
+    bitfield_writer():
+        m_data(0),
+        m_data_ptr((uint8_t*)&m_data),
+        m_data_size(sizeof(Type))
     {
         m_size = total_size_of_groups();
         m_data.resize(m_size / 8);
@@ -78,13 +81,6 @@ public:
     std::vector<uint8_t> data()
     {
         return m_data;
-    }
-
-    template<typename Type>
-    Type data_as_uint()
-    {
-        assert(sizeof(Type) == m_size / 8);
-        return EndianType::template get<Type>(m_data.data());
     }
 
 
@@ -220,8 +216,12 @@ private:
 
 
 private:
-    std::vector<uint8_t> m_data;
-    uint64_t m_size;
-    uint32_t m_number_of_groups;
+    DataType m_data;
+    uint8_t* m_data_ptr;
+    uint32_t m_data_size;
+    //
+    // std::vector<uint8_t> m_data;
+    // uint64_t m_size;
+    // uint32_t m_number_of_groups;
 };
 }

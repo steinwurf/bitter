@@ -24,7 +24,7 @@ void print_byte(uint8_t byte)
 
 int main()
 {
-    auto writer = bitter::bitfield_writer<endian::little_endian, 1, 7, 8, 16>();
+    auto writer = bitter::bitfield_writer<uint32_t, 1, 7, 8, 16>();
 
     bool first = true;
     writer.write<0>(first);

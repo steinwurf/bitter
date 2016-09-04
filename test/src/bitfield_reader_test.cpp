@@ -5,6 +5,8 @@
 #include <bitter/bitfield_reader.hpp>
 
 #include <endian/is_big_endian.hpp>
+#include <endian/big_endian.hpp>
+#include <endian/little_endian.hpp>
 
 #include <cstdint>
 
@@ -17,18 +19,20 @@ bool is_test_big_endian = endian::is_big_endian();
 TEST(test_bit_reader, read_bit)
 {
 
-    auto input = 0x0FF0FF00;
+    uint32_t input = 0x0FF0FF00U;
+
 
     auto reader =
-         bitter::bitfield_reader<uint32_t, 8,8,8,8>(input);
-
+        bitter::bitfield_reader<uint32_t, 8,8,8,8>(input);
 
     if(is_test_big_endian)
     {
+
         EXPECT_EQ(reader.data_ptr()[3], 0U);
         EXPECT_EQ(reader.data_ptr()[2], 255U);
         EXPECT_EQ(reader.data_ptr()[1], 240U);
         EXPECT_EQ(reader.data_ptr()[0], 15U);
+        reader.convert_endianness<endian::big_endian>();
     }
     else
     {
@@ -49,7 +53,7 @@ TEST(test_bit_reader, read_bit)
     // value = reader.read<uint8_t, 2>();
     // EXPECT_EQ(240U, value);
 
-    // value = reader.read<uint8_t, 3>();
+    // value = reader.read<uint8_t, 3>();xo
     // EXPECT_EQ(15U, value);
 
 }

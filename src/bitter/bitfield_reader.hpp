@@ -4,6 +4,9 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
+#include <endian/big_endian.hpp>
+#include <endian/little_endian.hpp>
+
 #include <cstdint>
 #include <vector>
 #include <cassert>
@@ -34,6 +37,12 @@ public:
     uint8_t* data_ptr()
     {
         return m_data_ptr;
+    }
+
+    template<typename EndianType>
+    void convert_endianness()
+    {
+        EndianType::template put<DataType>(m_data, m_data_ptr);
     }
 
 private:

@@ -33,6 +33,10 @@ TEST(test_bit_reader, read_bit)
         EXPECT_EQ(reader.data_ptr()[1], 240U);
         EXPECT_EQ(reader.data_ptr()[0], 15U);
         reader.convert_endianness<endian::big_endian>();
+        EXPECT_EQ(reader.data_ptr()[0], 0U);
+        EXPECT_EQ(reader.data_ptr()[1], 255U);
+        EXPECT_EQ(reader.data_ptr()[2], 240U);
+        EXPECT_EQ(reader.data_ptr()[3], 15U);
     }
     else
     {

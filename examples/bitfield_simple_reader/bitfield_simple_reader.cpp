@@ -24,8 +24,15 @@ void print_byte(uint8_t byte)
 int main()
 {
 
-    uint32_t value = 0xA0800802U;
+    uint32_t value = 0x20880A0U;
     auto reader = bitter::bitfield_reader<uint32_t, 1, 7, 8, 16>(value);
+
+    for(uint32_t i = 0; i < sizeof(uint32_t); ++i)
+    {
+        std::cout << "byte at " << i << " ";
+        print_byte(reader.data_ptr()[i]);
+        std::cout << "" << std::endl;
+    }
 
     for(uint32_t i = 0; i < sizeof(uint32_t); ++i)
     {

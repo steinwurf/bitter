@@ -33,7 +33,6 @@ TEST(test_bit_reader, read_bit)
         EXPECT_EQ(reader.data_ptr()[1], 240U);
         EXPECT_EQ(reader.data_ptr()[0], 15U);
         reader.convert_endianness<endian::little_endian>();
-        std::cout << "testing that test is run" << std::endl;
         EXPECT_EQ(reader.data_ptr()[0], 0U);
         EXPECT_EQ(reader.data_ptr()[1], 255U);
         EXPECT_EQ(reader.data_ptr()[2], 240U);

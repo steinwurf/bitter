@@ -9,21 +9,18 @@
 #include <cassert>
 #include <typeinfo>
 
-#include <endian/big_endian.hpp>
-#include <endian/little_endian.hpp>
-
 namespace bitter
 {
-template<class EndianType, typename InputType, uint32_t... Groups>
+template<typename DataType, uint32_t... Groups>
 class bitfield_reader
 {
 public:
-    bitfield_reader(InputType value)
+    bitfield_reader(DataType value):
+        m_data(value),
+        m_data_ptr((uint8_t*)&m_data),
+        m_data_size(sizeof(DataType))
     {
 
-        assert(sizeof(InputType) == total_size_of_groups() / 8);
-        m_data.resize(sizeof(InputType));
-        EndianType::template put<InputType>(value, m_data.data());
     }
 
     template<typename Type, uint32_t Group>
@@ -34,9 +31,9 @@ public:
         return read_bits_from_offset<Type>(current_group_size, current_offset);
     }
 
-    std::vector<uint8_t> data()
+    uint8_t* data_ptr()
     {
-        return m_data;
+        return m_data_ptr;
     }
 
 private:
@@ -122,13 +119,14 @@ private:
 
     uint8_t read_bit_at_offset(uint8_t offset)
     {
-        assert(offset < sizeof(InputType) * 8);
         auto byte = offset / 8;
         auto position = 7 - (offset % 8);
-        return (m_data[byte] >> position) & 0x1;
+        return (m_data_ptr[byte] >> position) & 0x1;
     }
 
 private:
-    std::vector<uint8_t> m_data;
+    DataType m_data;
+    uint8_t* m_data_ptr;
+    uint32_t m_data_size;
 };
 }

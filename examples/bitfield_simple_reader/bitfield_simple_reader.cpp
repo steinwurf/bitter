@@ -25,11 +25,11 @@ int main()
 {
 
     uint32_t value = 0xA0800802U;
-    auto reader = bitter::bitfield_reader<endian::little_endian, uint32_t, 1, 7, 8, 16>(value);
+    auto reader = bitter::bitfield_reader<uint32_t, 1, 7, 8, 16>(value);
 
-    for(auto byte : reader.data())
+    for(uint32_t i = 0; i < sizeof(uint32_t); ++i)
     {
-        print_byte(byte);
+        print_byte(reader.data_ptr()[i]);
     }
 
     std::cout << "" << std::endl;

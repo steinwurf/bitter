@@ -4,16 +4,10 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
-#include <iostream>
-
 #include <cstdint>
 #include <vector>
 #include <cassert>
 #include <type_traits>
-
-#include <endian/big_endian.hpp>
-#include <endian/little_endian.hpp>
-#include <endian/is_big_endian.hpp>
 
 namespace bitter
 {
@@ -34,7 +28,6 @@ public:
     void write(Type data)
     {
         // Check if Group actually exists
-        //std::cout << "number of groups" << m_number_of_groups << std::endl;
         assert(Group < m_number_of_groups);
 
         // Determine offset for group and size for the group
@@ -164,7 +157,6 @@ private:
 
     void write_bit(uint8_t value, uint8_t& dest, uint8_t position)
     {
-        std::cout << "postion: " << static_cast<int>(position) << std::endl;
         assert(value == 0 || value == 1);
         uint8_t mask = 0x001 << ( 7 - position);
 
@@ -204,8 +196,6 @@ private:
                 uint64_t byte_offset = current_offset / 8;
                 uint64_t bit_offset = current_offset % 8;
                 auto& value = m_data_ptr[byte_offset];
-
-                std::cout << "Current bit offset: " << bit_offset << std::endl;
                 write_bit(bit, value, bit_offset);
                 ++current_offset;
                 ++bit_written;
@@ -224,7 +214,5 @@ private:
     uint32_t m_data_size;
     uint64_t m_size;
     uint32_t m_number_of_groups;
-    //
-    // std::vector<uint8_t> m_data;
 };
 }

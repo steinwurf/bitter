@@ -55,6 +55,26 @@ TEST(test_bit_writer_little_endian, write_bit_2)
 
 }
 
+TEST(test_bit_writer_little_endian, write_bit_4)
+{
+    auto writer = bitter::bitfield_writer<uint32_t, 32>();
+    writer.write<0>(323794U);
+
+    if (is_big_endian)
+    {
+        EXPECT_EQ(writer.data_as_pointer()[3], 0U);
+        EXPECT_EQ(writer.data_as_pointer()[2], 4U);
+        EXPECT_EQ(writer.data_as_pointer()[1], 240U);
+        EXPECT_EQ(writer.data_as_pointer()[0], 210U);
+    }
+    else
+    {
+        EXPECT_EQ(writer.data_as_pointer()[0], 0U);
+        EXPECT_EQ(writer.data_as_pointer()[1], 4U);
+        EXPECT_EQ(writer.data_as_pointer()[2], 240U);
+        EXPECT_EQ(writer.data_as_pointer()[3], 210U);
+    }
+}
 
 TEST(test_bit_writer_little_endian, write_bit_3)
 {
@@ -62,7 +82,7 @@ TEST(test_bit_writer_little_endian, write_bit_3)
                                           64>();
     writer.write<0>(323794U);
 
-    if(is_big_endian)
+    if (is_big_endian)
     {
         EXPECT_EQ(writer.data_as_pointer()[7], 0U);
         EXPECT_EQ(writer.data_as_pointer()[6], 0U);
@@ -86,20 +106,6 @@ TEST(test_bit_writer_little_endian, write_bit_3)
     }
 }
 
-// TEST(test_bit_writer_little_endian, write_bit_4)
-// {
-//     std::vector<uint8_t> data_vector;
-//     data_vector.resize(4);
-
-//     auto writer = bitter::bitfield_writer<endian::little_endian,
-//     32>(data_vector);
-//     writer.write_as_vector<0>(323794U);
-
-//     EXPECT_EQ(writer.data()[3], 0U);
-//     EXPECT_EQ(writer.data()[2], 4U);
-//     EXPECT_EQ(writer.data()[1], 240U);
-//     EXPECT_EQ(writer.data()[0], 210U);
-// }
 
 // TEST(test_bit_writer_little_endian, write_multiple_bit_fields_1)
 // {

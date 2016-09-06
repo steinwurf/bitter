@@ -11,9 +11,6 @@
 #include <cassert>
 #include <typeinfo>
 
-
-#include <iostream>
-
 namespace bitter
 {
 template<typename DataType, uint32_t... Groups>
@@ -31,6 +28,17 @@ public:
     {
         auto current_group_size = group_size<Group>();
         auto current_offset = offset<Group>();
+        if (std::is_same<Type, bool>())
+        {
+            if (read_bits_from_offset<uint8_t>(current_group_size, current_offset) == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         return read_bits_from_offset<Type>(current_group_size, current_offset);
     }
 
@@ -49,7 +57,7 @@ private:
     template<uint32_t Group, uint32_t NextGroup, uint32_t... InputGroups>
     uint64_t group_size_()
     {
-        if((sizeof...(Groups) - Group) == sizeof...(InputGroups) + 1)
+        if ((sizeof...(Groups) - Group) == sizeof...(InputGroups) + 1)
         {
             return NextGroup;
         }
@@ -74,7 +82,7 @@ private:
     template<uint32_t Group, uint32_t NextGroup, uint32_t... InputGroups>
     uint64_t offset_()
     {
-        if((sizeof...(Groups) - Group) == sizeof...(InputGroups) + 1)
+        if ((sizeof...(Groups) - Group) == sizeof...(InputGroups) + 1)
         {
             return 0;
         }
@@ -93,13 +101,12 @@ private:
     template<typename ReturnType>
     ReturnType read_bits_from_offset(uint64_t bits, DataType offset)
     {
-        std::cout << "offset: " << static_cast<int>(offset) << std::endl;
         assert(bits <= 64);
         ReturnType result = 0;
         for(uint64_t i = 0; i < bits; ++i)
         {
             ReturnType bit = read_bit_at_offset(offset + i);
-            result |=  bit << i; //(bits - i - 1);
+            result |=  bit << i;
         }
         return result;
     }

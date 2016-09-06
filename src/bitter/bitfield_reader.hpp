@@ -99,7 +99,7 @@ private:
         for(uint64_t i = 0; i < bits; ++i)
         {
             ReturnType bit = read_bit_at_offset(offset + i);
-            result |=  bit << (bits - i - 1);
+            result |=  bit << i; //(bits - i - 1);
         }
         return result;
     }
@@ -111,7 +111,5 @@ private:
 
 private:
     DataType m_data;
-    uint8_t* m_data_ptr;
-    uint32_t m_data_size;
 };
 }

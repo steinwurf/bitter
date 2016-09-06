@@ -4,13 +4,15 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
-#include <endian/big_endian.hpp>
-#include <endian/little_endian.hpp>
+#include "helper_functions.hpp"
 
 #include <cstdint>
 #include <vector>
 #include <cassert>
 #include <typeinfo>
+
+
+#include <iostream>
 
 namespace bitter
 {
@@ -19,9 +21,7 @@ class bitfield_reader
 {
 public:
     bitfield_reader(DataType value):
-        m_data(value),
-        m_data_ptr((uint8_t*)&m_data),
-        m_data_size(sizeof(DataType))
+        m_data(value)
     {
 
     }
@@ -34,33 +34,10 @@ public:
         return read_bits_from_offset<Type>(current_group_size, current_offset);
     }
 
-    uint8_t* data_ptr()
-    {
-        return m_data_ptr;
-    }
-
-    template<typename EndianType>
-    void convert_endianness()
-    {
-        EndianType::template put<DataType>(m_data, m_data_ptr);
-    }
-
 private:
     uint32_t total_size_of_groups()
     {
-        return total_size_of_groups_<Groups...>();
-    }
-
-    template<uint32_t Group, uint32_t InputGroup, uint32_t... InputGroups>
-    uint32_t total_size_of_groups_()
-    {
-        return Group + total_size_of_groups_<InputGroup, InputGroups...>();
-    }
-
-    template<uint32_t Group>
-    uint32_t total_size_of_groups_()
-    {
-        return Group;
+        return bitter::total_size_of_groups_<Groups...>();
     }
 
     template<uint32_t Group>
@@ -114,8 +91,9 @@ private:
     }
 
     template<typename ReturnType>
-    ReturnType read_bits_from_offset(uint64_t bits, uint64_t offset)
+    ReturnType read_bits_from_offset(uint64_t bits, DataType offset)
     {
+        std::cout << "offset: " << static_cast<int>(offset) << std::endl;
         assert(bits <= 64);
         ReturnType result = 0;
         for(uint64_t i = 0; i < bits; ++i)
@@ -126,11 +104,9 @@ private:
         return result;
     }
 
-    uint8_t read_bit_at_offset(uint8_t offset)
+    DataType read_bit_at_offset(DataType offset)
     {
-        auto byte = offset / 8;
-        auto position = 7 - (offset % 8);
-        return (m_data_ptr[byte] >> position) & 0x1;
+        return (m_data >> offset) & 0x1;
     }
 
 private:

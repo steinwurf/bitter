@@ -81,15 +81,15 @@ TEST(test_bit_reader, read_bit6)
 
 }
 
-// TEST(test_bit_reader, read_bit7)
-// {
-//     uint8_t input = 0xF1;
-//     auto reader = bitter::bitfield_reader<uint8_t, 1, 7>(input);
+TEST(test_bit_reader, read_bit7)
+{
+    uint8_t input = 0xF1;
+    auto reader = bitter::bitfield_reader<uint8_t, 1, 7>(input);
 
-//     auto value = reader.read<bool, 0>();
-//     EXPECT_TRUE(value);
+    auto value = reader.read<bool, 0>();
+    EXPECT_TRUE(value);
 
-//     auto second_value = reader.read<uint8_t, 1>();
-//     EXPECT_EQ(6U, second_value);
+    auto second_value = reader.read<uint8_t, 1>();
+    EXPECT_EQ(120U, second_value);
 
-// }
+}

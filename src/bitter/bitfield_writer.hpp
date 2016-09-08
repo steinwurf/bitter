@@ -3,6 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
+#include "helper_functions.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -16,12 +17,9 @@ class bitfield_writer
 {
 public:
     bitfield_writer():
-        m_data(0),
-        m_data_ptr((uint8_t*)&m_data),
-        m_data_size(sizeof(DataType))
+        m_data(0)
     {
         m_size = total_size_of_groups();
-        m_number_of_groups = sizeof...(Groups);
     }
 
     template<uint32_t Group, typename Type>
@@ -84,7 +82,7 @@ public:
 private:
     uint32_t total_size_of_groups()
     {
-        return total_size_of_groups_<Groups...>();
+        return bitter::total_size_of_groups_<Groups...>();
     }
 
     template<uint32_t Group, uint32_t InputGroup, uint32_t... InputGroups>

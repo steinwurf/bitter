@@ -117,16 +117,18 @@ private:
     void write_bit(Type value, uint32_t position)
     {
         assert(value == 0 || value == 1);
-        Type mask = 0x001 << position;
+        DataType mask = 0x001 << position;
 
         if(value == 0)
         {
+            std::cout << "0";
             m_data &= ~mask;
 
         }
         else if(value == 1)
         {
             m_data |= mask;
+            std::cout << "1";
         }
     }
 
@@ -134,16 +136,18 @@ private:
     void write_data(Type value_to_write, uint64_t offset, uint64_t size)
     {
         uint64_t checker_mask = create_mask(size);
-        assert((checker_mask & value_to_write) == 0);
+        assert((checker_mask & (uint64_t) value_to_write) == 0);
 
         auto current_offset = offset;
 
+        std::cout << "current_offset " << (int) current_offset << std::endl;
         for (uint64_t i = 0; i < size; ++i)
         {
             auto bit = (value_to_write >> i) & 0x1;
             write_bit(bit, current_offset);
             ++current_offset;
         }
+        std::cout << "" << std::endl;
     }
 
 private:

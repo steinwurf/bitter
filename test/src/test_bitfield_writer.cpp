@@ -14,97 +14,114 @@
 
 #include "../test_helpers.hpp"
 
-bool is_big_endian = endian::is_big_endian();
-
-
 TEST(test_bit_writer_little_endian, write_bit)
 {
 
     auto writer = bitter::bitfield_writer<uint8_t, 1>();
     writer.write<0>(true);
-    // EXPECT_EQ(writer.data_as_pointer()[0], 1U);  // Will fail till bug is fixed
-    // EXPECT_EQ(writer.data(), 1U); // Will fail till bug is fixed
-    EXPECT_EQ(writer.data_as_pointer()[0], 128U);
-    EXPECT_EQ(writer.data(), 128U);
+    auto value = writer.data();
+
+    uint8_t* demo = (uint8_t*) &value;
+    print_byte(demo[0]);
+    EXPECT_EQ(value, 1U);
 }
 
-TEST(test_bit_writer_little_endian, write_bit_1)
+TEST(test_bit_writer_little_endian, write_bit1)
 {
-    auto writer = bitter::bitfield_writer<uint8_t,
-                                          8>();
-    writer.write<0>(32U);
-    EXPECT_EQ(writer.data(), 32U);
-}
 
+    auto writer = bitter::bitfield_writer<uint8_t, 1, 7>();
+    writer.write<0>(true);
+    uint8_t input = 64u;
+    writer.write<1>(input);
+    auto value = writer.data();
+
+    uint8_t* demo = (uint8_t*) &value;
+    print_byte(demo[0]);
+    EXPECT_EQ(value, 129U);
+}
 
 TEST(test_bit_writer_little_endian, write_bit_2)
 {
     auto writer = bitter::bitfield_writer<uint16_t,
-                                          16>();
-    writer.write<0>(2050U);
-    if (is_big_endian)
-    {
-        EXPECT_EQ(writer.data_as_pointer()[1], 8U);
-        EXPECT_EQ(writer.data_as_pointer()[0], 2U);
-    }
-    else
-    {
-        EXPECT_EQ(writer.data_as_pointer()[0], 8U);
-        EXPECT_EQ(writer.data_as_pointer()[1], 2U);
-    }
+    16>();
+    uint16_t input = 2050U;
+    writer.write<0>(input);
 
+    auto value = writer.data();
+    EXPECT_EQ(value, 2050U);
 }
 
-TEST(test_bit_writer_little_endian, write_bit_4)
-{
-    auto writer = bitter::bitfield_writer<uint32_t, 32>();
-    writer.write<0>(323794U);
-
-    if (is_big_endian)
-    {
-        EXPECT_EQ(writer.data_as_pointer()[3], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[2], 4U);
-        EXPECT_EQ(writer.data_as_pointer()[1], 240U);
-        EXPECT_EQ(writer.data_as_pointer()[0], 210U);
-    }
-    else
-    {
-        EXPECT_EQ(writer.data_as_pointer()[0], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[1], 4U);
-        EXPECT_EQ(writer.data_as_pointer()[2], 240U);
-        EXPECT_EQ(writer.data_as_pointer()[3], 210U);
-    }
-}
-
-TEST(test_bit_writer_little_endian, write_bit_3)
-{
-    auto writer = bitter::bitfield_writer<uint64_t,
-                                          64>();
-    writer.write<0>(323794U);
-
-    if (is_big_endian)
-    {
-        EXPECT_EQ(writer.data_as_pointer()[7], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[6], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[5], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[4], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[3], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[2], 4U);
-        EXPECT_EQ(writer.data_as_pointer()[1], 240U);
-        EXPECT_EQ(writer.data_as_pointer()[0], 210U);
-    }
-    else
-    {
-        EXPECT_EQ(writer.data_as_pointer()[0], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[1], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[2], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[3], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[4], 0U);
-        EXPECT_EQ(writer.data_as_pointer()[5], 4U);
-        EXPECT_EQ(writer.data_as_pointer()[6], 240U);
-        EXPECT_EQ(writer.data_as_pointer()[7], 210U);
-    }
-}
+// TEST(test_bit_writer_little_endian, write_bit)
+// {
+//
+//     auto writer = bitter::bitfield_writer<uint8_t, 1>();
+//     writer.write<0>(true);
+//     // EXPECT_EQ(writer.data_as_pointer()[0], 1U);  // Will fail till bug is fixed
+//     // EXPECT_EQ(writer.data(), 1U); // Will fail till bug is fixed
+//     EXPECT_EQ(writer.data_as_pointer()[0], 128U);
+//     EXPECT_EQ(writer.data(), 128U);
+// }
+//
+// TEST(test_bit_writer_little_endian, write_bit_1)
+// {
+//     auto writer = bitter::bitfield_writer<uint8_t,
+//                                           8>();
+//     writer.write<0>(32U);
+//     EXPECT_EQ(writer.data(), 32U);
+// }
+//
+//
+//
+// TEST(test_bit_writer_little_endian, write_bit_4)
+// {
+//     auto writer = bitter::bitfield_writer<uint32_t, 32>();
+//     writer.write<0>(323794U);
+//
+//     if (is_big_endian)
+//     {
+//         EXPECT_EQ(writer.data_as_pointer()[3], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[2], 4U);
+//         EXPECT_EQ(writer.data_as_pointer()[1], 240U);
+//         EXPECT_EQ(writer.data_as_pointer()[0], 210U);
+//     }
+//     else
+//     {
+//         EXPECT_EQ(writer.data_as_pointer()[0], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[1], 4U);
+//         EXPECT_EQ(writer.data_as_pointer()[2], 240U);
+//         EXPECT_EQ(writer.data_as_pointer()[3], 210U);
+//     }
+// }
+//
+// TEST(test_bit_writer_little_endian, write_bit_3)
+// {
+//     auto writer = bitter::bitfield_writer<uint64_t,
+//                                           64>();
+//     writer.write<0>(323794U);
+//
+//     if (is_big_endian)
+//     {
+//         EXPECT_EQ(writer.data_as_pointer()[7], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[6], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[5], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[4], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[3], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[2], 4U);
+//         EXPECT_EQ(writer.data_as_pointer()[1], 240U);
+//         EXPECT_EQ(writer.data_as_pointer()[0], 210U);
+//     }
+//     else
+//     {
+//         EXPECT_EQ(writer.data_as_pointer()[0], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[1], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[2], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[3], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[4], 0U);
+//         EXPECT_EQ(writer.data_as_pointer()[5], 4U);
+//         EXPECT_EQ(writer.data_as_pointer()[6], 240U);
+//         EXPECT_EQ(writer.data_as_pointer()[7], 210U);
+//     }
+// }
 
 
 // TEST(test_bit_writer_little_endian, write_multiple_bit_fields_1)

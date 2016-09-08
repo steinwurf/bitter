@@ -20,7 +20,7 @@ public:
     bitfield_writer():
         m_data(0)
     {
-        
+
     }
 
     template<uint32_t Group, typename Type>
@@ -138,9 +138,8 @@ private:
 
         auto current_offset = offset;
 
-        for (int i = 0; i < size; ++i)
+        for (uint64_t i = 0; i < size; ++i)
         {
-            auto position = size - i;
             auto bit = (value_to_write >> i) & 0x1;
             write_bit(bit, current_offset);
             ++current_offset;

@@ -20,9 +20,6 @@ TEST(test_bit_writer_little_endian, write_bit)
     auto writer = bitter::bitfield_writer<uint8_t, 1>();
     writer.write<0>(true);
     auto value = writer.data();
-
-    uint8_t* demo = (uint8_t*) &value;
-    print_byte(demo[0]);
     EXPECT_EQ(value, 1U);
 }
 
@@ -34,9 +31,6 @@ TEST(test_bit_writer_little_endian, write_bit1)
     uint8_t input = 64u;
     writer.write<1>(input);
     auto value = writer.data();
-
-    uint8_t* demo = (uint8_t*) &value;
-    print_byte(demo[0]);
     EXPECT_EQ(value, 129U);
 }
 

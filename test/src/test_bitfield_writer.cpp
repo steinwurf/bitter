@@ -3,9 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/bitfield_writer.hpp>
-
-#include <endian/is_big_endian.hpp>
+#include <bitter/writer.hpp>
 
 #include <cstdint>
 #include <vector>
@@ -17,7 +15,7 @@
 TEST(test_bit_writer, write_bit)
 {
 
-    auto writer = bitter::bitfield_writer<uint8_t, 1>();
+    auto writer = bitter::writer<bool, 1>();
     writer.write<0>(true);
     auto value = writer.data();
     EXPECT_EQ(value, 1U);
@@ -26,7 +24,7 @@ TEST(test_bit_writer, write_bit)
 TEST(test_bit_writer, write_bit1)
 {
 
-    auto writer = bitter::bitfield_writer<uint8_t, 1, 7>();
+    auto writer = bitter::writer<uint8_t, 1, 7>();
     writer.write<0>(true);
     uint8_t input = 64u;
     writer.write<1>(input);
@@ -36,8 +34,7 @@ TEST(test_bit_writer, write_bit1)
 
 TEST(test_bit_writer, write_bit_2)
 {
-    auto writer = bitter::bitfield_writer<uint16_t,
-    16>();
+    auto writer = bitter::writer<uint16_t, 16>();
     uint16_t input = 2050U;
     writer.write<0>(input);
 
@@ -47,8 +44,7 @@ TEST(test_bit_writer, write_bit_2)
 
 TEST(test_bit_writer, write_bit_3)
 {
-    auto writer = bitter::bitfield_writer<uint32_t,
-                                          32>();
+    auto writer = bitter::writer<uint32_t, 32>();
 
     uint32_t input = 323794U;
     writer.write<0>(input);
@@ -58,11 +54,38 @@ TEST(test_bit_writer, write_bit_3)
 
 }
 
+// TEST(test_bit_writer, write_bit_5)
+// {
+//     auto writer = bitter::writer<uint64_t,
+//                                           32, 32>();
+
+//     uint32_t input = 323794U;
+//     writer.write<0>(input);
+//     input = 323694U;
+//     writer.write<1>(input);
+//     auto value = writer.data();
+//     EXPECT_EQ(value, 169709203666U);
+
+// }
+
+// Test(test_bit_writer, write_bit_6)
+// {
+//     auto writer = bitter::writer<uint32_t, 16, 16>();
+
+//     uint16_t input = 512U;
+//     writer.write<0>(input);
+
+//     input = 1024U;
+//     writer.write<1>(input);
+
+//     auto value = writer.data();
+//     EXPECT_EQ(value, 67109376U);
+
+// }
+
 TEST(test_bit_writer, write_bit_6)
 {
-    auto writer = bitter::bitfield_writer<uint32_t,
-                                          16, 16>();
-
+    auto writer = bitter::writer<uint32_t, 16, 16>();
     uint16_t input = 512U;
     writer.write<0>(input);
 
@@ -71,12 +94,11 @@ TEST(test_bit_writer, write_bit_6)
 
     auto value = writer.data();
     EXPECT_EQ(value, 67109376U);
-
 }
 
 TEST(test_bit_writer, write_bit_7)
 {
-    auto writer = bitter::bitfield_writer<uint32_t,
+    auto writer = bitter::writer<uint32_t,
                                           8, 8,
                                           8, 8>();
 
@@ -97,23 +119,10 @@ TEST(test_bit_writer, write_bit_7)
 
 }
 
-// TEST(test_bit_writer, write_bit_5)
-// {
-//     auto writer = bitter::bitfield_writer<uint64_t,
-//                                           32, 32>();
-//
-//     uint32_t input = 323794U;
-//     writer.write<0>(input);
-//     input = 323694U;
-//     writer.write<1>(input);
-//     // auto value = writer.data();
-//     // EXPECT_EQ(value, 647488U);
-//
-// }
 
 // TEST(test_bit_writer, write_bit_4)
 // {
-//     auto writer = bitter::bitfield_writer<uint64_t,
+//     auto writer = bitter::writer<uint64_t,
 //                                           64>();
 //
 //     uint64_t input = 323794U;
@@ -126,7 +135,7 @@ TEST(test_bit_writer, write_bit_7)
 
 // TEST(test_bit_writer, write_bit_4)
 // {
-//     auto writer = bitter::bitfield_writer<uint32_t, 32>();
+//     auto writer = bitter::writer<uint32_t, 32>();
 //     writer.write<0>(323794U);
 //
 //     if (is_big_endian)
@@ -152,7 +161,7 @@ TEST(test_bit_writer, write_bit_7)
 //     std::vector<uint8_t> data_vector;
 //     data_vector.resize(2);
 
-//     auto writer = bitter::bitfield_writer<endian::little_endian,
+//     auto writer = bitter::writer<endian::little_endian,
 //                                           1, 8>(data_vector);
 
 //     writer.write_as_vector<0>(true);
@@ -168,7 +177,7 @@ TEST(test_bit_writer, write_bit_7)
 //     std::vector<uint8_t> data_vector;
 //     data_vector.resize(9);
 
-//     auto writer = bitter::bitfield_writer<endian::little_endian,
+//     auto writer = bitter::writer<endian::little_endian,
 //                                           1, 64>(data_vector);
 
 //     writer.write_as_vector<0>(true);

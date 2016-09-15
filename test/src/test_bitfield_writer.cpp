@@ -12,15 +12,6 @@
 
 #include "../test_helpers.hpp"
 
-TEST(test_bit_writer, write_bit)
-{
-
-    auto writer = bitter::writer<bool, 1>();
-    writer.write<0>(true);
-    auto value = writer.data();
-    EXPECT_EQ(value, 1U);
-}
-
 TEST(test_bit_writer, write_bit1)
 {
 

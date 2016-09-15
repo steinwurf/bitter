@@ -1,0 +1,7 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+bld.program(features='cxx',
+            source='simple_reader.cpp',
+            target='simple_reader',
+            use=['bitter_includes'])

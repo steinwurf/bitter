@@ -4,7 +4,11 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
-#include "helper_functions.hpp"
+#include "size_in_bits.hpp"
+#include "sum_sizes.hpp"
+#include "field_get.hpp"
+#include "field_offset.hpp"
+#include "field_size_in_bits.hpp"
 
 #include <cstdint>
 #include <vector>

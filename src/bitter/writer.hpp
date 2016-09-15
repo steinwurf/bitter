@@ -4,7 +4,9 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
-#include "helper_functions.hpp"
+#include "size_in_bits.hpp"
+#include "sum_sizes.hpp"
+#include "field_set.hpp"
 
 #include <cstdint>
 #include <cassert>

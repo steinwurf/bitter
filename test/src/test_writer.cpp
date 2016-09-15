@@ -174,7 +174,7 @@ TEST(test_bit_writer, write_tcp_header)
     first_header_row_writer.write<0>(128U);
     first_header_row_writer.write<1>(255U);
 
-    EXPECT_EQ(first_header_row_writer.data(), 0xFF0080);
+    EXPECT_EQ(first_header_row_writer.data(), 0xFF0080U);
 
     auto second_header_row_writer = bitter::writer<uint32_t, 32>();
     second_header_row_writer.write<0>(82000U);

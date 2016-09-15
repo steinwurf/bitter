@@ -64,7 +64,7 @@ TEST(test_bit_writer, write_bit_5)
     input = 323694U;
     writer.write<1>(input);
     auto value = writer.data();
-    EXPECT_EQ(value, 0x4F06E0004F0D2);
+    EXPECT_EQ(value, 0x4F06E0004F0D2U);
 
 }
 

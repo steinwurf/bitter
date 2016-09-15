@@ -88,7 +88,7 @@ namespace bitter
             // the end of the data type). Instead we just need to create an all ones
             // mask.
             DataType mask = 0;
-            return ~0;
+            return ~mask;
         }
         else
         {

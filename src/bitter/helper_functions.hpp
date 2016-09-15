@@ -54,14 +54,14 @@ namespace bitter
     }
 
     template<uint32_t Index, uint32_t Size0>
-    uint32_t field_size()
+    uint32_t field_size_in_bits()
     {
         static_assert (Index == 0, "");
         return Size0;
     }
 
     template<uint32_t Index, uint32_t Size0, uint32_t Size1, uint32_t... Sizes>
-    uint32_t field_size()
+    uint32_t field_size_in_bits()
     {
         if (Index == 0)
         {
@@ -69,22 +69,41 @@ namespace bitter
         }
         else
         {
-            return field_size<Index - (Index ? 1 : 0), Size1, Sizes...>();
+            return field_size_in_bits<Index - (Index ? 1 : 0), Size1, Sizes...>();
         }
     }
 
-    template<uint32_t Index, uint32_t... Sizes>
-    uint32_t field_mask()
+    template<class DataType, uint32_t Index, uint32_t... Sizes>
+    DataType field_mask()
     {
-        /// http://stackoverflow.com/a/1392065/1717320
-        return (1 << field_size<Index, Sizes...>()) - 1;
+        uint32_t field_size = field_size_in_bits<Index, Sizes...>();
+        uint32_t data_type_size = size_in_bits<DataType>();
+
+        assert(field_size <= data_type_size);
+
+        if (field_size == data_type_size)
+        {
+            // If the field size (in bits) is equal to the size of the DataType in
+            // bits. Then the below calculation does not work (we will shift over
+            // the end of the data type). Instead we just need to create an all ones
+            // mask.
+            DataType mask = 0;
+            return ~0;
+        }
+        else
+        {
+            // http://stackoverflow.com/a/1392065/1717320
+            DataType mask = 1;
+            return (mask << field_size) - 1;
+        }
+
     }
 
     template<class DataType, uint32_t Index, uint32_t... Sizes>
     DataType field_set(DataType value, DataType field)
     {
         uint32_t offset = field_offset<Index, Sizes...>();
-        uint32_t mask = field_mask<Index, Sizes...>();
+        DataType mask = field_mask<DataType, Index, Sizes...>();
 
         // Sanity check that we don't have garbage bits in our field
         assert((field & (~mask)) == 0U);
@@ -104,20 +123,8 @@ namespace bitter
     DataType field_get(DataType value)
     {
         uint32_t offset = field_offset<Index, Sizes...>();
-        uint32_t mask = field_mask<Index, Sizes...>();
+        DataType mask = field_mask<DataType, Index, Sizes...>();
 
         return (value >> offset) & mask;
     }
-
-    // template<uint32_t Group, uint32_t NextGroup, uint32_t... RemainingGroups>
-    // uint32_t total_size_of_groups_()
-    // {
-    //     return Group + total_size_of_groups_<NextGroup, RemainingGroups...>();
-    // }
-
-    // template<uint32_t Group>
-    // uint32_t total_size_of_groups_()
-    // {
-    //     return Group;
-    // }
 }

@@ -10,8 +10,6 @@
 #include <cassert>
 #include <type_traits>
 
-#include <iostream>
-
 namespace bitter
 {
 template<class DataType, uint32_t... Sizes>
@@ -19,7 +17,7 @@ struct writer
 {
     writer()
     {
-        static_assert(sizeof(DataType)*8 >= sum_sizes<Sizes...>(), "stop it..");
+        static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(), "stop it..");
     }
 
     template<uint32_t Index>

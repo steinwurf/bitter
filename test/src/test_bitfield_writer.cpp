@@ -54,34 +54,20 @@ TEST(test_bit_writer, write_bit_3)
 
 }
 
-// TEST(test_bit_writer, write_bit_5)
-// {
-//     auto writer = bitter::writer<uint64_t,
-//                                           32, 32>();
+TEST(test_bit_writer, write_bit_5)
+{
+    auto writer = bitter::writer<uint64_t,
+                                          32, 32>();
 
-//     uint32_t input = 323794U;
-//     writer.write<0>(input);
-//     input = 323694U;
-//     writer.write<1>(input);
-//     auto value = writer.data();
-//     EXPECT_EQ(value, 169709203666U);
+    uint32_t input = 323794U;
+    writer.write<0>(input);
+    input = 323694U;
+    writer.write<1>(input);
+    auto value = writer.data();
+    EXPECT_EQ(value, 0x4F06E0004F0D2);
 
-// }
+}
 
-// Test(test_bit_writer, write_bit_6)
-// {
-//     auto writer = bitter::writer<uint32_t, 16, 16>();
-
-//     uint16_t input = 512U;
-//     writer.write<0>(input);
-
-//     input = 1024U;
-//     writer.write<1>(input);
-
-//     auto value = writer.data();
-//     EXPECT_EQ(value, 67109376U);
-
-// }
 
 TEST(test_bit_writer, write_bit_6)
 {

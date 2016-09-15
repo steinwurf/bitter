@@ -18,7 +18,8 @@ struct reader
 {
     reader(DataType value) : m_value(value)
     {
-        static_assert(sizeof(DataType)*8 == sum_sizes<Sizes...>(), "stop it..");
+        static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
+                      "stop it..");
     }
 
     template<uint32_t Index>
@@ -32,7 +33,8 @@ struct reader
     {
         // Doble paran needed because assert is a macro on some platforms, and
         // they don't like the commas in the templates
-        assert((field_size<Index, Sizes...>()) <=  size_in_bits<FieldType>());
+        assert((field_size_in_bits<Index, Sizes...>()) <=
+               size_in_bits<FieldType>());
         return (FieldType) field_get<DataType, Index, Sizes...>(m_value);
     }
 

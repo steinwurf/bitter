@@ -5,10 +5,11 @@
 #include <bitter/reader.hpp>
 
 #include <cstdint>
+#include <typeinfo>
 
 #include <gtest/gtest.h>
 
-#include <typeinfo>
+
 
 
 TEST(test_bit_reader, read_bit)

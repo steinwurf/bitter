@@ -10,6 +10,8 @@
 #include "field_offset.hpp"
 #include "field_size_in_bits.hpp"
 
+#include "field.hpp"
+
 #include <cstdint>
 #include <vector>
 #include <cassert>
@@ -18,8 +20,9 @@
 namespace bitter
 {
 template<typename DataType, uint32_t... Sizes>
-struct reader
+class reader
 {
+public:
     reader(DataType value) : m_value(value)
     {
         static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
@@ -27,21 +30,30 @@ struct reader
     }
 
     template<uint32_t Index>
-    uint32_t read()
+    field field()
+    {
+        return field(read<index>());
+    }
+
+private:
+    template<uint32_t Index>
+    DataType read()
     {
         return field_get<DataType, Index, Sizes...>(m_value);
     }
 
-    template<uint32_t Index, class FieldType>
-    FieldType read_as()
-    {
-        // Doble paran needed because assert is a macro on some platforms, and
-        // they don't like the commas in the templates
-        assert((field_size_in_bits<Index, Sizes...>()) <=
-               size_in_bits<FieldType>());
-        return (FieldType) field_get<DataType, Index, Sizes...>(m_value);
-    }
+    // template<uint32_t Index, class FieldType>
+    // FieldType read_as()
+    // {
+    //     // Doble paran needed because assert is a macro on some platforms, and
+    //     // they don't like the commas in the templates
+    //     assert((field_size_in_bits<Index, Sizes...>()) <=
+    //            size_in_bits<FieldType>());
+    //     return (FieldType) field_get<DataType, Index, Sizes...>(m_value);
+    // }
 
+
+private:
     DataType m_value;
 };
 }

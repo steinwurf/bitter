@@ -30,9 +30,9 @@ public:
     }
 
     template<uint32_t Index>
-    field field()
+    field<DataType> get_field()
     {
-        return field(read<index>());
+        return field<DataType>(read<Index>());
     }
 
 private:

@@ -25,16 +25,16 @@ int main()
     uint32_t value = 0x20880A0U; //0000001000001000 10000000 1010000 0
     auto reader = bitter::reader<uint32_t, 1, 7, 8, 16>(value);
 
-    auto first_field = reader.read_as<0, bool>();
+    auto first_field = reader.get_field<0>().read_as<bool>();
     assert(first_field == false);
 
-    auto second_field = reader.read_as<1, uint8_t>();
+    auto second_field = reader.get_field<1>().read_as<uint8_t>();
     assert(second_field == 80U);
 
-    auto third_field = reader.read_as<2, uint8_t>();
+    auto third_field = reader.get_field<2>().read_as<uint8_t>();
     assert(third_field == 128U);
 
-    auto fourth_field = reader.read_as<3, uint16_t>();
+    auto fourth_field = reader.get_field<3>().read_as<uint16_t>();;
     assert(fourth_field == 520U);
 
     return 0;

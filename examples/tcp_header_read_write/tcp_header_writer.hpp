@@ -34,11 +34,11 @@ class tcp_header_writer
 {
 public:
     using header_fields =
-          bitter::bitfield_writer<endian::little_endian,
-                                16, 16, 32, 32,
-                                4, 6, 1, 1, 1,
-                                1, 1, 1, 16,
-                                16, 16, 24, 8>;
+        bitter::bitfield_writer<endian::little_endian,
+        16, 16, 32, 32,
+        4, 6, 1, 1, 1,
+        1, 1, 1, 16,
+        16, 16, 24, 8>;
     enum class field
     {
         source_port = 0,
@@ -61,14 +61,14 @@ public:
     };
 
 public:
-    tcp_header_writer(header_fields writer):
-    m_writer(writer)
+    tcp_header_writer(header_fields writer) :
+        m_writer(writer)
     {
 
     }
 
-    tcp_header_writer(std::vector<uint8_t> data):
-    m_writer(header_fields(data))
+    tcp_header_writer(std::vector<uint8_t> data) :
+        m_writer(header_fields(data))
     {
 
     }

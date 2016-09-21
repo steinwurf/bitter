@@ -10,7 +10,7 @@
 
 void print_byte(uint8_t byte)
 {
-    for(int i = 0; i  < 8; ++i)
+    for (int i = 0; i  < 8; ++i)
     {
         auto position = 7 - i;
         auto bit = (byte >> position) & 0x1;
@@ -44,7 +44,7 @@ int main()
     writer.options(209);
     writer.padding(128);
 
-    for(auto entry : writer.data())
+    for (auto entry : writer.data())
     {
         print_byte(entry);
     }
@@ -59,7 +59,8 @@ int main()
     auto seq_number = reader.sequence_number();
     std::cout << "Sequence Number: " << static_cast<int>(seq_number) << std::endl;
     auto ack_number = reader.acknowledgment_number();
-    std::cout << "Acknowledgment Number: " << static_cast<int>(ack_number) << std::endl;
+    std::cout << "Acknowledgment Number: " << static_cast<int>(ack_number)
+              << std::endl;
     auto data_offset = reader.data_offset();
     std::cout << "Data offset: " << static_cast<int>(data_offset) << std::endl;
     auto reserverd = reader.reserverd();

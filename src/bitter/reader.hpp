@@ -20,7 +20,8 @@ namespace bitter
 template<typename DataType, uint32_t... Sizes>
 struct reader
 {
-    reader(DataType value) : m_value(value)
+    reader(DataType value) :
+        m_value(value)
     {
         static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
                       "stop it..");

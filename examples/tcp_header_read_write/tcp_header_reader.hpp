@@ -38,11 +38,11 @@ class tcp_header_reader
 {
 public:
     using header_fields =
-          bitter::bitfield_reader<endian::little_endian,
-                                16, 16, 32, 32,
-                                4, 6, 1, 1, 1,
-                                1, 1, 1, 16,
-                                16, 16, 24, 8>;
+        bitter::bitfield_reader<endian::little_endian,
+        16, 16, 32, 32,
+        4, 6, 1, 1, 1,
+        1, 1, 1, 16,
+        16, 16, 24, 8>;
     enum class field
     {
         source_port = 0,
@@ -65,14 +65,14 @@ public:
     };
 
 public:
-    tcp_header_reader(header_fields bitfield):
-    m_bitfield(bitfield)
+    tcp_header_reader(header_fields bitfield) :
+        m_bitfield(bitfield)
     {
 
     }
 
-    tcp_header_reader(std::vector<uint8_t> data):
-    m_bitfield(header_fields(data))
+    tcp_header_reader(std::vector<uint8_t> data) :
+        m_bitfield(header_fields(data))
     {
 
         std::cout << "m " << m_bitfield.size() << std::endl;

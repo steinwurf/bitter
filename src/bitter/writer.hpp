@@ -28,11 +28,8 @@ public:
     template<uint32_t Index>
     void field(DataType value)
     {
-
-
         assert((field_size_in_bits<Index, Sizes...>() <=
                 size_in_bits<DataType>()));
-
 
         m_data = field_set<DataType, Index, Sizes...>(m_data, value);
     }

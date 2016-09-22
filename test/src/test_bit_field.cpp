@@ -27,9 +27,3 @@ TEST(test_bit_field, bit_field_read_as2)
     auto field = bitter::bit_field<uint8_t>(255U, 8U);
     EXPECT_EQ(255U, field.read_as<uint8_t>());
 }
-
-TEST(test_bit_field, bit_field_read_as3)
-{
-    auto field = bitter::bit_field<uint8_t>(255U, 8U);
-    EXPECT_EQ(255U, field.read_as<uint16_t>());
-}

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "field_size_in_bits.hpp"
+#include "size_in_bits.hpp"
 
 #include <cstdint>
 #include <cassert>

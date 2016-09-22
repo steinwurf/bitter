@@ -10,8 +10,6 @@
 #include <cstdint>
 #include <cassert>
 
-#include <iostream>
-
 namespace bitter
 {
 template<typename DataType>
@@ -33,11 +31,8 @@ public:
     template<typename ReturnType>
     ReturnType read_as()
     {
-        if(!(std::is_same<bool, ReturnType>::value) && m_size != 1U)
-        {
-            // Check if the field fits into the size of ReturnType
-            assert(sizeof(DataType) <= sizeof(ReturnType));
-        }
+        // Check if the field fits into the size of ReturnType
+        assert(sizeof(ReturnType) <= sizeof(DataType));
 
         // Check if the size provide can fit into ReturnType
         assert(m_size <= size_in_bits<ReturnType>());

@@ -8,15 +8,15 @@
 
 namespace bitter
 {
-    template<class DataType>
-    constexpr uint32_t size_in_bits()
-    {
-        return sizeof(DataType)*8;
-    }
+template<class DataType>
+constexpr uint32_t size_in_bits()
+{
+    return sizeof(DataType)*8;
+}
 
-    template<>
-    constexpr uint32_t size_in_bits<bool>()
-    {
-        return 1U;
-    }
+template<>
+constexpr uint32_t size_in_bits<bool>()
+{
+    return 1U;
+}
 }

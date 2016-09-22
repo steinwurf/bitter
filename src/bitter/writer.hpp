@@ -19,11 +19,12 @@ struct writer
 {
     writer()
     {
-        static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(), "stop it..");
+        static_assert(size_in_bits<DataType>() ==
+                      sum_sizes<Sizes...>(), "stop it..");
     }
 
     template<uint32_t Index>
-    void write(DataType value)
+    void field(DataType value)
     {
         m_data = field_set<DataType, Index, Sizes...>(m_data, value);
     }

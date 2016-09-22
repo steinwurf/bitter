@@ -10,7 +10,7 @@
 #include "field_offset.hpp"
 #include "field_size_in_bits.hpp"
 
-#include "field.hpp"
+#include "bit_field.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -23,16 +23,18 @@ template<typename DataType, uint32_t... Sizes>
 class reader
 {
 public:
-    reader(DataType value) : m_value(value)
+    reader(DataType value) :
+        m_value(value)
     {
         static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
                       "stop it..");
     }
 
     template<uint32_t Index>
-    field<DataType> get_field()
+    bit_field<DataType> field()
     {
-        return field<DataType>(read<Index>());
+        auto size = field_size_in_bits<Index, Sizes...>();
+        return bit_field<DataType>(read<Index>(), size);
     }
 
 private:
@@ -42,15 +44,6 @@ private:
         return field_get<DataType, Index, Sizes...>(m_value);
     }
 
-    // template<uint32_t Index, class FieldType>
-    // FieldType read_as()
-    // {
-    //     // Doble paran needed because assert is a macro on some platforms, and
-    //     // they don't like the commas in the templates
-    //     assert((field_size_in_bits<Index, Sizes...>()) <=
-    //            size_in_bits<FieldType>());
-    //     return (FieldType) field_get<DataType, Index, Sizes...>(m_value);
-    // }
 
 
 private:

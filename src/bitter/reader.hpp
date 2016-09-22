@@ -30,6 +30,7 @@ public:
                       "stop it..");
     }
 
+    // Based on the index given, the function returns the field
     template<uint32_t Index>
     bit_field<DataType> field()
     {

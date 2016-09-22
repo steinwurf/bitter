@@ -21,7 +21,8 @@ namespace bitter
         // Sanity check that we don't have garbage bits in our field
         assert((field & (~mask)) == 0U);
 
-        // Shift the field up to where it should go and do the same with the mask
+        // Shift the field up to where it should go
+        // and do the same with the mask
         field = field << offset;
         mask = mask << offset;
 

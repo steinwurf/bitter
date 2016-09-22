@@ -24,7 +24,8 @@ namespace bitter
         }
         else
         {
-            return field_size_in_bits<Index - (Index ? 1 : 0), Size1, Sizes...>();
+            return field_size_in_bits<Index - (Index ? 1 : 0),
+                                      Size1, Sizes...>();
         }
     }
 }

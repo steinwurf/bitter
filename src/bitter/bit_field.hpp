@@ -8,12 +8,14 @@
 
 #include <type_traits>
 #include <cstdint>
+#include <cassert>
 
 namespace bitter
 {
 template<typename DataType>
-struct bit_field
+class bit_field
 {
+public:
     bit_field(DataType value, uint32_t size) :
         m_value(value),
         m_size(size)
@@ -21,6 +23,7 @@ struct bit_field
 
     }
 
+    // Return value as the requested type
     template<typename ReturnType>
     ReturnType read_as()
     {
@@ -43,6 +46,7 @@ struct bit_field
         }
     }
 
+private:
     DataType m_value;
     uint32_t m_size;
 };

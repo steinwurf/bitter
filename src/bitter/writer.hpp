@@ -5,18 +5,20 @@
 #pragma once
 
 #include "size_in_bits.hpp"
+
 #include "sum_sizes.hpp"
+#include "field_size_in_bits.hpp"
 #include "field_set.hpp"
 
 #include <cstdint>
 #include <cassert>
-#include <type_traits>
 
 namespace bitter
 {
 template<class DataType, uint32_t... Sizes>
-struct writer
+class writer
 {
+public:
     writer()
     {
         static_assert(size_in_bits<DataType>() ==
@@ -26,6 +28,12 @@ struct writer
     template<uint32_t Index>
     void field(DataType value)
     {
+
+        auto field_size = field_size_in_bits<Index, Sizes...>();
+        auto datatype_size_in_bits = size_in_bits<DataType>();
+        assert(field_size <= datatype_size_in_bits);
+
+
         m_data = field_set<DataType, Index, Sizes...>(m_data, value);
     }
 
@@ -33,6 +41,8 @@ struct writer
     {
         return m_data;
     }
+
+private:
 
     DataType m_data = 0;
 };

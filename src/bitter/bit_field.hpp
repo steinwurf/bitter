@@ -10,11 +10,16 @@
 #include <cstdint>
 #include <cassert>
 
+#include <iostream>
+
 namespace bitter
 {
 template<typename DataType>
 class bit_field
 {
+/// @brief Small class used for wrapping a bitfield
+/// @param value is the value of the bit we are wrapping
+/// @param size is the size of the field in bits
 public:
     bit_field(DataType value, uint32_t size) :
         m_value(value),
@@ -23,27 +28,20 @@ public:
 
     }
 
-    // Return value as the requested type
+
+    /// @return m_value cast to the type of ReturnType
     template<typename ReturnType>
     ReturnType read_as()
     {
-        assert(sizeof(ReturnType) <= sizeof(DataType));
+        if(!(std::is_same<bool, ReturnType>::value) && m_size != 1U)
+        {
+            // Check if the field fits into the size of ReturnType
+            assert(sizeof(DataType) <= sizeof(ReturnType));
+        }
+
+        // Check if the size provide can fit into ReturnType
         assert(m_size <= size_in_bits<ReturnType>());
-        if(std::is_same<bool, ReturnType>::value)
-        {
-            if(m_value == 0U)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        else
-        {
-            return (ReturnType) m_value;
-        }
+        return (ReturnType) m_value;
     }
 
 private:

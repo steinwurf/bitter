@@ -27,7 +27,7 @@ public:
         m_value(value)
     {
         static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
-                      "stop it..");
+                      "size of the Datatype is not equal to the sum of sizes");
     }
 
     // Based on the index given, the function returns the field

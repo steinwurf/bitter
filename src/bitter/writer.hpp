@@ -22,7 +22,8 @@ public:
     writer()
     {
         static_assert(size_in_bits<DataType>() ==
-                      sum_sizes<Sizes...>(), "stop it..");
+                      sum_sizes<Sizes...>(),
+                      "size of the Datatype is not equal to the sum of sizes");
     }
 
     template<uint32_t Index>

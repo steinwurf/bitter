@@ -29,9 +29,9 @@ public:
     void field(DataType value)
     {
 
-        auto field_size = field_size_in_bits<Index, Sizes...>();
-        auto datatype_size_in_bits = size_in_bits<DataType>();
-        assert(field_size <= datatype_size_in_bits);
+
+        assert((field_size_in_bits<Index, Sizes...>() <=
+                size_in_bits<DataType>()));
 
 
         m_data = field_set<DataType, Index, Sizes...>(m_data, value);

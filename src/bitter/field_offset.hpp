@@ -8,6 +8,8 @@
 
 namespace bitter
 {
+/// @brief Template based functions for getting the offset
+///         for the field at index
 template<uint32_t Index, uint32_t Size0>
 uint32_t field_offset()
 {

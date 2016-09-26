@@ -8,6 +8,8 @@
 
 namespace bitter
 {
+    /// @breif Function for getting the size of field in bits,
+    ///        based on index given.
     template<uint32_t Index, uint32_t Size0>
     uint32_t field_size_in_bits()
     {

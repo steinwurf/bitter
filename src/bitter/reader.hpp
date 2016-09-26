@@ -19,10 +19,14 @@
 
 namespace bitter
 {
+/// @breif Reader class used for reading the content
+///        of the value parsed to the reader at initialisation
 template<typename DataType, uint32_t... Sizes>
 class reader
 {
 public:
+    /// @brief Reader constructor
+    /// DataType must be either uint8_t, uint16_t, uint32_t, or uint64_t
     reader(DataType value) :
         m_value(value)
     {
@@ -30,7 +34,7 @@ public:
                       "size of the Datatype is not equal to the sum of sizes");
     }
 
-    // Based on the index given, the function returns the field
+    /// @brief Based on the provided index the function returns the field
     template<uint32_t Index>
     bit_field<DataType> field()
     {
@@ -39,6 +43,8 @@ public:
     }
 
 private:
+    /// @breif Function used as a wraper, used for retriving a field
+    ///        based on the Index provide
     template<uint32_t Index>
     DataType read()
     {

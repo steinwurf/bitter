@@ -15,6 +15,8 @@
 
 namespace bitter
 {
+/// @brief Writer class used for writing data to
+/// the fields given in the variadic template Sizes
 template<class DataType, uint32_t... Sizes>
 class writer
 {
@@ -26,6 +28,8 @@ public:
                       "size of the Datatype is not equal to the sum of sizes");
     }
 
+    /// @prief based on the provided index, the value is written
+    /// @param value is the data, wished to written to the field at Index
     template<uint32_t Index>
     void field(DataType value)
     {

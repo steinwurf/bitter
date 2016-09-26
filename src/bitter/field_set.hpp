@@ -12,6 +12,9 @@
 
 namespace bitter
 {
+    /// @brief set the value of a field based on the index
+    /// @param value is the data of the writer
+    /// @param field is the data we want to write to value
     template<class DataType, uint32_t Index, uint32_t... Sizes>
     DataType field_set(DataType value, DataType field)
     {

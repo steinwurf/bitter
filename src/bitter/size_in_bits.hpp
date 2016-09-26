@@ -8,6 +8,7 @@
 
 namespace bitter
 {
+/// @breif function for getting the size of DataType in bits
 template<class DataType>
 constexpr uint32_t size_in_bits()
 {

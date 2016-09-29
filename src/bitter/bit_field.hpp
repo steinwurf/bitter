@@ -12,18 +12,19 @@
 
 namespace bitter
 {
-template<typename DataType>
-class bit_field
-{
 /// @brief Small class used for wrapping a bitfield
 /// @param value is the value of the bit we are wrapping
 /// @param size is the size of the field in bits
+template<typename DataType>
+class bit_field
+{
+
 public:
     bit_field(DataType value, uint32_t size) :
         m_value(value),
         m_size(size)
     {
-
+        assert(0 < size);
     }
 
 

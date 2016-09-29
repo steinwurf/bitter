@@ -29,8 +29,8 @@ namespace bitter
         field = field << offset;
         mask = mask << offset;
 
-        /// Merge the bits:
-        /// https://graphics.stanford.edu/~seander/bithacks.html#MaskedMerge
+        // Merge the bits:
+        // https://graphics.stanford.edu/~seander/bithacks.html#MaskedMerge
         value = value ^ ((value ^ field) & mask);
 
         return value;

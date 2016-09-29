@@ -7,7 +7,6 @@
 #include "field_offset.hpp"
 #include "field_mask.hpp"
 
-
 #include <cstdint>
 #include <cassert>
 

@@ -25,6 +25,12 @@ template<typename DataType, uint32_t... Sizes>
 class reader
 {
 public:
+
+    /// Small alias for the bit_field
+    template<uint32_t Index>
+    using bit_field_type =
+        bit_field<DataType, field_size_in_bits<Index, Sizes...>()>;
+
     /// @brief Reader constructor
     /// DataType must be either uint8_t, uint16_t, uint32_t, or uint64_t
     reader(DataType value) :
@@ -36,10 +42,9 @@ public:
 
     /// @brief Based on the provided index the function returns the field
     template<uint32_t Index>
-    bit_field<DataType, field_size_in_bits<Index, Sizes...>()> field()
+    bit_field_type<Index> field()
     {
-        return bit_field<DataType,
-            field_size_in_bits<Index, Sizes...>()>(read<Index>());
+        return bit_field_type<Index>(read<Index>());
     }
 
 private:
@@ -51,9 +56,9 @@ private:
         return field_get<DataType, Index, Sizes...>(m_value);
     }
 
-
-
 private:
+
+    /// Store the value containing the data used by the reader
     DataType m_value;
 };
 }

@@ -24,7 +24,7 @@ public:
         m_value(value),
         m_size(size)
     {
-        assert(0 < size);
+        assert(size > 0);
     }
 
 
@@ -37,7 +37,23 @@ public:
 
         // Check if the size provide can fit into ReturnType
         assert(m_size <= size_in_bits<ReturnType>());
-        return (ReturnType) m_value;
+
+        if (std::is_same<bool, ReturnType>::value)
+        {
+
+            if (m_value == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return (ReturnType) m_value;
+        }
     }
 
 private:

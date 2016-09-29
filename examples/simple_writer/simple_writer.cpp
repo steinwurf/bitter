@@ -18,11 +18,10 @@ int main()
     writer.field<1>(value);
     value = 128U;
     writer.field<2>(value);
-    uint32_t larger_value = 2050;
+    uint16_t larger_value = 2050;
     writer.field<3>(larger_value);
 
     auto data = writer.data();
-
     assert(data == 0x8028041U);
 
     return 0;

@@ -21,11 +21,15 @@ template<class DataType, uint32_t... Sizes>
 class writer
 {
 public:
+
+    /// Constructor
     writer()
     {
         static_assert(size_in_bits<DataType>() ==
                       sum_sizes<Sizes...>(),
-                      "size of the Datatype is not equal to the sum of sizes");
+                      "The size of the DataType in bits must exactly match the "
+                      "sum of all the bit fields. If needed an unused bit "
+                      "field can be added.");
     }
 
     /// @prief based on the provided index, the value is written
@@ -33,12 +37,14 @@ public:
     template<uint32_t Index>
     void field(DataType value)
     {
-        assert((field_size_in_bits<Index, Sizes...>() <=
-                size_in_bits<DataType>()));
+        static_assert(field_size_in_bits<Index, Sizes...>() <=
+                      size_in_bits<DataType>(), "The field size in bits cannot "
+                      "be larger than the total size of the data type");
 
         m_data = field_set<DataType, Index, Sizes...>(m_data, value);
     }
 
+    /// @return The value create by the writer containing the bit fields
     DataType data() const
     {
         return m_data;
@@ -46,6 +52,7 @@ public:
 
 private:
 
+    /// The value built by the writer contining the different fields
     DataType m_data = 0;
 };
 }

@@ -107,7 +107,7 @@ TEST(test_bit_writer, write_tcp_header)
     EXPECT_EQ(third_header_row_writer.data(), 0x3D0900U);
 
     auto fourth_header_row_writer = bitter::writer<uint32_t, 4, 6, 1,
-                                                   1, 1, 1, 1, 1, 16>();
+                                    1, 1, 1, 1, 1, 16>();
     fourth_header_row_writer.field<0>(8U);
     fourth_header_row_writer.field<1>(0U);
     fourth_header_row_writer.field<2>(true);

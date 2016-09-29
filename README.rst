@@ -32,15 +32,15 @@ above lets read back the four bit fields from the uint32_t value::
 
     auto reader = bitter::reader<uint32_t, 8, 8, 8, 8>(0xdeadbeef);
 
-    uint8_t value0 = reader.field<0>().read_as<uint8_t>();
-    uint8_t value1 = reader.field<1>().read_as<uint8_t>();
-    uint8_t value2 = reader.field<2>().read_as<uint8_t>();
-    uint8_t value3 = reader.field<3>().read_as<uint8_t>();
+    uint8_t value0 = reader.field<0>().read_as<uint8_t>(); // Read bits 0-7
+    uint8_t value1 = reader.field<1>().read_as<uint8_t>(); // Read bits 8-15
+    uint8_t value2 = reader.field<2>().read_as<uint8_t>(); // Read bits 16-23
+    uint8_t value3 = reader.field<3>().read_as<uint8_t>(); // Read bits 24-31
 
-    assert(value0 == 0xef); // Read bits 0-7
-    assert(value1 == 0xbe); // Read bits 8-15
-    assert(value2 == 0xad); // Read bits 16-23
-    assert(value3 == 0xde); // Read bits 24-31
+    assert(value0 == 0xef);
+    assert(value1 == 0xbe);
+    assert(value2 == 0xad);
+    assert(value3 == 0xde);
 
 Use `#include <bitter/reader.hpp>` to use the `bitter::reader`.
 

@@ -18,8 +18,8 @@ namespace bitter
 template<uint32_t Index, uint32_t Size0>
 constexpr uint32_t field_size_in_bits()
 {
-    static_assert (Index == 0, "If there is only one size left. Then we "
-                   "must be at index zero");
+    static_assert(Index == 0, "If there is only one size left. Then we "
+                  "must be at index zero");
     return Size0;
 }
 

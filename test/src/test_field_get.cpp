@@ -12,6 +12,6 @@
 TEST(test_field_get, field)
 {
     uint8_t value = 255;
-    EXPECT_TRUE((bitter::field_get<bool, 0, 1, 7>(value)));
+    EXPECT_TRUE(((bool)bitter::field_get<uint8_t, 0, 1, 7>(value)));
     EXPECT_EQ(127U, (bitter::field_get<uint8_t, 1, 1, 7>(value)));
 }

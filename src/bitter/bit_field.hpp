@@ -15,16 +15,15 @@ namespace bitter
 /// @brief Small class used for wrapping a bitfield
 /// @param value is the value of the bit we are wrapping
 /// @param size is the size of the field in bits
-template<typename DataType>
+template<typename DataType, uint32_t Size>
 class bit_field
 {
 
 public:
-    bit_field(DataType value, uint32_t size) :
-        m_value(value),
-        m_size(size)
+    bit_field(DataType value) :
+        m_value(value)
     {
-        assert(size > 0);
+        static_assert(Size > 0, "Size is less than or equal to 0");
     }
 
 
@@ -36,7 +35,7 @@ public:
         assert(sizeof(ReturnType) <= sizeof(DataType));
 
         // Check if the size provide can fit into ReturnType
-        assert(m_size <= size_in_bits<ReturnType>());
+        assert(Size <= size_in_bits<ReturnType>());
 
         return (ReturnType) m_value;
 
@@ -44,6 +43,5 @@ public:
 
 private:
     DataType m_value;
-    uint32_t m_size;
 };
 }

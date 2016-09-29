@@ -37,7 +37,5 @@ DataType field_mask()
         DataType mask = 1;
         return (mask << field_size) - 1;
     }
-
 }
-
 }

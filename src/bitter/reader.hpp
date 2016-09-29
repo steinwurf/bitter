@@ -36,10 +36,10 @@ public:
 
     /// @brief Based on the provided index the function returns the field
     template<uint32_t Index>
-    bit_field<DataType> field()
+    bit_field<DataType, field_size_in_bits<Index, Sizes...>()> field()
     {
-        auto size = field_size_in_bits<Index, Sizes...>();
-        return bit_field<DataType>(read<Index>(), size);
+        return bit_field<DataType,
+            field_size_in_bits<Index, Sizes...>()>(read<Index>());
     }
 
 private:

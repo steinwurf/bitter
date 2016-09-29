@@ -5,34 +5,54 @@
 #pragma once
 
 #include "size_in_bits.hpp"
+
 #include "sum_sizes.hpp"
+#include "field_size_in_bits.hpp"
 #include "field_set.hpp"
 
 #include <cstdint>
 #include <cassert>
-#include <type_traits>
 
 namespace bitter
 {
+/// @brief Writer class used for writing data to
+/// the fields given in the variadic template Sizes
 template<class DataType, uint32_t... Sizes>
-struct writer
+class writer
 {
+public:
+
+    /// Constructor
     writer()
     {
-        static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(), "stop it..");
+        static_assert(size_in_bits<DataType>() ==
+                      sum_sizes<Sizes...>(),
+                      "The size of the DataType in bits must exactly match the "
+                      "sum of all the bit fields. If needed an unused bit "
+                      "field can be added.");
     }
 
+    /// @prief based on the provided index, the value is written
+    /// @param value is the data, wished to written to the field at Index
     template<uint32_t Index>
-    void write(DataType value)
+    void field(DataType value)
     {
+        static_assert(field_size_in_bits<Index, Sizes...>() <=
+                      size_in_bits<DataType>(), "The field size in bits cannot "
+                      "be larger than the total size of the data type");
+
         m_data = field_set<DataType, Index, Sizes...>(m_data, value);
     }
 
+    /// @return The value create by the writer containing the bit fields
     DataType data() const
     {
         return m_data;
     }
 
+private:
+
+    /// The value built by the writer contining the different fields
     DataType m_data = 0;
 };
 }

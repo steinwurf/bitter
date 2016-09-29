@@ -5,12 +5,15 @@
 #pragma once
 
 #include "field_size_in_bits.hpp"
+#include "size_in_bits.hpp"
 
 #include <cstdint>
 #include <cassert>
 
 namespace bitter
 {
+/// @brief Function for creating a maske for variable
+///        with the sizeof DataTypes
 template<class DataType, uint32_t Index, uint32_t... Sizes>
 DataType field_mask()
 {
@@ -34,7 +37,5 @@ DataType field_mask()
         DataType mask = 1;
         return (mask << field_size) - 1;
     }
-
 }
-
 }

@@ -12,6 +12,9 @@
 
 namespace bitter
 {
+/// @brief set the value of a field based on the index
+/// @param value is the data of the writer
+/// @param field is the data we want to write to value
 template<class DataType, uint32_t Index, uint32_t... Sizes>
 DataType field_set(DataType value, DataType field)
 {
@@ -21,12 +24,13 @@ DataType field_set(DataType value, DataType field)
     // Sanity check that we don't have garbage bits in our field
     assert((field & (~mask)) == 0U);
 
-    // Shift the field up to where it should go and do the same with the mask
+    // Shift the field up to where it should go
+    // and do the same with the mask
     field = field << offset;
     mask = mask << offset;
 
-    /// Merge the bits:
-    /// https://graphics.stanford.edu/~seander/bithacks.html#MaskedMerge
+    // Merge the bits:
+    // https://graphics.stanford.edu/~seander/bithacks.html#MaskedMerge
     value = value ^ ((value ^ field) & mask);
 
     return value;

@@ -1,15 +1,17 @@
-======
-Bitter
-======
+// Copyright (c) Steinwurf ApS 2016.
+// All Rights Reserved
+//
+// Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-Is a lightweight Header only C++ API, for reading and writing single bit and
-varying length byte fields.
+#include <bitter/writer.hpp>
+#include <bitter/reader.hpp>
 
-Writing a bit field
--------------------
+#include <gtest/gtest.h>
 
-Lets say we want to write the four bytes of a 32 bit integer individually::
+#include <cassert>
 
+TEST(test_readme, writing_a_bit_field)
+{
     // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the data
     // type.
@@ -21,15 +23,10 @@ Lets say we want to write the four bytes of a 32 bit integer individually::
     writer.field<3>(0xde); // Write bits 24-31
 
     assert(writer.data() == 0xdeadbeef);
+}
 
-Use `#include <bitter/writer.hpp>` to use the `bitter::writer`.
-
-Reading a bit field
--------------------
-
-Given a value we can also read the individual bit fields. Based on the example
-above lets read back the four bit fields from the uint32_t value::
-
+TEST(test_readme, reading_a_bit_field)
+{
     auto reader = bitter::reader<uint32_t, 8, 8, 8, 8>(0xdeadbeef);
 
     uint32_t value0 = reader.field<0>().read_as<uint8_t>();
@@ -41,9 +38,4 @@ above lets read back the four bit fields from the uint32_t value::
     assert(value1 == 0xbe); // Read bits 8-15
     assert(value2 == 0xad); // Read bits 16-23
     assert(value3 == 0xde); // Read bits 24-31
-
-Use `#include <bitter/reader.hpp>` to use the `bitter::reader`.
-
-License
-=======
-For more info on the license see the LICENSE file
+}

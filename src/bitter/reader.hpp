@@ -10,6 +10,8 @@
 #include "field_offset.hpp"
 #include "field_size_in_bits.hpp"
 
+#include "bit_field.hpp"
+
 #include <cstdint>
 #include <vector>
 #include <cassert>
@@ -17,32 +19,46 @@
 
 namespace bitter
 {
+/// @breif Reader class used for reading the content
+///        of the value parsed to the reader at initialisation
 template<typename DataType, uint32_t... Sizes>
-struct reader
+class reader
 {
+public:
+
+    /// Small alias for the bit_field
+    template<uint32_t Index>
+    using bit_field_type =
+        bit_field<DataType, field_size_in_bits<Index, Sizes...>()>;
+
+    /// @brief Reader constructor
+    /// DataType must be either uint8_t, uint16_t, uint32_t, or uint64_t
     reader(DataType value) :
         m_value(value)
     {
         static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
-                      "stop it..");
+                      "size of the Datatype is not equal to the sum of sizes");
     }
 
+    /// @brief Based on the provided index the function returns the field
     template<uint32_t Index>
-    uint32_t read()
+    bit_field_type<Index> field()
+    {
+        return bit_field_type<Index>(read<Index>());
+    }
+
+private:
+    /// @breif Function used as a wraper, used for retriving a field
+    ///        based on the Index provide
+    template<uint32_t Index>
+    DataType read()
     {
         return field_get<DataType, Index, Sizes...>(m_value);
     }
 
-    template<uint32_t Index, class FieldType>
-    FieldType read_as()
-    {
-        // Doble paran needed because assert is a macro on some platforms, and
-        // they don't like the commas in the templates
-        assert((field_size_in_bits<Index, Sizes...>()) <=
-               size_in_bits<FieldType>());
-        return (FieldType) field_get<DataType, Index, Sizes...>(m_value);
-    }
+private:
 
+    /// Store the value containing the data used by the reader
     DataType m_value;
 };
 }

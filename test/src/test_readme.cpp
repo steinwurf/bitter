@@ -12,30 +12,28 @@
 
 TEST(test_readme, writing_a_bit_field)
 {
-    // Using an uint32_t data type divided into 4 bit fields each 8 bits in
-    // size. The sum of the bit fields must match the number of bits in the data
-    // type.
-    auto writer = bitter::writer<uint32_t, 8, 8, 8, 8>();
+    // Write into a 16 bit data type divided into 3 bit fields of size 1, 2, and
+    // 13 bits respectively. The sum of sizes of the bit fields must match the
+    // number of bits in the choosen data type.
+    auto writer = bitter::writer<uint16_t, 1, 2, 13>();
 
-    writer.field<0>(0xef); // Write bits 0-7
-    writer.field<1>(0xbe); // Write bits 8-15
-    writer.field<2>(0xad); // Write bits 16-23
-    writer.field<3>(0xde); // Write bits 24-31
-
-    assert(writer.data() == 0xdeadbeef);
+    writer.field<0>(1); // Write bit 0
+    writer.field<1>(1); // Write bits 1-2
+    writer.field<2>(1); // Write bits 3-15
+    assert(writer.data() == 0b0000000000001011);
 }
 
 TEST(test_readme, reading_a_bit_field)
 {
-    auto reader = bitter::reader<uint32_t, 8, 8, 8, 8>(0xdeadbeef);
+    // Read from a 16 bit data type divided into 3 bit fields of size 1, 2, and
+    // 13 bits respectively.
+    auto reader = bitter::reader<uint16_t, 1, 2, 13>(0b0000000000001011);
 
-    uint8_t value0 = reader.field<0>().read_as<uint8_t>(); // Read bits 0-7
-    uint8_t value1 = reader.field<1>().read_as<uint8_t>(); // Read bits 8-15
-    uint8_t value2 = reader.field<2>().read_as<uint8_t>(); // Read bits 16-23
-    uint8_t value3 = reader.field<3>().read_as<uint8_t>(); // Read bits 24-31
+    bool value0 = reader.field<0>().read_as<bool>(); // Read bit 0
+    uint8_t value1 = reader.field<1>().read_as<uint8_t>(); // Read bits 1-2
+    uint16_t value2 = reader.field<2>().read_as<uint16_t>(); // Read bits 3-15
 
-    assert(value0 == 0xef);
-    assert(value1 == 0xbe);
-    assert(value2 == 0xad);
-    assert(value3 == 0xde);
+    assert(value0 == 1);
+    assert(value1 == 1);
+    assert(value2 == 1);
 }

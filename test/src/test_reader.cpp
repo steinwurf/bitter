@@ -116,3 +116,17 @@ TEST(test_bit_reader, read_bit9)
     value = reader.field<7>().read_as<bool>();
     EXPECT_TRUE(value);
 }
+
+TEST(test_bit_reader, test_const)
+{
+    uint8_t input = 0x01;
+    const auto reader = bitter::reader<uint8_t, 1, 1, 1, 1, 1, 1, 1, 1>(input);
+
+    const auto field1 = reader.field<0>();
+    auto value1 = field1.read_as<bool>();
+    EXPECT_TRUE(value1);
+
+    const auto field2 = reader.field<7>();
+    auto value2 = field2.read_as<bool>();
+    EXPECT_FALSE(value2);
+}

@@ -6,7 +6,7 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Minor: Made ``field`` and ``read_as`` member functions ``const``.
 
 1.0.0
 -----

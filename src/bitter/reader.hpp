@@ -42,7 +42,7 @@ public:
 
     /// @brief Based on the provided index the function returns the field
     template<uint32_t Index>
-    bit_field_type<Index> field()
+    bit_field_type<Index> field() const
     {
         return bit_field_type<Index>(read<Index>());
     }
@@ -51,7 +51,7 @@ private:
     /// @breif Function used as a wraper, used for retriving a field
     ///        based on the Index provide
     template<uint32_t Index>
-    DataType read()
+    DataType read() const
     {
         return field_get<DataType, Index, Sizes...>(m_value);
     }

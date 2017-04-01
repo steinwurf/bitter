@@ -2,28 +2,58 @@
 *.slo
 *.lo
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
 
 # Compiled Dynamic libraries
 *.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
 
 # Compiled Static libraries
 *.lai
 *.la
 *.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
+# Python
+*.pyc
+
+# Compiled Doxygen documentation
+/doxygen/html
+
+# Waf files
+waf-*
+waf3-*
+.waf-*
+.waf3-*
+.lock-*
+build
+resolve_symlinks
+resolved_dependencies
+
+# Gnu Global tag files
+GPATH
+GRTAGS
+GSYMS
+GTAGS
+
+# Emacs temp / auto save
+\#*#
+*.#*
+*~
+
+#Eclipse ignore
+.cproject
+*.project
+.metadata
+local.properties
+.classpath
+.settings/
+
+# Visual Studio ignore
+*.bat
+*.sln
+*.suo
+*.user
+*.ncb
+*.sdf
+*.opensdf
+*.log
+*.vcxproj*
+VSProjects

@@ -2,15 +2,13 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file
+
 #include <bitter/reader.hpp>
 
 #include <cstdint>
 #include <typeinfo>
 
 #include <gtest/gtest.h>
-
-
-
 
 TEST(test_bit_reader, read_bit)
 {

@@ -6,7 +6,7 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Patch: Fix version name.
 
 2.0.0
 -----

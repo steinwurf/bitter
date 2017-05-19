@@ -9,7 +9,7 @@ def build(bld):
 
     bld.env.append_unique(
         'DEFINES_STEINWURF_VERSION',
-        'STEINWURF_CONDIAN_VERSION="{}"'.format(
+        'STEINWURF_HEX_VERSION="{}"'.format(
             VERSION))
 
     bld(name='bitter_includes',

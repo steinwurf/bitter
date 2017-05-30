@@ -22,7 +22,6 @@ namespace detail
 template<typename T>
 inline constexpr T pow2(const T exponent)
 {
-    // (parentheses not required in next line)
     return (exponent == 0) ? 1 : (2 * pow2(exponent - 1));
 }
 }

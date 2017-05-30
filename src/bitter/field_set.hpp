@@ -4,35 +4,39 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
+#include <cassert>
+#include <cstdint>
+#include <type_traits>
+
 #include "field_mask.hpp"
 #include "field_offset.hpp"
-
-#include <cstdint>
-#include <cassert>
+#include "field_max_value.hpp"
 
 namespace bitter
 {
-/// @brief set the value of a field based on the index
-/// @param value is the data of the writer
-/// @param field is the data we want to write to value
+
+/// @brief set the value in a bitfield based on the index
+/// @param bitfield is the data of the writer
+/// @param value is the data we want to write to the bitfield
 template<class DataType, uint32_t Index, uint32_t... Sizes>
-DataType field_set(DataType value, DataType field)
+DataType field_set(DataType bitfield, DataType value)
 {
+    // Verify that the bitfield can be represented with the available bits:
+    assert((value <= field_max_value<DataType, Index, Sizes...>()) &&
+           "value exceeds limit representable by available bits");
+
     uint32_t offset = field_offset<Index, Sizes...>();
     DataType mask = field_mask<DataType, Index, Sizes...>();
 
-    // Sanity check that we don't have garbage bits in our field
-    assert((field & (~mask)) == 0U);
-
-    // Shift the field up to where it should go
+    // Shift the value up to where it should go
     // and do the same with the mask
-    field = field << offset;
+    value = value << offset;
     mask = mask << offset;
 
     // Merge the bits:
     // https://graphics.stanford.edu/~seander/bithacks.html#MaskedMerge
-    value = value ^ ((value ^ field) & mask);
+    bitfield = bitfield ^ ((bitfield ^ value) & mask);
 
-    return value;
+    return bitfield;
 }
 }

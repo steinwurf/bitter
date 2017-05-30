@@ -13,11 +13,14 @@
 #include "field_offset.hpp"
 #include "field_size_in_bits.hpp"
 
+#include <iostream>
+
 namespace bitter
 {
 namespace detail
 {
-inline constexpr std::size_t pow2(unsigned const exponent)
+template<typename T>
+inline constexpr T pow2(const T exponent)
 {
     // (parentheses not required in next line)
     return (exponent == 0) ? 1 : (2 * pow2(exponent - 1));
@@ -31,9 +34,9 @@ template<class DataType, uint32_t Index, uint32_t... Sizes>
 DataType field_set(DataType bitfield, DataType value)
 {
     using bitfield_limit =
-        std::integral_constant<std::size_t,
-        detail::pow2(
-            field_size_in_bits<Index, Sizes...>())>;
+        std::integral_constant<uint64_t,
+        detail::pow2((uint64_t)field_size_in_bits<Index, Sizes...>())>;
+
     // Verify that the bitfield can be represented with the available bits:
     assert(value < bitfield_limit::value &&
            "value exceeds limit representable by available bits");

@@ -5,26 +5,15 @@
 #pragma once
 
 #include <cassert>
-#include <cmath>
 #include <cstdint>
 #include <type_traits>
 
 #include "field_mask.hpp"
 #include "field_offset.hpp"
-#include "field_size_in_bits.hpp"
-
-#include <iostream>
+#include "field_max_value.hpp"
 
 namespace bitter
 {
-namespace detail
-{
-template<typename T>
-inline constexpr T pow2(const T exponent)
-{
-    return (exponent == 0) ? 1 : (2 * pow2(exponent - 1));
-}
-}
 
 /// @brief set the value in a bitfield based on the index
 /// @param bitfield is the data of the writer
@@ -32,12 +21,8 @@ inline constexpr T pow2(const T exponent)
 template<class DataType, uint32_t Index, uint32_t... Sizes>
 DataType field_set(DataType bitfield, DataType value)
 {
-    using bitfield_limit =
-        std::integral_constant<uint64_t,
-        detail::pow2((uint64_t)field_size_in_bits<Index, Sizes...>())>;
-
     // Verify that the bitfield can be represented with the available bits:
-    assert(value < bitfield_limit::value &&
+    assert((value <= field_max_value<DataType, Index, Sizes...>()) &&
            "value exceeds limit representable by available bits");
 
     uint32_t offset = field_offset<Index, Sizes...>();

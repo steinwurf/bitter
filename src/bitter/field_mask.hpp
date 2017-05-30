@@ -15,7 +15,7 @@ namespace bitter
 /// @brief Function for creating a maske for variable
 ///        with the sizeof DataTypes
 template<class DataType, uint32_t Index, uint32_t... Sizes>
-DataType field_mask()
+constexpr DataType field_mask()
 {
     uint32_t field_size = field_size_in_bits<Index, Sizes...>();
     uint32_t data_type_size = size_in_bits<DataType>();

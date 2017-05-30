@@ -5,15 +5,12 @@
 #pragma once
 
 #include <cassert>
-#include <cmath>
 #include <cstdint>
 #include <type_traits>
 
 #include "field_mask.hpp"
 #include "field_offset.hpp"
-#include "field_size_in_bits.hpp"
-
-#include <iostream>
+#include "field_max_value.hpp"
 
 namespace bitter
 {
@@ -25,7 +22,7 @@ template<class DataType, uint32_t Index, uint32_t... Sizes>
 DataType field_set(DataType bitfield, DataType value)
 {
     // Verify that the bitfield can be represented with the available bits:
-    assert(value < field_max_value<DataType, Index, Sizes...>() &&
+    assert((value <= field_max_value<DataType, Index, Sizes...>()) &&
            "value exceeds limit representable by available bits");
 
     uint32_t offset = field_offset<Index, Sizes...>();

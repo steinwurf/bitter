@@ -83,7 +83,7 @@ TEST(test_bit_writer, write_bit_3)
         input = 0x44444444;
         writer.field<1>(input);
         auto value = writer.data();
-        EXPECT_EQ(value, 0x4444444422222222);
+        EXPECT_EQ(value, 0x4444444422222222U);
     }
     {
         auto writer = bitter::msb0_writer<uint64_t, 32, 32>();
@@ -93,7 +93,7 @@ TEST(test_bit_writer, write_bit_3)
         input = 0x44444444;
         writer.field<1>(input);
         auto value = writer.data();
-        EXPECT_EQ(value, 0x2222222244444444);
+        EXPECT_EQ(value, 0x2222222244444444U);
     }
 }
 
@@ -109,7 +109,7 @@ TEST(test_bit_writer, write_bit_4)
         writer.field<1>(input);
 
         auto value = writer.data();
-        EXPECT_EQ(value, 0x43211234);
+        EXPECT_EQ(value, 0x43211234U);
     }
     {
         auto writer = bitter::msb0_writer<uint32_t, 16, 16>();
@@ -120,7 +120,7 @@ TEST(test_bit_writer, write_bit_4)
         writer.field<1>(input);
 
         auto value = writer.data();
-        EXPECT_EQ(value, 0x12344321);
+        EXPECT_EQ(value, 0x12344321U);
     }
 }
 
@@ -141,7 +141,7 @@ TEST(test_bit_writer, write_bit_5)
         writer.field<3>(input);
 
         auto value = writer.data();
-        EXPECT_EQ(value, 0x44332211);
+        EXPECT_EQ(value, 0x44332211U);
     }
     {
         auto writer = bitter::msb0_writer<uint32_t, 8, 8, 8, 8>();
@@ -158,6 +158,6 @@ TEST(test_bit_writer, write_bit_5)
         writer.field<3>(input);
 
         auto value = writer.data();
-        EXPECT_EQ(value, 0x11223344);
+        EXPECT_EQ(value, 0x11223344U);
     }
 }

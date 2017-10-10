@@ -10,7 +10,10 @@ fields.
 bitter can be used to read or write individual bits or groups of bits
 inside native data types.
 
-We provide 4 different readers/writers::
+Usage
+-----
+
+bitter provides 4 different readers/writers::
 
     bitter::lsb0_writer<DataType, Fields...>();
     bitter::lsb0_reader<DataType, Fields...>();

@@ -6,7 +6,11 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Changed ``bitter::reader`` and ``bitter::writer`` to support
+  LSB 0 and MSB 0 bit numbering (see README.rst for introduction). The old
+  ``bitter::reader`` and ``bitter::writer`` are functional equivalent to
+  ``bitter::lsb0_reader``, ``bitter::lsb0_writer`` old applications should
+  be able to upgrade by simply renaming.
 
 2.0.1
 -----

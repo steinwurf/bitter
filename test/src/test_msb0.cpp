@@ -3,7 +3,6 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/endian_field_offset.hpp>
 #include <bitter/msb0.hpp>
 
 #include <cstdint>

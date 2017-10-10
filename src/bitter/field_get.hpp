@@ -4,7 +4,6 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
-#include "field_offset.hpp"
 #include "field_mask.hpp"
 
 #include <cstdint>

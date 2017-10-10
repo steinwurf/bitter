@@ -9,7 +9,6 @@
 #include <type_traits>
 
 #include "field_mask.hpp"
-#include "field_offset.hpp"
 #include "field_max_value.hpp"
 
 namespace bitter

@@ -7,7 +7,6 @@
 #include "size_in_bits.hpp"
 #include "sum_sizes.hpp"
 #include "field_get.hpp"
-#include "field_offset.hpp"
 #include "field_size_in_bits.hpp"
 #include "lsb0.hpp"
 #include "msb0.hpp"

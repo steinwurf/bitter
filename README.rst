@@ -17,10 +17,10 @@ We provide 4 different readers/writers::
     bitter::msb0_writer<DataType, Fields...>();
     bitter::msb0_reader<DataType, Fields...>();
 
-Where `DataType` is a native data type e.g. `uint8_t`, `uint16_t`,
-`uint32_t` etc. `Fields...` is a variadic template argument specifying the
-different bit fields. The curiously looking `lsb0` and `msb0` specifies
-the "bit numbering" used.
+Where ``DataType`` is a native data type e.g. ``uint8_t``, ``uint16_t``,
+``uint32_t`` etc. ``Fields...`` is a variadic template argument specifying
+the different bit fields. The curiously looking ``lsb0`` and ``msb0``
+specifies the "bit numbering" used.
 
 To use bitter for reading/writing bit fields you need to first decide on
 what bit numbering scheme to use - if you never heard about this concept
@@ -92,29 +92,54 @@ MSB 0 mode
 
     assert(writer.data() == 0x12345678);
 
-Use `#include <bitter/msb0_writer.hpp>` to use the `bitter::msb0_writer`.
-
-
+Use ``#include <bitter/msb0_writer.hpp>`` to use the
+``bitter::msb0_writer``.
 
 Reading a bit field
 -------------------
 
-Given a value we can also read the individual bit fields. Based on the example
-above lets read back the four bit fields from the uint32_t value::
+Given a value we can also read the individual bit fields.
 
-    auto reader = bitter::reader<uint32_t, 8, 8, 8, 8>(0xdeadbeef);
+LSB 0 mode
+..........
+
+::
+
+    auto reader = bitter::lsb0_reader<uint32_t, 8, 8, 8, 8>(0x12345678);
 
     uint8_t value0 = reader.field<0>().read_as<uint8_t>(); // Read bits 0-7
     uint8_t value1 = reader.field<1>().read_as<uint8_t>(); // Read bits 8-15
     uint8_t value2 = reader.field<2>().read_as<uint8_t>(); // Read bits 16-23
     uint8_t value3 = reader.field<3>().read_as<uint8_t>(); // Read bits 24-31
 
-    assert(value0 == 0xef);
-    assert(value1 == 0xbe);
-    assert(value2 == 0xad);
-    assert(value3 == 0xde);
+    assert(value0 == 0x78);
+    assert(value1 == 0x56);
+    assert(value2 == 0x34);
+    assert(value3 == 0x12);
 
-Use `#include <bitter/reader.hpp>` to use the `bitter::reader`.
+Use ``#include <bitter/lsb0_reader.hpp>`` to use the
+``bitter::lsb0_reader``.
+
+MSB 0 mode
+..........
+
+::
+
+    auto reader = bitter::msb0_reader<uint32_t, 8, 8, 8, 8>(0x12345678);
+
+    uint8_t value0 = reader.field<0>().read_as<uint8_t>(); // Read bits 0-7
+    uint8_t value1 = reader.field<1>().read_as<uint8_t>(); // Read bits 8-15
+    uint8_t value2 = reader.field<2>().read_as<uint8_t>(); // Read bits 16-23
+    uint8_t value3 = reader.field<3>().read_as<uint8_t>(); // Read bits 24-31
+
+    assert(value0 == 0x12);
+    assert(value1 == 0x34);
+    assert(value2 == 0x56);
+    assert(value3 == 0x78);
+
+Use ``#include <bitter/lsb0_reader.hpp>`` to use the
+``bitter::lsb0_reader``.
+
 
 Bit numbering (bit endianness)
 ------------------------------

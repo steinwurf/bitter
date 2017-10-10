@@ -10,15 +10,11 @@
 
 namespace bitter
 {
-/// @todo docs
-/// @breif function for getting the size of DataType in bits
+/// @brief Calculates the bit shift offset into a value given that bitter
+///        is configured in MSB 0 numbering mode (see README.rst for more
+///        information).
 struct msb0
 {
-
-    /// Calculates the bit shift offset into a value given that bitter
-    /// is configured in MSB 0 numbering mode (see README.rst for more
-    /// information).
-    ///
     /// The basic implementation in MSB 0 mode works according to the
     /// following observation.
     ///
@@ -43,7 +39,7 @@ struct msb0
     /// We do this by implementing a counter which iterates through the
     /// field sizes once we reach the index we are interested in we
     /// sum the remaining sizes.
-    /// 
+    ///
     template<uint32_t Index, uint32_t... Sizes>
     static uint32_t field_offset()
     {
@@ -80,10 +76,12 @@ private:
         }
         else
         {
-            return count_to_field_offset<Index, Counter + (Counter < Index ? 1 : 0), Size1, Sizes...>();
+            return count_to_field_offset<
+                   Index,
+                   Counter + (Counter < Index ? 1 : 0),
+                   Size1,
+                   Sizes...>();
         }
     }
-
-
 };
 }

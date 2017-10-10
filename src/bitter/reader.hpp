@@ -9,7 +9,8 @@
 #include "field_get.hpp"
 #include "field_offset.hpp"
 #include "field_size_in_bits.hpp"
-
+#include "lsb0.hpp"
+#include "msb0.hpp"
 #include "bit_field.hpp"
 
 #include <cstdint>
@@ -21,7 +22,7 @@ namespace bitter
 {
 /// @breif Reader class used for reading the content
 ///        of the value parsed to the reader at initialisation
-template<typename DataType, uint32_t... Sizes>
+template<typename DataType, typename BitNumbering, uint32_t... Sizes>
 class reader
 {
 public:
@@ -53,7 +54,7 @@ private:
     template<uint32_t Index>
     DataType read() const
     {
-        return field_get<DataType, Index, Sizes...>(m_value);
+        return field_get<DataType, BitNumbering, Index, Sizes...>(m_value);
     }
 
 private:

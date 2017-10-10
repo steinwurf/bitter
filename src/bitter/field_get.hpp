@@ -15,10 +15,16 @@ namespace bitter
 /// @brief function for accessing a field based on
 ///        the provided index
 /// @param value is the data give to the reader at intialisation
-template<class DataType, uint32_t Index, uint32_t... Sizes>
+template
+<
+    typename DataType,
+    typename BitNumbering,
+    uint32_t Index,
+    uint32_t... Sizes
+>
 DataType field_get(DataType value)
 {
-    uint32_t offset = field_offset<Index, Sizes...>();
+    uint32_t offset = BitNumbering::template field_offset<Index, Sizes...>();
     DataType mask = field_mask<DataType, Index, Sizes...>();
 
     return (value >> offset) & mask;

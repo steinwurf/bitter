@@ -1,9 +1,14 @@
-======
 Bitter
 ======
 
 Is a lightweight Header only C++ API, for reading and writing single bit and
 varying length byte fields.
+
+.. image:: http://buildbot.steinwurf.dk/svgstatus?project=bitter
+    :target: http://buildbot.steinwurf.dk/stats?projects=bitter
+
+.. contents:: Table of Contents:
+   :local:
 
 Writing a bit field
 -------------------
@@ -129,7 +134,7 @@ If on the other hand we use the msb_reader the example would be::
 
     auto reader = bitter::msb_reader<uint8_t, 1, 2, 3, 2>(0xdeadbeef);
 
-We would have the following layout of the four fields inside the byte:
+We would have the following layout of the four fields inside the byte::
 
       0   1   2   3   4   5   6   7
     +---+-------+-----------+-------+

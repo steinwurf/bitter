@@ -19,7 +19,7 @@ TEST(test_bit_writer, write_bit)
         uint8_t input = 0b1000000;
         writer.field<1>(input);
         auto value = writer.data();
-        EXPECT_EQ(value, 0b10000001);
+        EXPECT_EQ(value, 0b10000001U);
     }
     {
         auto writer = bitter::msb0_writer<uint8_t, 1, 7>();
@@ -27,7 +27,7 @@ TEST(test_bit_writer, write_bit)
         uint8_t input = 0b1000000;
         writer.field<1>(input);
         auto value = writer.data();
-        EXPECT_EQ(value, 0b11000000);
+        EXPECT_EQ(value, 0b11000000U);
     }
 }
 

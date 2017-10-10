@@ -59,6 +59,7 @@ LSB 0 mode
 ..........
 
 ::
+
     // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.
@@ -77,6 +78,7 @@ MSB 0 mode
 ..........
 
 ::
+
     // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.

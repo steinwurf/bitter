@@ -17,8 +17,8 @@
 TEST(test_readme, writing_a_lsb0_bit_field)
 {
     // Using an uint32_t data type divided into 4 bit fields each 8 bits in
-    // size. The sum of the bit fields must match the number of bits in the data
-    // type.
+    // size. The sum of the bit fields must match the number of bits in the
+    // data type.
     auto writer = bitter::lsb0_writer<uint32_t, 8, 8, 8, 8>();
 
     writer.field<0>(0x12); // Write bits 0-7
@@ -32,8 +32,8 @@ TEST(test_readme, writing_a_lsb0_bit_field)
 TEST(test_readme, writing_a_msb0_bit_field)
 {
     // Using an uint32_t data type divided into 4 bit fields each 8 bits in
-    // size. The sum of the bit fields must match the number of bits in the data
-    // type.
+    // size. The sum of the bit fields must match the number of bits in the
+    // data type.
     auto writer = bitter::msb0_writer<uint32_t, 8, 8, 8, 8>();
 
     writer.field<0>(0x12); // Write bits 24-31

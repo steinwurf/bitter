@@ -1,33 +1,95 @@
 Bitter
 ======
 
-Is a lightweight Header only C++ API, for reading and writing single bit and
-varying length byte fields.
-
-.. image:: http://buildbot.steinwurf.dk/svgstatus?project=bitter
-    :target: http://buildbot.steinwurf.dk/stats?projects=bitter
+Is a lightweight header only C++ API, for reading and writing single bit
+fields.
 
 .. contents:: Table of Contents:
    :local:
+
+bitter can be used to read or write individual bits or groups of bits
+inside native data types.
+
+We provide 4 different readers/writers::
+
+    bitter::lsb0_writer<DataType, Fields...>();
+    bitter::lsb0_reader<DataType, Fields...>();
+    bitter::msb0_writer<DataType, Fields...>();
+    bitter::msb0_reader<DataType, Fields...>();
+
+Where `DataType` is a native data type e.g. `uint8_t`, `uint16_t`,
+`uint32_t` etc. `Fields...` is a variadic template argument specifying the
+different bit fields. The curiously looking `lsb0` and `msb0` specifies
+the "bit numbering" used.
+
+To use bitter for reading/writing bit fields you need to first decide on
+what bit numbering scheme to use - if you never heard about this concept
+before you can jump to the "Bit numbering (bit endianness)" section further
+down. Here's the quick TL;DR:
+
+bitter can be configured to place bit fields either from *left to right*
+called MSB 0 (Most Significant Bit 0) mode or *right to left* called LSB 0
+(Least Significant Bit 0) mode.
+
+Example::
+
+                   auto writer = bitter::lsb0_writer<uint8_t, 4, 4>();
+                                          ^     ^      ^      ^  ^
+                                          |     |      |      |  |
+    LSB 0 mode (fields right-to-left) <---+     |      |      |  |
+                                                |      |      |  |
+      We will write bits into a value <---------+      |      |  |
+                                                       |      |  |
+           The data type of the value <----------------+      |  |
+                                                              |  |
+         Field at index 0 with size 4 <-----------------------+  |
+                                                                 |
+         Field at index 1 with size 4 <--------------------------+
+
+Since we use LSB 0 mode the field with index 0 will the the right half (
+bit 0-3) of the byte and the field with index 1 will be the left half (
+bit 4-7). In MSB 0 mode this would have been opposite.
 
 Writing a bit field
 -------------------
 
 Lets say we want to write the four bytes of a 32 bit integer individually::
 
+LSB 0 mode
+..........
+
     // Using an uint32_t data type divided into 4 bit fields each 8 bits in
-    // size. The sum of the bit fields must match the number of bits in the data
-    // type.
-    auto writer = bitter::writer<uint32_t, 8, 8, 8, 8>();
+    // size. The sum of the bit fields must match the number of bits in the
+    // data type.
+    auto writer = bitter::lsb0_writer<uint32_t, 8, 8, 8, 8>();
 
-    writer.field<0>(0xef); // Write bits 0-7
-    writer.field<1>(0xbe); // Write bits 8-15
-    writer.field<2>(0xad); // Write bits 16-23
-    writer.field<3>(0xde); // Write bits 24-31
+    writer.field<0>(0x12); // Write bits 0-7
+    writer.field<1>(0x34); // Write bits 8-15
+    writer.field<2>(0x56); // Write bits 16-23
+    writer.field<3>(0x78); // Write bits 24-31
 
-    assert(writer.data() == 0xdeadbeef);
+    assert(writer.data() == 0x78563412);
 
-Use `#include <bitter/writer.hpp>` to use the `bitter::writer`.
+Use `#include <bitter/lsb0_writer.hpp>` to use the `bitter::lsb0_writer`.
+
+MSB 0 mode
+..........
+
+    // Using an uint32_t data type divided into 4 bit fields each 8 bits in
+    // size. The sum of the bit fields must match the number of bits in the
+    // data type.
+    auto writer = bitter::msb0_writer<uint32_t, 8, 8, 8, 8>();
+
+    writer.field<0>(0x12); // Write bits 24-31
+    writer.field<1>(0x34); // Write bits 16-23
+    writer.field<2>(0x56); // Write bits 8-15
+    writer.field<3>(0x78); // Write bits 0-7
+
+    assert(writer.data() == 0x12345678);
+
+Use `#include <bitter/msb0_writer.hpp>` to use the `bitter::msb0_writer`.
+
+
 
 Reading a bit field
 -------------------

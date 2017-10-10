@@ -207,10 +207,10 @@ laid out from bit number 0.
 
 So imagine we have the following bit reader::
 
-    auto reader = bitter::lsb_reader<uint8_t, 1, 2, 3, 2>(0xdeadbeef);
+    auto reader = bitter::lsb0_reader<uint8_t, 1, 2, 3, 2>(0xdeadbeef);
 
 We have four fields of size 1, 2, 3, 2 bits respectively (8 bits in
-total). We use the lsb_reader to use LSB 0 bit numbering so we have
+total). We use the ``lsb0_reader`` to use LSB 0 bit numbering so we have
 the following layout of the four fields inside the byte::
 
       7   6   5   4   3   2   1   0
@@ -225,9 +225,9 @@ the following layout of the four fields inside the byte::
 So the first field is at bit 0 which is the lest significant bit
 inside the byte.
 
-If on the other hand we use the msb_reader the example would be::
+If on the other hand we use the ``msb0_reader`` the example would be::
 
-    auto reader = bitter::msb_reader<uint8_t, 1, 2, 3, 2>(0xdeadbeef);
+    auto reader = bitter::msb0_reader<uint8_t, 1, 2, 3, 2>(0xdeadbeef);
 
 We would have the following layout of the four fields inside the byte::
 
@@ -242,4 +242,6 @@ We would have the following layout of the four fields inside the byte::
 
 License
 =======
-For more info on the license see the LICENSE file
+
+The bitter library is released under the BSD license see the LICENSE.rst
+file

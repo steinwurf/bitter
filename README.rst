@@ -72,7 +72,8 @@ LSB 0 mode
 
     assert(writer.data() == 0x78563412);
 
-Use `#include <bitter/lsb0_writer.hpp>` to use the `bitter::lsb0_writer`.
+Use ``#include <bitter/lsb0_writer.hpp>`` to use the
+``bitter::lsb0_writer``.
 
 MSB 0 mode
 ..........

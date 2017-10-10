@@ -58,6 +58,7 @@ Lets say we want to write the four bytes of a 32 bit integer individually::
 LSB 0 mode
 ..........
 
+::
     // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.
@@ -75,6 +76,7 @@ Use `#include <bitter/lsb0_writer.hpp>` to use the `bitter::lsb0_writer`.
 MSB 0 mode
 ..........
 
+::
     // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.

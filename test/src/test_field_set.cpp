@@ -31,11 +31,11 @@ TEST(test_field_set, field_set_16)
 
         temp = bitter::field_set<
                bitter::u16, bitter::msb0, 0, 8, 8>(temp, 0xFF);
-        EXPECT_EQ(0xFF00, temp);
+        EXPECT_EQ(0xFF00U, temp);
 
         temp = bitter::field_set<
                bitter::u16, bitter::msb0, 1, 8, 8>(temp, 0xBB);
-        EXPECT_EQ(0xFFBB, temp);
+        EXPECT_EQ(0xFFBBU, temp);
     }
 }
 
@@ -50,7 +50,7 @@ TEST(test_field_set, field_set_24)
 
         temp = bitter::field_set<
                bitter::u24, bitter::lsb0, 1, 4, 20>(temp, 0xABCD0);
-        EXPECT_EQ(0xABCD01, temp);
+        EXPECT_EQ(0xABCD01U, temp);
     }
     {
         uint32_t temp = 0U;

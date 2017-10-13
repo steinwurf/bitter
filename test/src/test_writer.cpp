@@ -58,24 +58,24 @@ TEST(test_bit_writer, write_bit_u24)
         writer.field<0>(0xFF00);
 
         auto value = writer.data();
-        EXPECT_EQ(value, 0xFF00);
+        EXPECT_EQ(value, 0xFF00U);
 
         writer.field<1>(0xFF);
 
         value = writer.data();
-        EXPECT_EQ(value, 0xFFFF00);
+        EXPECT_EQ(value, 0xFFFF00U);
     }
     {
         auto writer = bitter::msb0_writer<bitter::u24, 16, 8>();
         writer.field<0>(0xFF00);
 
         auto value = writer.data();
-        EXPECT_EQ(value, 0xFF0000);
+        EXPECT_EQ(value, 0xFF0000U);
 
         writer.field<1>(0xFF);
 
         value = writer.data();
-        EXPECT_EQ(value, 0xFF00FF);
+        EXPECT_EQ(value, 0xFF00FFU);
     }
 }
 

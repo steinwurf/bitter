@@ -1,8 +1,15 @@
 #! /usr/bin/env python
 # encoding: utf-8
 
+source = bld.path.ant_glob('bitter_test.cpp')
+
+if bld.options.test_filter:
+    source += bld.path.ant_glob('src/**/' + bld.options.test_filter)
+else:
+    source += bld.path.ant_glob('src/**/*.cpp')
+
 bld.program(
     features='cxx test',
-    source=bld.path.ant_glob('**/*.cpp'),
+    source=source,
     target='bitter_tests',
     use=['bitter_includes', 'gtest'])

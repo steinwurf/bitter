@@ -16,10 +16,10 @@ namespace bitter
 ///        the provided index
 /// @param value is the data give to the reader at intialisation
 template<class DataType, uint32_t Index, uint32_t... Sizes>
-DataType field_get(DataType value)
+typename DataType::type field_get(typename DataType::type value)
 {
     uint32_t offset = field_offset<Index, Sizes...>();
-    DataType mask = field_mask<DataType, Index, Sizes...>();
+    typename DataType::type mask = field_mask<DataType, Index, Sizes...>();
 
     return (value >> offset) & mask;
 }

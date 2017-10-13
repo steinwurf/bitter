@@ -2,7 +2,7 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
-#include <bitter/reader.hpp>
+#include <bitter/lsb0_reader.hpp>
 
 #include <cstdint>
 #include <cassert>
@@ -23,7 +23,7 @@ int main()
 {
 
     uint32_t value = 0x8028041U;
-    auto reader = bitter::reader<uint32_t, 1, 7, 8, 16>(value);
+    auto reader = bitter::lsb0_reader<uint32_t, 1, 7, 8, 16>(value);
 
     auto first_field = reader.field<0>().read_as<bool>();
     assert(first_field == true);

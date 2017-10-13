@@ -6,29 +6,59 @@
 #include <bitter/field_get.hpp>
 
 #include <bitter/types.hpp>
+#include <bitter/msb0.hpp>
+#include <bitter/lsb0.hpp>
 
 #include <cstdint>
 
 #include <gtest/gtest.h>
 
-TEST(test_field_get, field)
-{
-    uint8_t value = 0b11111111;
 
-    EXPECT_EQ(0b1, (bitter::field_get<bitter::u8, 0, 1, 7>(value)));
-    EXPECT_EQ(0b1111111, (bitter::field_get<bitter::u8, 1, 1, 7>(value)));
+TEST(test_field_get, field_u8)
+{
+    uint8_t value = 0b10000000;
+
+    {
+        auto f0 = bitter::field_get<
+                  bitter::u8, bitter::msb0, 0, 1, 7>(value);
+
+        auto f1 = bitter::field_get<
+                  bitter::u8, bitter::msb0, 1, 1, 7>(value);
+
+        EXPECT_EQ(f0, 0b1);
+        EXPECT_EQ(f1, 0b0000000);
+    }
+    {
+        auto f0 = bitter::field_get<
+                  bitter::u8, bitter::lsb0, 0, 1, 7>(value);
+        auto f1 = bitter::field_get<
+                  bitter::u8, bitter::lsb0, 1, 1, 7>(value);
+
+        EXPECT_EQ(f0, 0b0);
+        EXPECT_EQ(f1, 0b1000000);
+    }
 }
 
-TEST(test_field_get, field2)
+TEST(test_field_get, field_u24)
 {
-    uint16_t value = 1024U;
-    EXPECT_EQ(0U, (bitter::field_get<bitter::u16, 0, 8, 8>(value)));
-    EXPECT_EQ(4U, (bitter::field_get<bitter::u16, 1, 8, 8>(value)));
-}
+    uint32_t value = 0xF0000F;
 
-TEST(test_field_get, field3)
-{
-    uint32_t value = 0xF0000FU;
-    EXPECT_EQ(0xFU, (bitter::field_get<bitter::u24, 0, 4, 20>(value)));
-    EXPECT_EQ(0xFU, (bitter::field_get<bitter::u24, 1, 4, 20>(value)));
+    {
+        auto f0 = bitter::field_get<
+                  bitter::u24, bitter::msb0, 0, 4, 20>(value);
+        auto f1 = bitter::field_get<
+                  bitter::u24, bitter::msb0, 1, 4, 20>(value);
+
+        EXPECT_EQ(f0, 0xFU);
+        EXPECT_EQ(f1, 0x0000FU);
+    }
+    {
+        auto f0 = bitter::field_get<
+                  bitter::u24, bitter::lsb0, 0, 4, 20>(value);
+        auto f1 = bitter::field_get<
+                  bitter::u24, bitter::lsb0, 1, 4, 20>(value);
+
+        EXPECT_EQ(f0, 0xFU);
+        EXPECT_EQ(f1, 0xF0000U);
+    }
 }

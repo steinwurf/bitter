@@ -51,6 +51,34 @@ TEST(test_bit_writer, write_bit_1)
     }
 }
 
+TEST(test_bit_writer, write_bit_u24)
+{
+    {
+        auto writer = bitter::lsb0_writer<bitter::u24, 16, 8>();
+        writer.field<0>(0xFF00);
+
+        auto value = writer.data();
+        EXPECT_EQ(value, 0xFF00);
+
+        writer.field<1>(0xFF);
+
+        auto value = writer.data();
+        EXPECT_EQ(value, 0xFFFF00);
+    }
+    {
+        auto writer = bitter::msb0_writer<bitter::u24, 16, 8>();
+        writer.field<0>(0xFF00);
+
+        auto value = writer.data();
+        EXPECT_EQ(value, 0xFF0000);
+
+        writer.field<1>(0xFF);
+
+        auto value = writer.data();
+        EXPECT_EQ(value, 0xFF00FF);
+    }
+}
+
 TEST(test_bit_writer, write_bit_2)
 {
     {

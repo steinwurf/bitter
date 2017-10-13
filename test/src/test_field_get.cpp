@@ -5,27 +5,29 @@
 
 #include <bitter/field_get.hpp>
 
+#include <bitter/msb0.hpp>
+#include <bitter/lsb0.hpp>
+
 #include <cstdint>
 
 #include <gtest/gtest.h>
 
 TEST(test_field_get, field)
 {
-    uint8_t value = 255U;
-    EXPECT_TRUE(((bool)bitter::field_get<uint8_t, 0, 1, 7>(value)));
-    EXPECT_EQ(127U, (bitter::field_get<uint8_t, 1, 1, 7>(value)));
-}
+    uint8_t value = 0b10000000;
 
-TEST(test_field_get, field1)
-{
-    uint8_t value = 255U;
-    EXPECT_EQ(1U, (bitter::field_get<uint8_t, 0, 1, 7>(value)));
-    EXPECT_EQ(127U, (bitter::field_get<uint8_t, 1, 1, 7>(value)));
-}
+    {
+        auto f0 = bitter::field_get<uint8_t, bitter::msb0, 0, 1, 7>(value);
+        auto f1 = bitter::field_get<uint8_t, bitter::msb0, 1, 1, 7>(value);
 
-TEST(test_field_get, field2)
-{
-    uint16_t value = 1024U;
-    EXPECT_EQ(0U, (bitter::field_get<uint16_t, 0, 8, 8>(value)));
-    EXPECT_EQ(4U, (bitter::field_get<uint16_t, 1, 8, 8>(value)));
+        EXPECT_EQ(f0, 0b1);
+        EXPECT_EQ(f1, 0b0000000);
+    }
+    {
+        auto f0 = bitter::field_get<uint8_t, bitter::lsb0, 0, 1, 7>(value);
+        auto f1 = bitter::field_get<uint8_t, bitter::lsb0, 1, 1, 7>(value);
+
+        EXPECT_EQ(f0, 0b0);
+        EXPECT_EQ(f1, 0b1000000);
+    }
 }

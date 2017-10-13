@@ -5,7 +5,8 @@
 #pragma once
 
 #include "size_in_bits.hpp"
-
+#include "lsb0.hpp"
+#include "msb0.hpp"
 #include "sum_sizes.hpp"
 #include "field_size_in_bits.hpp"
 #include "field_set.hpp"
@@ -17,7 +18,12 @@ namespace bitter
 {
 /// @brief Writer class used for writing data to
 /// the fields given in the variadic template Sizes
-template<class DataType, uint32_t... Sizes>
+template
+<
+    typename DataType,
+    typename BitNumbering,
+    uint32_t... Sizes
+>
 class writer
 {
 public:
@@ -41,7 +47,8 @@ public:
                       size_in_bits<DataType>(), "The field size in bits cannot "
                       "be larger than the total size of the data type");
 
-        m_data = field_set<DataType, Index, Sizes...>(m_data, value);
+        m_data = field_set<
+                 DataType, BitNumbering, Index, Sizes...>(m_data, value);
     }
 
     /// @return The value create by the writer containing the bit fields

@@ -9,7 +9,6 @@
 #include <type_traits>
 
 #include "field_mask.hpp"
-#include "field_offset.hpp"
 #include "field_max_value.hpp"
 
 namespace bitter
@@ -18,14 +17,20 @@ namespace bitter
 /// @brief set the value in a bitfield based on the index
 /// @param bitfield is the data of the writer
 /// @param value is the data we want to write to the bitfield
-template<class DataType, uint32_t Index, uint32_t... Sizes>
+template
+<
+    typename DataType,
+    typename BitNumbering,
+    uint32_t Index,
+    uint32_t... Sizes
+>
 DataType field_set(DataType bitfield, DataType value)
 {
     // Verify that the bitfield can be represented with the available bits:
     assert((value <= field_max_value<DataType, Index, Sizes...>()) &&
            "value exceeds limit representable by available bits");
 
-    uint32_t offset = field_offset<Index, Sizes...>();
+    uint32_t offset = BitNumbering::template field_offset<Index, Sizes...>();
     DataType mask = field_mask<DataType, Index, Sizes...>();
 
     // Shift the value up to where it should go

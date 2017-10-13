@@ -16,7 +16,7 @@ TEST(test_bit_reader, read_bit)
     uint32_t input = 0x0FF0FF00U;
 
     {
-        auto reader = bitter::lsb0_reader<uint32_t, 8, 8, 8, 8>(input);
+        auto reader = bitter::lsb0_reader<bitter::u32, 8, 8, 8, 8>(input);
 
         auto value = reader.field<0>().read_as<uint8_t>();
         EXPECT_EQ(0x00U, value);
@@ -29,7 +29,7 @@ TEST(test_bit_reader, read_bit)
     }
 
     {
-        auto reader = bitter::msb0_reader<uint32_t, 8, 8, 8, 8>(input);
+        auto reader = bitter::msb0_reader<bitter::u32, 8, 8, 8, 8>(input);
 
         auto value = reader.field<0>().read_as<uint8_t>();
         EXPECT_EQ(0x0FU, value);
@@ -49,7 +49,7 @@ TEST(test_bit_reader, read_bit1)
     uint32_t input = 0x0FF0FF00U;
 
     {
-        auto reader = bitter::lsb0_reader<uint32_t, 16, 16>(input);
+        auto reader = bitter::lsb0_reader<bitter::u32, 16, 16>(input);
 
         auto value = reader.field<0>().read_as<uint16_t>();
         EXPECT_EQ(0xFF00U, value);
@@ -58,7 +58,7 @@ TEST(test_bit_reader, read_bit1)
     }
 
     {
-        auto reader = bitter::msb0_reader<uint32_t, 16, 16>(input);
+        auto reader = bitter::msb0_reader<bitter::u32, 16, 16>(input);
 
         auto value = reader.field<0>().read_as<uint16_t>();
         EXPECT_EQ(0x0FF0U, value);
@@ -72,7 +72,7 @@ TEST(test_bit_reader, read_bit3)
     uint64_t input = 0xA50FF0A50FF0FF00U;
 
     {
-        auto reader = bitter::lsb0_reader<uint64_t, 32, 32>(input);
+        auto reader = bitter::lsb0_reader<bitter::u64, 32, 32>(input);
 
         auto value = reader.field<0>().read_as<uint32_t>();
         EXPECT_EQ(0x0FF0FF00U, value);
@@ -81,7 +81,7 @@ TEST(test_bit_reader, read_bit3)
     }
 
     {
-        auto reader = bitter::msb0_reader<uint64_t, 32, 32>(input);
+        auto reader = bitter::msb0_reader<bitter::u64, 32, 32>(input);
 
         auto value = reader.field<0>().read_as<uint32_t>();
         EXPECT_EQ(0xA50FF0A5U, value);
@@ -94,13 +94,13 @@ TEST(test_bit_reader, read_bit4)
 {
     uint64_t input = 0xA50FF0A50FF0FF00U;
     {
-        auto reader = bitter::lsb0_reader<uint64_t, 64>(input);
+        auto reader = bitter::lsb0_reader<bitter::u64, 64>(input);
 
         auto value = reader.field<0>().read_as<uint64_t>();
         EXPECT_EQ(0xA50FF0A50FF0FF00U, value);
     }
     {
-        auto reader = bitter::msb0_reader<uint64_t, 64>(input);
+        auto reader = bitter::msb0_reader<bitter::u64, 64>(input);
 
         auto value = reader.field<0>().read_as<uint64_t>();
         EXPECT_EQ(0xA50FF0A50FF0FF00U, value);
@@ -111,7 +111,7 @@ TEST(test_bit_reader, read_bit5)
 {
     uint8_t input = 0xF1;
     {
-        auto reader = bitter::lsb0_reader<uint8_t, 1, 7>(input);
+        auto reader = bitter::lsb0_reader<bitter::u8, 1, 7>(input);
 
         auto value = reader.field<0>().read_as<bool>();
         EXPECT_TRUE(value);
@@ -120,7 +120,7 @@ TEST(test_bit_reader, read_bit5)
         EXPECT_EQ(0b1111000, second_value);
     }
     {
-        auto reader = bitter::msb0_reader<uint8_t, 1, 7>(input);
+        auto reader = bitter::msb0_reader<bitter::u8, 1, 7>(input);
 
         auto value = reader.field<0>().read_as<bool>();
         EXPECT_TRUE(value);
@@ -134,7 +134,7 @@ TEST(test_bit_reader, read_bit6)
 {
     {
         uint8_t input = 0b10000001;
-        auto reader = bitter::lsb0_reader<uint8_t, 1, 7>(input);
+        auto reader = bitter::lsb0_reader<bitter::u8, 1, 7>(input);
 
         auto value = reader.field<0>().read_as<bool>();
         EXPECT_TRUE(value);
@@ -144,7 +144,7 @@ TEST(test_bit_reader, read_bit6)
     }
     {
         uint8_t input = 0b10000001;
-        auto reader = bitter::msb0_reader<uint8_t, 1, 7>(input);
+        auto reader = bitter::msb0_reader<bitter::u8, 1, 7>(input);
 
         auto value = reader.field<0>().read_as<bool>();
         EXPECT_TRUE(value);
@@ -159,7 +159,7 @@ TEST(test_bit_reader, read_bit9)
     {
         uint8_t input = 0b10110101;
         auto reader = bitter::lsb0_reader<
-                      uint8_t, 1, 1, 1, 1, 1, 1, 1, 1>(input);
+                      bitter::u8, 1, 1, 1, 1, 1, 1, 1, 1>(input);
 
         auto value = reader.field<0>().read_as<bool>();
         EXPECT_TRUE(value);
@@ -188,7 +188,7 @@ TEST(test_bit_reader, read_bit9)
     {
         uint8_t input = 0b10110101;
         auto reader = bitter::msb0_reader<
-                      uint8_t, 1, 1, 1, 1, 1, 1, 1, 1>(input);
+                      bitter::u8, 1, 1, 1, 1, 1, 1, 1, 1>(input);
 
         auto value = reader.field<0>().read_as<bool>();
         EXPECT_TRUE(value);
@@ -221,7 +221,7 @@ TEST(test_bit_reader, test_const)
     uint8_t input = 0x01;
     {
         const auto reader = bitter::lsb0_reader<
-                            uint8_t, 1, 1, 1, 1, 1, 1, 1, 1>(input);
+                            bitter::u8, 1, 1, 1, 1, 1, 1, 1, 1>(input);
 
         const auto field1 = reader.field<0>();
         auto value1 = field1.read_as<bool>();
@@ -233,7 +233,7 @@ TEST(test_bit_reader, test_const)
     }
     {
         const auto reader = bitter::msb0_reader<
-                            uint8_t, 1, 1, 1, 1, 1, 1, 1, 1>(input);
+                            bitter::u8, 1, 1, 1, 1, 1, 1, 1, 1>(input);
 
         const auto field1 = reader.field<0>();
         auto value1 = field1.read_as<bool>();

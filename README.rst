@@ -20,10 +20,10 @@ bitter provides 4 different readers/writers::
     bitter::msb0_writer<DataType, Fields...>();
     bitter::msb0_reader<DataType, Fields...>();
 
-Where ``DataType`` is a native data type e.g. ``uint8_t``, ``uint16_t``,
-``uint32_t`` etc. ``Fields...`` is a variadic template argument specifying
-the different bit fields. The curiously looking ``lsb0`` and ``msb0``
-specifies the "bit numbering" used.
+Where ``DataType`` is a bitter type e.g. ``u8``, ``u16``,
+``u24`` etc. (u8 is short for unsigned 8 bit). ``Fields...`` is a variadic
+template argument specifying the different bit fields. The curiously
+looking ``lsb0`` and ``msb0`` specifies the "bit numbering" used.
 
 To use bitter for reading/writing bit fields you need to first decide on
 what bit numbering scheme to use - if you never heard about this concept
@@ -36,18 +36,18 @@ called MSB 0 (Most Significant Bit 0) mode or *right to left* called LSB 0
 
 Example::
 
-                   auto writer = bitter::lsb0_writer<uint8_t, 4, 4>();
-                                          ^     ^      ^      ^  ^
-                                          |     |      |      |  |
-    LSB 0 mode (fields right-to-left) <---+     |      |      |  |
-                                                |      |      |  |
-      We will write bits into a value <---------+      |      |  |
-                                                       |      |  |
-           The data type of the value <----------------+      |  |
-                                                              |  |
-         Field at index 0 with size 4 <-----------------------+  |
-                                                                 |
-         Field at index 1 with size 4 <--------------------------+
+                   auto writer = bitter::lsb0_writer<bitter::u8, 4, 4>();
+                                          ^     ^         ^      ^  ^
+                                          |     |         |      |  |
+    LSB 0 mode (fields right-to-left) <---+     |         |      |  |
+                                                |         |      |  |
+      We will write bits into a value <---------+         |      |  |
+                                                          |      |  |
+           The data type of the value <-------------------+      |  |
+                                                                 |  |
+         Field at index 0 with size 4 <--------------------------+  |
+                                                                    |
+         Field at index 1 with size 4 <-----------------------------+
 
 Since we use LSB 0 mode the field with index 0 will the the right half (
 bit 0-3) of the byte and the field with index 1 will be the left half (
@@ -63,10 +63,10 @@ LSB 0 mode
 
 ::
 
-    // Using an uint32_t data type divided into 4 bit fields each 8 bits in
+    // Using an u32 data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.
-    auto writer = bitter::lsb0_writer<uint32_t, 8, 8, 8, 8>();
+    auto writer = bitter::lsb0_writer<bitter::u32, 8, 8, 8, 8>();
 
     writer.field<0>(0x12); // Write bits 0-7
     writer.field<1>(0x34); // Write bits 8-15
@@ -83,10 +83,10 @@ MSB 0 mode
 
 ::
 
-    // Using an uint32_t data type divided into 4 bit fields each 8 bits in
+    // Using an u32 data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.
-    auto writer = bitter::msb0_writer<uint32_t, 8, 8, 8, 8>();
+    auto writer = bitter::msb0_writer<bitter::u32, 8, 8, 8, 8>();
 
     writer.field<0>(0x12); // Write bits 24-31
     writer.field<1>(0x34); // Write bits 16-23
@@ -108,7 +108,7 @@ LSB 0 mode
 
 ::
 
-    auto reader = bitter::lsb0_reader<uint32_t, 8, 8, 8, 8>(0x12345678);
+    auto reader = bitter::lsb0_reader<bitter::u32, 8, 8, 8, 8>(0x12345678);
 
     uint8_t value0 = reader.field<0>().read_as<uint8_t>(); // Read bits 0-7
     uint8_t value1 = reader.field<1>().read_as<uint8_t>(); // Read bits 8-15
@@ -128,7 +128,7 @@ MSB 0 mode
 
 ::
 
-    auto reader = bitter::msb0_reader<uint32_t, 8, 8, 8, 8>(0x12345678);
+    auto reader = bitter::msb0_reader<bitter::u32, 8, 8, 8, 8>(0x12345678);
 
     uint8_t value0 = reader.field<0>().read_as<uint8_t>(); // Read bits 0-7
     uint8_t value1 = reader.field<1>().read_as<uint8_t>(); // Read bits 8-15
@@ -227,7 +227,7 @@ inside the byte.
 
 If on the other hand we use the ``msb0_reader`` the example would be::
 
-    auto reader = bitter::msb0_reader<uint8_t, 1, 2, 3, 2>(0xdeadbeef);
+    auto reader = bitter::msb0_reader<bitter::u8, 1, 2, 3, 2>(0xdeadbeef);
 
 We would have the following layout of the four fields inside the byte::
 

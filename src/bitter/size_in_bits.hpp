@@ -16,6 +16,12 @@ constexpr uint32_t size_in_bits()
 }
 
 template<>
+constexpr uint32_t size_in_bits<bool>()
+{
+    return 1U;
+}
+
+template<>
 constexpr uint32_t size_in_bits<uint8_t>()
 {
     return sizeof(uint8_t) * 8U;

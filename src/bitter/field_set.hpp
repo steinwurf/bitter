@@ -24,14 +24,15 @@ template
     uint32_t Index,
     uint32_t... Sizes
 >
-DataType field_set(DataType bitfield, DataType value)
+typename DataType::type field_set(typename DataType::type bitfield,
+                                  typename DataType::type value)
 {
     // Verify that the bitfield can be represented with the available bits:
     assert((value <= field_max_value<DataType, Index, Sizes...>()) &&
            "value exceeds limit representable by available bits");
 
     uint32_t offset = BitNumbering::template field_offset<Index, Sizes...>();
-    DataType mask = field_mask<DataType, Index, Sizes...>();
+    typename DataType::type mask = field_mask<DataType, Index, Sizes...>();
 
     // Shift the value up to where it should go
     // and do the same with the mask

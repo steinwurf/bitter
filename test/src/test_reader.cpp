@@ -67,6 +67,31 @@ TEST(test_bit_reader, read_bit1)
     }
 }
 
+TEST(test_bit_reader, read_bit_u24)
+{
+
+    uint32_t input = 0xF0FF00U;
+
+    {
+        auto reader = bitter::lsb0_reader<bitter::u24, 16, 8>(input);
+
+        auto value = reader.field<0>().read_as<uint16_t>();
+        EXPECT_EQ(0xFF00U, value);
+        value = reader.field<1>().read_as<uint8_t>();
+        EXPECT_EQ(0xF0U, value);
+    }
+
+    {
+        auto reader = bitter::msb0_reader<bitter::u24, 16, 8>(input);
+
+        auto value = reader.field<0>().read_as<uint16_t>();
+        EXPECT_EQ(0xF0FFU, value);
+        value = reader.field<1>().read_as<uint8_t>();
+        EXPECT_EQ(0x00, value);
+    }
+}
+
+
 TEST(test_bit_reader, read_bit3)
 {
     uint64_t input = 0xA50FF0A50FF0FF00U;

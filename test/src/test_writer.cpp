@@ -62,7 +62,7 @@ TEST(test_bit_writer, write_bit_u24)
 
         writer.field<1>(0xFF);
 
-        auto value = writer.data();
+        value = writer.data();
         EXPECT_EQ(value, 0xFFFF00);
     }
     {
@@ -74,7 +74,7 @@ TEST(test_bit_writer, write_bit_u24)
 
         writer.field<1>(0xFF);
 
-        auto value = writer.data();
+        value = writer.data();
         EXPECT_EQ(value, 0xFF00FF);
     }
 }

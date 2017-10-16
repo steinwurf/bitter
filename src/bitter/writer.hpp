@@ -10,6 +10,7 @@
 #include "sum_sizes.hpp"
 #include "field_size_in_bits.hpp"
 #include "field_set.hpp"
+#include "types.hpp"
 
 #include <cstdint>
 #include <cassert>
@@ -41,7 +42,7 @@ public:
     /// @prief based on the provided index, the value is written
     /// @param value is the data, wished to written to the field at Index
     template<uint32_t Index>
-    void field(DataType value)
+    void field(typename DataType::type value)
     {
         static_assert(field_size_in_bits<Index, Sizes...>() <=
                       size_in_bits<DataType>(), "The field size in bits cannot "
@@ -52,7 +53,7 @@ public:
     }
 
     /// @return The value create by the writer containing the bit fields
-    DataType data() const
+    typename DataType::type data() const
     {
         return m_data;
     }
@@ -60,6 +61,6 @@ public:
 private:
 
     /// The value built by the writer contining the different fields
-    DataType m_data = 0;
+    typename DataType::type m_data = 0;
 };
 }

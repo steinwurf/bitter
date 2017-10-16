@@ -6,6 +6,9 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
+* Major: Added support for additional byte sized fields. Instead of
+  directly using the native types. bitter now uses the types defined in
+  ``src/bitter/types.hpp`` such as ``u8``, ``u16``, ``u24``, ``u32``, etc.
 * Major: Changed ``bitter::reader`` and ``bitter::writer`` to support
   LSB 0 and MSB 0 bit numbering (see README.rst for introduction). The old
   ``bitter::reader`` and ``bitter::writer`` are functional equivalent to

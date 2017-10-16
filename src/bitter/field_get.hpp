@@ -21,10 +21,10 @@ template
     uint32_t Index,
     uint32_t... Sizes
 >
-DataType field_get(DataType value)
+typename DataType::type field_get(typename DataType::type value)
 {
     uint32_t offset = BitNumbering::template field_offset<Index, Sizes...>();
-    DataType mask = field_mask<DataType, Index, Sizes...>();
+    typename DataType::type mask = field_mask<DataType, Index, Sizes...>();
 
     return (value >> offset) & mask;
 }

@@ -11,6 +11,7 @@
 #include "lsb0.hpp"
 #include "msb0.hpp"
 #include "bit_field.hpp"
+#include "types.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -29,11 +30,11 @@ public:
     /// Small alias for the bit_field
     template<uint32_t Index>
     using bit_field_type =
-        bit_field<DataType, field_size_in_bits<Index, Sizes...>()>;
+        bit_field<typename DataType::type, field_size_in_bits<Index, Sizes...>()>;
 
     /// @brief Reader constructor
     /// DataType must be either uint8_t, uint16_t, uint32_t, or uint64_t
-    reader(DataType value) :
+    reader(typename DataType::type value) :
         m_value(value)
     {
         static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
@@ -51,7 +52,7 @@ private:
     /// @breif Function used as a wraper, used for retriving a field
     ///        based on the Index provide
     template<uint32_t Index>
-    DataType read() const
+    typename DataType::type read() const
     {
         return field_get<DataType, BitNumbering, Index, Sizes...>(m_value);
     }
@@ -59,6 +60,6 @@ private:
 private:
 
     /// Store the value containing the data used by the reader
-    DataType m_value;
+    typename DataType::type m_value;
 };
 }

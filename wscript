@@ -4,6 +4,12 @@
 APPNAME = 'bitter'
 VERSION = '2.0.1'
 
+def options(opt):
+
+    opt.add_option(
+        '--test_filter', default=None, action='store',
+        help='Compiles all tests that include the substring specified.'
+             'Wildcards allowed. (Used with --run_tests)')
 
 def build(bld):
 
@@ -21,5 +27,6 @@ def build(bld):
         # Only build tests when executed from the top-level wscript,
         # i.e. not when included as a dependency
         bld.recurse('test')
+
         bld.recurse('examples/simple_writer')
         bld.recurse('examples/simple_reader')

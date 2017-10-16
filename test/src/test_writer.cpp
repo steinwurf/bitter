@@ -14,7 +14,7 @@
 TEST(test_bit_writer, write_bit)
 {
     {
-        auto writer = bitter::lsb0_writer<uint8_t, 1, 7>();
+        auto writer = bitter::lsb0_writer<bitter::u8, 1, 7>();
         writer.field<0>(true);
         uint8_t input = 0b1000000;
         writer.field<1>(input);
@@ -22,7 +22,7 @@ TEST(test_bit_writer, write_bit)
         EXPECT_EQ(value, 0b10000001U);
     }
     {
-        auto writer = bitter::msb0_writer<uint8_t, 1, 7>();
+        auto writer = bitter::msb0_writer<bitter::u8, 1, 7>();
         writer.field<0>(true);
         uint8_t input = 0b1000000;
         writer.field<1>(input);
@@ -34,7 +34,7 @@ TEST(test_bit_writer, write_bit)
 TEST(test_bit_writer, write_bit_1)
 {
     {
-        auto writer = bitter::lsb0_writer<uint16_t, 16>();
+        auto writer = bitter::lsb0_writer<bitter::u16, 16>();
         uint16_t input = 2050U;
         writer.field<0>(input);
 
@@ -42,7 +42,7 @@ TEST(test_bit_writer, write_bit_1)
         EXPECT_EQ(value, 2050U);
     }
     {
-        auto writer = bitter::msb0_writer<uint16_t, 16>();
+        auto writer = bitter::msb0_writer<bitter::u16, 16>();
         uint16_t input = 2050U;
         writer.field<0>(input);
 
@@ -51,10 +51,38 @@ TEST(test_bit_writer, write_bit_1)
     }
 }
 
+TEST(test_bit_writer, write_bit_u24)
+{
+    {
+        auto writer = bitter::lsb0_writer<bitter::u24, 16, 8>();
+        writer.field<0>(0xFF00);
+
+        auto value = writer.data();
+        EXPECT_EQ(value, 0xFF00U);
+
+        writer.field<1>(0xFF);
+
+        value = writer.data();
+        EXPECT_EQ(value, 0xFFFF00U);
+    }
+    {
+        auto writer = bitter::msb0_writer<bitter::u24, 16, 8>();
+        writer.field<0>(0xFF00);
+
+        auto value = writer.data();
+        EXPECT_EQ(value, 0xFF0000U);
+
+        writer.field<1>(0xFF);
+
+        value = writer.data();
+        EXPECT_EQ(value, 0xFF00FFU);
+    }
+}
+
 TEST(test_bit_writer, write_bit_2)
 {
     {
-        auto writer = bitter::lsb0_writer<uint32_t, 32>();
+        auto writer = bitter::lsb0_writer<bitter::u32, 32>();
 
         uint32_t input = 323794U;
         writer.field<0>(input);
@@ -63,7 +91,7 @@ TEST(test_bit_writer, write_bit_2)
         EXPECT_EQ(value, 323794U);
     }
     {
-        auto writer = bitter::msb0_writer<uint32_t, 32>();
+        auto writer = bitter::msb0_writer<bitter::u32, 32>();
 
         uint32_t input = 323794U;
         writer.field<0>(input);
@@ -76,7 +104,7 @@ TEST(test_bit_writer, write_bit_2)
 TEST(test_bit_writer, write_bit_3)
 {
     {
-        auto writer = bitter::lsb0_writer<uint64_t, 32, 32>();
+        auto writer = bitter::lsb0_writer<bitter::u64, 32, 32>();
 
         uint32_t input = 0x22222222;
         writer.field<0>(input);
@@ -86,7 +114,7 @@ TEST(test_bit_writer, write_bit_3)
         EXPECT_EQ(value, 0x4444444422222222U);
     }
     {
-        auto writer = bitter::msb0_writer<uint64_t, 32, 32>();
+        auto writer = bitter::msb0_writer<bitter::u64, 32, 32>();
 
         uint32_t input = 0x22222222;
         writer.field<0>(input);
@@ -101,7 +129,7 @@ TEST(test_bit_writer, write_bit_3)
 TEST(test_bit_writer, write_bit_4)
 {
     {
-        auto writer = bitter::lsb0_writer<uint32_t, 16, 16>();
+        auto writer = bitter::lsb0_writer<bitter::u32, 16, 16>();
         uint16_t input = 0x1234;
         writer.field<0>(input);
 
@@ -112,7 +140,7 @@ TEST(test_bit_writer, write_bit_4)
         EXPECT_EQ(value, 0x43211234U);
     }
     {
-        auto writer = bitter::msb0_writer<uint32_t, 16, 16>();
+        auto writer = bitter::msb0_writer<bitter::u32, 16, 16>();
         uint16_t input = 0x1234;
         writer.field<0>(input);
 
@@ -127,7 +155,7 @@ TEST(test_bit_writer, write_bit_4)
 TEST(test_bit_writer, write_bit_5)
 {
     {
-        auto writer = bitter::lsb0_writer<uint32_t, 8, 8, 8, 8>();
+        auto writer = bitter::lsb0_writer<bitter::u32, 8, 8, 8, 8>();
         uint8_t input = 0x11;
         writer.field<0>(input);
 
@@ -144,7 +172,7 @@ TEST(test_bit_writer, write_bit_5)
         EXPECT_EQ(value, 0x44332211U);
     }
     {
-        auto writer = bitter::msb0_writer<uint32_t, 8, 8, 8, 8>();
+        auto writer = bitter::msb0_writer<bitter::u32, 8, 8, 8, 8>();
         uint8_t input = 0x11;
         writer.field<0>(input);
 

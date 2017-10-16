@@ -9,7 +9,7 @@
 
 int main()
 {
-    auto writer = bitter::lsb0_writer<uint32_t, 1, 7, 8, 16>();
+    auto writer = bitter::lsb0_writer<bitter::u32, 1, 7, 8, 16>();
 
     bool first = true;
     writer.field<0>(first);

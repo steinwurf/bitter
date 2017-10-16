@@ -28,6 +28,5 @@ def build(bld):
         # i.e. not when included as a dependency
         bld.recurse('test')
 
-        # @todo reenable
-        #bld.recurse('examples/simple_writer')
-        #bld.recurse('examples/simple_reader')
+        bld.recurse('examples/simple_writer')
+        bld.recurse('examples/simple_reader')

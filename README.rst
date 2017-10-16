@@ -240,6 +240,20 @@ We would have the following layout of the four fields inside the byte::
       +-----------+ bit
 
 
+Byte endianness
+---------------
+
+While bitter allows us to conveniently pack bit-fields into a value. It
+does not deal with writing those values to memory according to a specific
+byte order (endianess):
+
+https://en.wikipedia.org/wiki/Endianness
+
+To do that you can use our ``endian`` library available here:
+
+https://github.com/steinwurf/endian
+
+
 License
 =======
 

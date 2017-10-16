@@ -10,7 +10,7 @@
 
 namespace bitter
 {
-/// @brief Function computing the max value fo a field.
+/// @brief Function computing the max value for a field.
 template<class DataType, uint32_t Index, uint32_t... Sizes>
 constexpr typename DataType::type field_max_value()
 {

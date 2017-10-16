@@ -8,8 +8,8 @@
 
 namespace bitter
 {
-/// @breif Reader class used for reading the content
-///        of the value parsed to the reader at initialisation
+/// @brief Reader class used for reading the content
+///        of the value parsed to the reader at initialization
 template<typename DataType, uint32_t... Sizes>
 using msb0_reader = reader<DataType, msb0, Sizes...>;
 }

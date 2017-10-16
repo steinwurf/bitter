@@ -12,8 +12,8 @@
 
 namespace bitter
 {
-/// @brief Function for creating a maske for variable
-///        with the sizeof DataTypes
+/// @brief Function for creating a mask for a variable
+///        with the size of DataType
 template<class DataType, uint32_t Index, uint32_t... Sizes>
 typename DataType::type field_mask()
 {

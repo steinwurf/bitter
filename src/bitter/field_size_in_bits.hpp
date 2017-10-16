@@ -8,12 +8,12 @@
 
 namespace bitter
 {
-/// @breif Function for getting the size of field in bits,
+/// @brief Function for getting the size of field in bits,
 ///        based on index given.
 ///
 /// The algorithm takes an index and a variable list of sizes. To find the size
 /// at e.g. index = 2 we loop over the list dropping the head of the list each
-/// time index isn't zero. Once index == 0 we have foudn the size we are looking
+/// time index isn't zero. Once index == 0 we have found the size we are looking
 /// for.
 template<uint32_t Index, uint32_t Size0>
 constexpr uint32_t field_size_in_bits()

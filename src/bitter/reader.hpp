@@ -20,8 +20,8 @@
 
 namespace bitter
 {
-/// @breif Reader class used for reading the content
-///        of the value parsed to the reader at initialisation
+/// @brief Reader class used for reading the content
+///        of the value parsed to the reader at initialization
 template<typename DataType, typename BitNumbering, uint32_t... Sizes>
 class reader
 {
@@ -38,7 +38,7 @@ public:
         m_value(value)
     {
         static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
-                      "size of the Datatype is not equal to the sum of sizes");
+                      "size of the DataType is not equal to the sum of sizes");
     }
 
     /// @brief Based on the provided index the function returns the field
@@ -49,7 +49,7 @@ public:
     }
 
 private:
-    /// @breif Function used as a wraper, used for retriving a field
+    /// @brief Function used as a wrapper, used for retrieving a field
     ///        based on the Index provide
     template<uint32_t Index>
     typename DataType::type read() const

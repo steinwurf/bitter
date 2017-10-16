@@ -9,8 +9,6 @@
 
 #include <gtest/gtest.h>
 
-
-
 TEST(test_msb_field_offset, field_offset)
 {
     EXPECT_EQ(15U, (bitter::msb0::field_offset<0, 1, 4, 6, 5>()));

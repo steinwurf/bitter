@@ -12,8 +12,6 @@
 
 #include <cassert>
 
-// @todo enable
-//
 TEST(test_readme, writing_a_lsb0_bit_field)
 {
     // Using an u32 data type divided into 4 bit fields each 8 bits in

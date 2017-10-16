@@ -9,7 +9,7 @@
 namespace bitter
 {
 /// @brief Template based functions for getting the total size of the
-///        variadic tempalte Sizes.
+///        variadic template Sizes.
 template<uint32_t Size0>
 constexpr uint32_t sum_sizes()
 {

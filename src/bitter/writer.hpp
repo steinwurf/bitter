@@ -39,7 +39,7 @@ public:
                       "field can be added.");
     }
 
-    /// @prief based on the provided index, the value is written
+    /// @brief based on the provided index, the value is written
     /// @param value is the data, wished to written to the field at Index
     template<uint32_t Index>
     void field(typename DataType::type value)
@@ -60,7 +60,7 @@ public:
 
 private:
 
-    /// The value built by the writer contining the different fields
+    /// The value built by the writer containing the different fields
     typename DataType::type m_data = 0;
 };
 }

@@ -13,7 +13,7 @@ namespace bitter
 {
 /// @brief function for accessing a field based on
 ///        the provided index
-/// @param value is the data give to the reader at intialisation
+/// @param value is the data give to the reader at initialization
 template
 <
     typename DataType,

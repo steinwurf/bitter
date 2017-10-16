@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 APPNAME = 'bitter'
-VERSION = '2.0.1'
+VERSION = '3.0.0'
 
 def options(opt):
 

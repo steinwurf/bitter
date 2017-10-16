@@ -6,6 +6,10 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+3.0.0
+-----
 * Major: Added support for additional byte sized fields. Instead of
   directly using the native types. bitter now uses the types defined in
   ``src/bitter/types.hpp`` such as ``u8``, ``u16``, ``u24``, ``u32``, etc.

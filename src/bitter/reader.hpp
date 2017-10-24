@@ -45,14 +45,14 @@ public:
     template<uint32_t Index>
     bit_field_type<Index> field() const
     {
-        return bit_field_type<Index>(read<Index>());
+        return bit_field_type<Index>(get<Index>());
     }
 
 private:
     /// @brief Function used as a wrapper, used for retrieving a field
     ///        based on the Index provide
     template<uint32_t Index>
-    typename DataType::type read() const
+    typename DataType::type get() const
     {
         return field_get<DataType, BitNumbering, Index, Sizes...>(m_value);
     }

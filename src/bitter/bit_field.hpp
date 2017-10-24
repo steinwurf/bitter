@@ -29,7 +29,7 @@ public:
 
     /// @return The bit field value cast to the type of ReturnType
     template<typename ReturnType>
-    ReturnType read_as() const
+    ReturnType as() const
     {
         // Check if the size provide can fit into ReturnType
         static_assert(Size <= size_in_bits<ReturnType>(), "There are not "

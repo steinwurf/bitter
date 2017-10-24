@@ -6,7 +6,7 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Renamed ``read_as`` to ``as``.
 
 3.0.0
 -----

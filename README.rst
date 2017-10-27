@@ -15,15 +15,19 @@ Usage
 
 bitter provides 4 different readers/writers::
 
-    bitter::lsb0_writer<DataType, Fields...>();
-    bitter::lsb0_reader<DataType, Fields...>();
-    bitter::msb0_writer<DataType, Fields...>();
-    bitter::msb0_reader<DataType, Fields...>();
+    bitter::lsb0_writer<Type, Fields...>();
+    bitter::lsb0_reader<Type, Fields...>();
+    bitter::msb0_writer<Type, Fields...>();
+    bitter::msb0_reader<Type, Fields...>();
 
-Where ``DataType`` is a bitter type e.g. ``u8``, ``u16``,
-``u24`` etc. (u8 is short for unsigned 8 bit). ``Fields...`` is a variadic
+Where ``Type`` is a unsigned integer type e.g. ``uint8_t``, ``uint16_t``,
+``uint32_t`` etc. (``uint8_t`` is short for unsigned 8 bit, these types
+are defined in the ``<ctdint>`` header). ``Fields...`` is a variadic
 template argument specifying the different bit fields. The curiously
-looking ``lsb0`` and ``msb0`` specifies the "bit numbering" used.
+looking ``lsb0`` and ``msb0`` specifies the "bit numbering" used. In some
+rare cases you may want to read e.g. 24 bits or 40 bits for which no
+standard integer types are defined, however also for those you can use
+bitter see
 
 To use bitter for reading/writing bit fields you need to first decide on
 what bit numbering scheme to use - if you never heard about this concept
@@ -227,7 +231,7 @@ inside the byte.
 
 If on the other hand we use the ``msb0_reader`` the example would be::
 
-    auto reader = bitter::msb0_reader<bitter::u8, 1, 2, 3, 2>(0xdeadbeef);
+    auto reader = bitter::msb0_reader<uint8_t, 1, 2, 3, 2>(0xdeadbeef);
 
 We would have the following layout of the four fields inside the byte::
 
@@ -238,6 +242,15 @@ We would have the following layout of the four fields inside the byte::
       ^
       |             most significant
       +-----------+ bit
+
+
+Generic sized bit fields
+------------------------
+
+In some cases you may want to read/write an odd number of bytes e.g. 5
+corresponding to 40 bits from//to a value. In that case you can use
+bitter's generic data types (defined in ``src/bitter/types.hpp``) such
+as ``u8``, ``u16``, ``u24``, ``u32``, ``u40`` etc.
 
 
 Byte endianness

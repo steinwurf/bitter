@@ -12,6 +12,7 @@
 #include "msb0.hpp"
 #include "bit_field.hpp"
 #include "types.hpp"
+#include "to_type.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -22,22 +23,25 @@ namespace bitter
 {
 /// @brief Reader class used for reading the content
 ///        of the value parsed to the reader at initialization
-template<typename DataType, typename BitNumbering, uint32_t... Sizes>
+template<typename Type, typename BitNumbering, uint32_t... Sizes>
 class reader
 {
 public:
 
+    // Get the bitter type
+    using bitter_type = to_type<Type>;
+
     /// Small alias for the bit_field
     template<uint32_t Index>
     using bit_field_type =
-        bit_field<typename DataType::type, field_size_in_bits<Index, Sizes...>()>;
+        bit_field<typename bitter_type::type, field_size_in_bits<Index, Sizes...>()>;
 
     /// @brief Reader constructor
     /// DataType must be either u8, u16, u24, u32, u40, u48, u56, or u64
-    reader(typename DataType::type value) :
+    reader(typename bitter_type::type value) :
         m_value(value)
     {
-        static_assert(size_in_bits<DataType>() == sum_sizes<Sizes...>(),
+        static_assert(size_in_bits<bitter_type>() == sum_sizes<Sizes...>(),
                       "size of the DataType is not equal to the sum of sizes");
     }
 
@@ -52,14 +56,14 @@ private:
     /// @brief Function used as a wrapper, used for retrieving a field
     ///        based on the Index provide
     template<uint32_t Index>
-    typename DataType::type get() const
+    typename bitter_type::type get() const
     {
-        return field_get<DataType, BitNumbering, Index, Sizes...>(m_value);
+        return field_get<bitter_type, BitNumbering, Index, Sizes...>(m_value);
     }
 
 private:
 
     /// Store the value containing the data used by the reader
-    typename DataType::type m_value;
+    typename bitter_type::type m_value;
 };
 }

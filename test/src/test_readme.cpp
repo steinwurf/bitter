@@ -71,3 +71,16 @@ TEST(test_readme, reading_a_msb0_bit_field)
     assert(value2 == 0x56);
     assert(value3 == 0x78);
 }
+
+TEST(test_readme, reading_a_generic_sized_bit_field)
+{
+    auto reader = bitter::msb0_reader<bitter::u24, 4, 12, 8>(0x123456U);
+
+    uint8_t value0 = reader.field<0>().as<uint8_t>(); // Read bits 0-3
+    uint8_t value1 = reader.field<1>().as<uint16_t>(); // Read bits 4-15
+    uint8_t value2 = reader.field<2>().as<uint8_t>(); // Read bits 16-23
+
+    assert(value0 == 0x1);
+    assert(value1 == 0x234);
+    assert(value2 == 0x56);
+}

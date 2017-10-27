@@ -27,7 +27,7 @@ template argument specifying the different bit fields. The curiously
 looking ``lsb0`` and ``msb0`` specifies the "bit numbering" used. In some
 rare cases you may want to read e.g. 24 bits or 40 bits for which no
 standard integer types are defined, however also for those you can use
-bitter see
+bitter see Section `Generic sized bit fields`_ further down.
 
 To use bitter for reading/writing bit fields you need to first decide on
 what bit numbering scheme to use - if you never heard about this concept
@@ -67,10 +67,10 @@ LSB 0 mode
 
 ::
 
-    // Using an u32 data type divided into 4 bit fields each 8 bits in
+    // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.
-    auto writer = bitter::lsb0_writer<bitter::u32, 8, 8, 8, 8>();
+    auto writer = bitter::lsb0_writer<uint32_t, 8, 8, 8, 8>();
 
     writer.field<0>(0x12); // Write bits 0-7
     writer.field<1>(0x34); // Write bits 8-15
@@ -87,10 +87,10 @@ MSB 0 mode
 
 ::
 
-    // Using an u32 data type divided into 4 bit fields each 8 bits in
+    // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.
-    auto writer = bitter::msb0_writer<bitter::u32, 8, 8, 8, 8>();
+    auto writer = bitter::msb0_writer<uint32_t, 8, 8, 8, 8>();
 
     writer.field<0>(0x12); // Write bits 24-31
     writer.field<1>(0x34); // Write bits 16-23
@@ -112,7 +112,7 @@ LSB 0 mode
 
 ::
 
-    auto reader = bitter::lsb0_reader<bitter::u32, 8, 8, 8, 8>(0x12345678);
+    auto reader = bitter::lsb0_reader<uint32_t, 8, 8, 8, 8>(0x12345678);
 
     uint8_t value0 = reader.field<0>().as<uint8_t>(); // Read bits 0-7
     uint8_t value1 = reader.field<1>().as<uint8_t>(); // Read bits 8-15
@@ -132,7 +132,7 @@ MSB 0 mode
 
 ::
 
-    auto reader = bitter::msb0_reader<bitter::u32, 8, 8, 8, 8>(0x12345678);
+    auto reader = bitter::msb0_reader<uint32_t, 8, 8, 8, 8>(0x12345678);
 
     uint8_t value0 = reader.field<0>().as<uint8_t>(); // Read bits 0-7
     uint8_t value1 = reader.field<1>().as<uint8_t>(); // Read bits 8-15
@@ -251,6 +251,18 @@ In some cases you may want to read/write an odd number of bytes e.g. 5
 corresponding to 40 bits from//to a value. In that case you can use
 bitter's generic data types (defined in ``src/bitter/types.hpp``) such
 as ``u8``, ``u16``, ``u24``, ``u32``, ``u40`` etc.
+
+Small example::
+
+    auto reader = bitter::msb0_reader<bitter::u24, 4, 12, 8>(0x123456U);
+
+    uint8_t value0 = reader.field<0>().as<uint8_t>(); // Read bits 0-3
+    uint16_t value1 = reader.field<1>().as<uint16_t>(); // Read bits 4-15
+    uint8_t value2 = reader.field<2>().as<uint8_t>(); // Read bits 16-23
+
+    assert(value0 == 0x1);
+    assert(value1 == 0x234);
+    assert(value2 == 0x56);
 
 
 Byte endianness

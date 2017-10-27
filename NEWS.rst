@@ -6,6 +6,10 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+4.1.0
+-----
 * Minor: Added support for native types in the bitter readers and
   writers. Such that using ``uint8_t``, ``uint16_t`` etc. now is the
   default. Using the ``u8``, ``u16``, ``u24`` etc. types is still

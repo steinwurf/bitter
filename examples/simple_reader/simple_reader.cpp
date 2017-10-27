@@ -10,7 +10,6 @@
 
 int main()
 {
-
     uint32_t value = 0x8028041U;
     auto reader = bitter::lsb0_reader<bitter::u32, 1, 7, 8, 16>(value);
 

@@ -33,7 +33,7 @@ public:
         bit_field<typename DataType::type, field_size_in_bits<Index, Sizes...>()>;
 
     /// @brief Reader constructor
-    /// DataType must be either uint8_t, uint16_t, uint32_t, or uint64_t
+    /// DataType must be either u8, u16, u24, u32, u40, u48, u56, or u64
     reader(typename DataType::type value) :
         m_value(value)
     {

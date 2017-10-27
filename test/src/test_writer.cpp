@@ -11,6 +11,38 @@
 #include <iostream>
 #include <gtest/gtest.h>
 
+TEST(test_bit_writer, write_integer)
+{
+    {
+        auto writer = bitter::lsb0_writer<uint8_t, 4, 4>();
+        writer.field<0>(0x0U);
+        writer.field<1>(0xFU);
+        auto value = writer.data();
+        EXPECT_EQ(value, 0xF0U);
+    }
+    {
+        auto writer = bitter::lsb0_writer<uint16_t, 8, 8>();
+        writer.field<0>(0xF0U);
+        writer.field<1>(0x0FU);
+        auto value = writer.data();
+        EXPECT_EQ(value, 0x0FF0U);
+    }
+    {
+        auto writer = bitter::lsb0_writer<uint32_t, 16, 16>();
+        writer.field<0>(0xF0F0U);
+        writer.field<1>(0x0F0FU);
+        auto value = writer.data();
+        EXPECT_EQ(value, 0x0F0FF0F0U);
+    }
+    {
+        auto writer = bitter::lsb0_writer<uint64_t, 32, 32>();
+        writer.field<0>(0xF0F0F0F0U);
+        writer.field<1>(0x0F0F0F0FU);
+        auto value = writer.data();
+        EXPECT_EQ(value, 0x0F0F0F0FF0F0F0F0U);
+    }
+}
+
 TEST(test_bit_writer, write_bit)
 {
     {

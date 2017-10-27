@@ -11,6 +11,46 @@
 
 #include <gtest/gtest.h>
 
+TEST(test_bit_reader, read_integer)
+{
+    {
+        uint8_t input = 0x0FU;
+        auto reader = bitter::lsb0_reader<uint8_t, 4, 4>(input);
+
+        auto value = reader.field<0>().as<uint8_t>();
+        EXPECT_EQ(0xFU, value);
+        value = reader.field<1>().as<uint8_t>();
+        EXPECT_EQ(0x0U, value);
+    }
+    {
+        uint16_t input = 0x0FF0U;
+        auto reader = bitter::lsb0_reader<uint16_t, 8, 8>(input);
+
+        auto value = reader.field<0>().as<uint8_t>();
+        EXPECT_EQ(0xF0U, value);
+        value = reader.field<1>().as<uint8_t>();
+        EXPECT_EQ(0x0FU, value);
+    }
+    {
+        uint32_t input = 0x0FF0FF00U;
+        auto reader = bitter::lsb0_reader<uint32_t, 16, 16>(input);
+
+        auto value = reader.field<0>().as<uint16_t>();
+        EXPECT_EQ(0xFF00U, value);
+        value = reader.field<1>().as<uint16_t>();
+        EXPECT_EQ(0x0FF0U, value);
+    }
+    {
+        uint64_t input = 0xFFF0FF000FF0FF00U;
+        auto reader = bitter::lsb0_reader<uint64_t, 32, 32>(input);
+
+        auto value = reader.field<0>().as<uint32_t>();
+        EXPECT_EQ(0x0FF0FF00U, value);
+        value = reader.field<1>().as<uint32_t>();
+        EXPECT_EQ(0xFFF0FF00U, value);
+    }
+}
+
 TEST(test_bit_reader, read_bit)
 {
     uint32_t input = 0x0FF0FF00U;

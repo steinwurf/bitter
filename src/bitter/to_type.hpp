@@ -18,9 +18,9 @@ template<class BitterType>
 struct to_type
 {
     static_assert(BitterType::size > 0, "DataType must have size.");
-    static_assert(std::is_unsigned<typename BitterType::type>::value ,
-        "DataType must have a nested type which is unsigned. "
-        "See types.hpp");
+    static_assert(std::is_unsigned<typename BitterType::type>::value,
+                  "DataType must have a nested type which is unsigned. "
+                  "See types.hpp");
 
     using type = BitterType;
 };

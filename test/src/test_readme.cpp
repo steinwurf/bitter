@@ -14,10 +14,10 @@
 
 TEST(test_readme, writing_a_lsb0_bit_field)
 {
-    // Using an u32 data type divided into 4 bit fields each 8 bits in
+    // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.
-    auto writer = bitter::lsb0_writer<bitter::u32, 8, 8, 8, 8>();
+    auto writer = bitter::lsb0_writer<uint32_t, 8, 8, 8, 8>();
 
     writer.field<0>(0x12); // Write bits 0-7
     writer.field<1>(0x34); // Write bits 8-15
@@ -29,10 +29,10 @@ TEST(test_readme, writing_a_lsb0_bit_field)
 
 TEST(test_readme, writing_a_msb0_bit_field)
 {
-    // Using an u32 data type divided into 4 bit fields each 8 bits in
+    // Using an uint32_t data type divided into 4 bit fields each 8 bits in
     // size. The sum of the bit fields must match the number of bits in the
     // data type.
-    auto writer = bitter::msb0_writer<bitter::u32, 8, 8, 8, 8>();
+    auto writer = bitter::msb0_writer<uint32_t, 8, 8, 8, 8>();
 
     writer.field<0>(0x12); // Write bits 24-31
     writer.field<1>(0x34); // Write bits 16-23
@@ -44,7 +44,7 @@ TEST(test_readme, writing_a_msb0_bit_field)
 
 TEST(test_readme, reading_a_lsb0_bit_field)
 {
-    auto reader = bitter::lsb0_reader<bitter::u32, 8, 8, 8, 8>(0x12345678);
+    auto reader = bitter::lsb0_reader<uint32_t, 8, 8, 8, 8>(0x12345678);
 
     uint8_t value0 = reader.field<0>().as<uint8_t>(); // Read bits 0-7
     uint8_t value1 = reader.field<1>().as<uint8_t>(); // Read bits 8-15
@@ -59,7 +59,7 @@ TEST(test_readme, reading_a_lsb0_bit_field)
 
 TEST(test_readme, reading_a_msb0_bit_field)
 {
-    auto reader = bitter::msb0_reader<bitter::u32, 8, 8, 8, 8>(0x12345678);
+    auto reader = bitter::msb0_reader<uint32_t, 8, 8, 8, 8>(0x12345678);
 
     uint8_t value0 = reader.field<0>().as<uint8_t>(); // Read bits 0-7
     uint8_t value1 = reader.field<1>().as<uint8_t>(); // Read bits 8-15
@@ -70,4 +70,17 @@ TEST(test_readme, reading_a_msb0_bit_field)
     assert(value1 == 0x34);
     assert(value2 == 0x56);
     assert(value3 == 0x78);
+}
+
+TEST(test_readme, reading_a_generic_sized_bit_field)
+{
+    auto reader = bitter::msb0_reader<bitter::u24, 4, 12, 8>(0x123456U);
+
+    uint8_t value0 = reader.field<0>().as<uint8_t>(); // Read bits 0-3
+    uint16_t value1 = reader.field<1>().as<uint16_t>(); // Read bits 4-15
+    uint8_t value2 = reader.field<2>().as<uint8_t>(); // Read bits 16-23
+
+    assert(value0 == 0x1);
+    assert(value1 == 0x234);
+    assert(value2 == 0x56);
 }

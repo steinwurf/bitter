@@ -3,7 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/field_mask.hpp>
+#include <bitter/detail/field_mask.hpp>
 
 #include <bitter/types.hpp>
 

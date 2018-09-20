@@ -3,7 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/size_in_bits.hpp>
+#include <bitter/detail/size_in_bits.hpp>
 
 #include <bitter/types.hpp>
 

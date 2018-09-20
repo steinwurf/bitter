@@ -4,14 +4,15 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
-#include "size_in_bits.hpp"
+#include "detail/size_in_bits.hpp"
+#include "detail/sum_sizes.hpp"
+#include "detail/field_size_in_bits.hpp"
+#include "detail/field_set.hpp"
+#include "detail/to_type.hpp"
+
 #include "lsb0.hpp"
 #include "msb0.hpp"
-#include "sum_sizes.hpp"
-#include "field_size_in_bits.hpp"
-#include "field_set.hpp"
 #include "types.hpp"
-#include "to_type.hpp"
 
 #include <cstdint>
 #include <cassert>

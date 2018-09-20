@@ -8,6 +8,10 @@ Latest
 ------
 * tbd
 
+5.0.0
+-----
+* Major: Moved files in detail namespace into the detail folder.
+
 4.1.0
 -----
 * Minor: Added support for native types in the bitter readers and

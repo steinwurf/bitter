@@ -3,7 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/field_size_in_bits.hpp>
+#include <bitter/detail/field_size_in_bits.hpp>
 
 #include <cstdint>
 

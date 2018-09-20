@@ -3,7 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/sum_sizes.hpp>
+#include <bitter/detail/sum_sizes.hpp>
 
 #include <cstdint>
 

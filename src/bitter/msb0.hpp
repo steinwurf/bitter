@@ -6,7 +6,7 @@
 
 #include <cstdint>
 
-#include "sum_sizes.hpp"
+#include "detail/sum_sizes.hpp"
 
 namespace bitter
 {

@@ -3,7 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/to_type.hpp>
+#include <bitter/detail/to_type.hpp>
 
 #include <cstdint>
 

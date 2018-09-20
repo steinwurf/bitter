@@ -3,7 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/field_get.hpp>
+#include <bitter/detail/field_get.hpp>
 
 #include <bitter/types.hpp>
 #include <bitter/msb0.hpp>

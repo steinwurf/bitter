@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <type_traits>
 
-#include "types.hpp"
+#include "../types.hpp"
 
 namespace bitter
 {

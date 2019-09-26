@@ -1,6 +1,9 @@
 Bitter
 ======
 
+.. image:: https://travis-ci.org/steinwurf/bitter.svg?branch=master
+    :target: https://travis-ci.org/steinwurf/bitter
+    
 Is a lightweight header only C++ API, for reading and writing single bit
 fields.
 

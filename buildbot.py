@@ -11,10 +11,10 @@ from datetime import datetime
 project_name = 'bitter'
 
 
-def run_command(args):
+def run_command(args, env_ext={}):
     print("Running: {}".format(args))
     sys.stdout.flush()
-    subprocess.check_call(args)
+    subprocess.check_call(args, env=dict(os.environ.copy(), **env_ext))
 
 
 def get_tool_options(properties):

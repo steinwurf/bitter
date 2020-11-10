@@ -6,6 +6,7 @@
 
 #include "field_mask.hpp"
 
+#include <cstddef>
 #include <cstdint>
 #include <cassert>
 
@@ -18,12 +19,12 @@ template
 <
     typename DataType,
     typename BitNumbering,
-    uint32_t Index,
-    uint32_t... Sizes
+    std::size_t Index,
+    std::size_t... Sizes
 >
 typename DataType::type field_get(typename DataType::type value)
 {
-    uint32_t offset = BitNumbering::template field_offset<Index, Sizes...>();
+    std::size_t offset = BitNumbering::template field_offset<Index, Sizes...>();
     typename DataType::type mask = field_mask<DataType, Index, Sizes...>();
 
     return (value >> offset) & mask;

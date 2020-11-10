@@ -6,6 +6,7 @@
 
 #include "field_mask.hpp"
 
+#include <cstddef>
 #include <cstdint>
 
 namespace bitter

@@ -15,6 +15,7 @@
 #include "msb0.hpp"
 #include "types.hpp"
 
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 #include <cassert>

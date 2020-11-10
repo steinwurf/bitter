@@ -6,6 +6,7 @@
 
 #include "size_in_bits.hpp"
 
+#include <cstddef>
 #include <type_traits>
 #include <cstdint>
 #include <cassert>

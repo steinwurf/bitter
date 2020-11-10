@@ -7,6 +7,7 @@
 #include "field_size_in_bits.hpp"
 #include "size_in_bits.hpp"
 
+#include <cstddef>
 #include <cstdint>
 #include <cassert>
 

@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
+#include <cstddef>
 #include <cassert>
 #include <cstdint>
 #include <type_traits>

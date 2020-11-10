@@ -14,7 +14,7 @@ namespace bitter
 {
 /// @brief Small class used for wrapping a single bit field and allow it to be
 /// read in a convenient way.
-template<typename DataType, uint32_t Size>
+template<typename DataType, std::size_t Size>
 class bit_field
 {
 public:

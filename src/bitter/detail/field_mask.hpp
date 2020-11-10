@@ -14,11 +14,11 @@ namespace bitter
 {
 /// @brief Function for creating a mask for a variable
 ///        with the size of DataType
-template<class DataType, uint32_t Index, uint32_t... Sizes>
+template<class DataType, std::size_t Index, std::size_t... Sizes>
 typename DataType::type field_mask()
 {
-    uint32_t field_size = field_size_in_bits<Index, Sizes...>();
-    uint32_t data_type_size = size_in_bits<DataType>();
+    std::size_t field_size = field_size_in_bits<Index, Sizes...>();
+    std::size_t data_type_size = size_in_bits<DataType>();
 
     // The size of the field cannot exceed the number of bits allowed
     // in the data type

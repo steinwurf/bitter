@@ -10,14 +10,14 @@ namespace bitter
 {
 /// @brief Template based functions for getting the total size of the
 ///        variadic template Sizes.
-template<uint32_t Size0>
-constexpr uint32_t sum_sizes()
+template<std::size_t Size0>
+constexpr std::size_t sum_sizes()
 {
     return Size0;
 }
 
-template<uint32_t Size0, uint32_t Size1, uint32_t... Sizes>
-constexpr uint32_t sum_sizes()
+template<std::size_t Size0, std::size_t Size1, std::size_t... Sizes>
+constexpr std::size_t sum_sizes()
 {
     return Size0 + sum_sizes<Size1, Sizes...>();
 }

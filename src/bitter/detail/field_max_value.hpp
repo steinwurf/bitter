@@ -11,7 +11,7 @@
 namespace bitter
 {
 /// @brief Function computing the max value for a field.
-template<class DataType, uint32_t Index, uint32_t... Sizes>
+template<class DataType, std::size_t Index, std::size_t... Sizes>
 constexpr typename DataType::type field_max_value()
 {
     // Note the max value is simply the numeric value of the bitmask

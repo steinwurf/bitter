@@ -25,7 +25,7 @@ template
 <
     typename Type,
     typename BitNumbering,
-    uint32_t... Sizes
+    std::size_t... Sizes
 >
 class writer
 {
@@ -46,7 +46,7 @@ public:
 
     /// @brief based on the provided index, the value is written
     /// @param value is the data, wished to written to the field at Index
-    template<uint32_t Index>
+    template<std::size_t Index>
     void field(typename bitter_type::type value)
     {
         static_assert(field_size_in_bits<Index, Sizes...>() <=

@@ -6,7 +6,7 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Use std::size_t for size and positions.
 
 5.1.0
 -----

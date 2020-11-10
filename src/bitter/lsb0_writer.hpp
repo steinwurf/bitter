@@ -10,6 +10,6 @@ namespace bitter
 {
 /// @brief Reader class used for reading the content
 ///        of the value parsed to the reader at initialization
-template<typename DataType, uint32_t... Sizes>
+template<typename DataType, std::size_t... Sizes>
 using lsb0_writer = writer<DataType, lsb0, Sizes...>;
 }

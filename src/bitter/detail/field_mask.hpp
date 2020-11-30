@@ -7,22 +7,21 @@
 #include "field_size_in_bits.hpp"
 #include "size_in_bits.hpp"
 
-#include <cstdint>
 #include <cassert>
+#include <cstdint>
 
 namespace bitter
 {
 /// @brief Function for creating a mask for a variable
 ///        with the size of DataType
-template<class DataType, uint32_t Index, uint32_t... Sizes>
+template <class DataType, uint32_t Index, uint32_t... Sizes>
 typename DataType::type field_mask()
 {
     uint32_t field_size = field_size_in_bits<Index, Sizes...>();
-    uint32_t data_type_size = size_in_bits<DataType>();
 
     // The size of the field cannot exceed the number of bits allowed
     // in the data type
-    assert(field_size <= data_type_size);
+    assert(field_size <= size_in_bits<DataType>());
 
     if (field_size == size_in_bits<typename DataType::type>())
     {

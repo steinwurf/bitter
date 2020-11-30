@@ -3,10 +3,10 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <bitter/lsb0_writer.hpp>
 #include <bitter/lsb0_reader.hpp>
-#include <bitter/msb0_writer.hpp>
+#include <bitter/lsb0_writer.hpp>
 #include <bitter/msb0_reader.hpp>
+#include <bitter/msb0_writer.hpp>
 
 #include <gtest/gtest.h>
 
@@ -24,7 +24,7 @@ TEST(test_readme, writing_a_lsb0_bit_field)
     writer.field<2>(0x56); // Write bits 16-23
     writer.field<3>(0x78); // Write bits 24-31
 
-    assert(writer.data() == 0x78563412);
+    ASSERT_TRUE(writer.data() == 0x78563412);
 }
 
 TEST(test_readme, writing_a_msb0_bit_field)
@@ -39,7 +39,7 @@ TEST(test_readme, writing_a_msb0_bit_field)
     writer.field<2>(0x56); // Write bits 8-15
     writer.field<3>(0x78); // Write bits 0-7
 
-    assert(writer.data() == 0x12345678);
+    ASSERT_TRUE(writer.data() == 0x12345678);
 }
 
 TEST(test_readme, reading_a_lsb0_bit_field)
@@ -51,10 +51,10 @@ TEST(test_readme, reading_a_lsb0_bit_field)
     uint8_t value2 = reader.field<2>().as<uint8_t>(); // Read bits 16-23
     uint8_t value3 = reader.field<3>().as<uint8_t>(); // Read bits 24-31
 
-    assert(value0 == 0x78);
-    assert(value1 == 0x56);
-    assert(value2 == 0x34);
-    assert(value3 == 0x12);
+    ASSERT_TRUE(value0 == 0x78);
+    ASSERT_TRUE(value1 == 0x56);
+    ASSERT_TRUE(value2 == 0x34);
+    ASSERT_TRUE(value3 == 0x12);
 }
 
 TEST(test_readme, reading_a_msb0_bit_field)
@@ -66,21 +66,21 @@ TEST(test_readme, reading_a_msb0_bit_field)
     uint8_t value2 = reader.field<2>().as<uint8_t>(); // Read bits 16-23
     uint8_t value3 = reader.field<3>().as<uint8_t>(); // Read bits 24-31
 
-    assert(value0 == 0x12);
-    assert(value1 == 0x34);
-    assert(value2 == 0x56);
-    assert(value3 == 0x78);
+    ASSERT_TRUE(value0 == 0x12);
+    ASSERT_TRUE(value1 == 0x34);
+    ASSERT_TRUE(value2 == 0x56);
+    ASSERT_TRUE(value3 == 0x78);
 }
 
 TEST(test_readme, reading_a_generic_sized_bit_field)
 {
     auto reader = bitter::msb0_reader<bitter::u24, 4, 12, 8>(0x123456U);
 
-    uint8_t value0 = reader.field<0>().as<uint8_t>(); // Read bits 0-3
+    uint8_t value0 = reader.field<0>().as<uint8_t>();   // Read bits 0-3
     uint16_t value1 = reader.field<1>().as<uint16_t>(); // Read bits 4-15
-    uint8_t value2 = reader.field<2>().as<uint8_t>(); // Read bits 16-23
+    uint8_t value2 = reader.field<2>().as<uint8_t>();   // Read bits 16-23
 
-    assert(value0 == 0x1);
-    assert(value1 == 0x234);
-    assert(value2 == 0x56);
+    ASSERT_TRUE(value0 == 0x1);
+    ASSERT_TRUE(value1 == 0x234);
+    ASSERT_TRUE(value2 == 0x56);
 }

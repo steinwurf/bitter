@@ -6,7 +6,7 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Patch: Silence warnings when building with NDEBUG macro
 
 6.0.0
 -----

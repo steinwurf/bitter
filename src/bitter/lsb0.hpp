@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 
 namespace bitter
@@ -39,8 +40,8 @@ struct lsb0
     /// field sizes accumulating the sizes until we reach the index we are
     /// interested in.
     ///
-    template<uint32_t Index, uint32_t... Sizes>
-    static uint32_t field_offset()
+    template<std::size_t Index, std::size_t... Sizes>
+    static std::size_t field_offset()
     {
         return count_to_field_offset<Index, 0, Sizes...>();
     }
@@ -49,11 +50,11 @@ private:
 
     template
     <
-        uint32_t Index,
-        uint32_t Counter,
-        uint32_t Size0
+        std::size_t Index,
+        std::size_t Counter,
+        std::size_t Size0
     >
-    static uint32_t count_to_field_offset()
+    static std::size_t count_to_field_offset()
     {
         static_assert(Index == Counter, "");
         return 0;
@@ -61,13 +62,13 @@ private:
 
     template
     <
-        uint32_t Index,
-        uint32_t Counter,
-        uint32_t Size0,
-        uint32_t Size1,
-        uint32_t... Sizes
+        std::size_t Index,
+        std::size_t Counter,
+        std::size_t Size0,
+        std::size_t Size1,
+        std::size_t... Sizes
     >
-    static uint32_t count_to_field_offset()
+    static std::size_t count_to_field_offset()
     {
         if (Index == Counter)
         {

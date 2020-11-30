@@ -15,6 +15,7 @@
 #include "msb0.hpp"
 #include "types.hpp"
 
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 #include <cassert>
@@ -24,7 +25,7 @@ namespace bitter
 {
 /// @brief Reader class used for reading the content
 ///        of the value parsed to the reader at initialization
-template<typename Type, typename BitNumbering, uint32_t... Sizes>
+template<typename Type, typename BitNumbering, std::size_t... Sizes>
 class reader
 {
 public:
@@ -33,7 +34,7 @@ public:
     using bitter_type = to_type<Type>;
 
     /// Small alias for the bit_field
-    template<uint32_t Index>
+    template<std::size_t Index>
     using bit_field_type =
         bit_field<typename bitter_type::type, field_size_in_bits<Index, Sizes...>()>;
 
@@ -47,7 +48,7 @@ public:
     }
 
     /// @brief Based on the provided index the function returns the field
-    template<uint32_t Index>
+    template<std::size_t Index>
     bit_field_type<Index> field() const
     {
         return bit_field_type<Index>(get<Index>());
@@ -56,7 +57,7 @@ public:
 private:
     /// @brief Function used as a wrapper, used for retrieving a field
     ///        based on the Index provide
-    template<uint32_t Index>
+    template<std::size_t Index>
     typename bitter_type::type get() const
     {
         return field_get<bitter_type, BitNumbering, Index, Sizes...>(m_value);

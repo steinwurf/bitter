@@ -8,6 +8,14 @@ Latest
 ------
 * Patch: Silence warnings when building with NDEBUG macro
 
+6.0.0
+-----
+* Major: Use std::size_t for size and positions.
+
+5.1.0
+-----
+* Minor: Added cmake build file.
+
 5.0.0
 -----
 * Major: Moved files in detail namespace into the detail folder.

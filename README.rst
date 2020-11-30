@@ -1,6 +1,9 @@
 Bitter
 ======
 
+.. image:: https://travis-ci.org/steinwurf/bitter.svg?branch=master
+    :target: https://travis-ci.org/steinwurf/bitter
+
 Is a lightweight header only C++ API, for reading and writing single bit
 fields.
 
@@ -277,6 +280,18 @@ https://en.wikipedia.org/wiki/Endianness
 To do that you can use our ``endian`` library available here:
 
 https://github.com/steinwurf/endian
+
+
+Use as Dependency in CMake
+--------------------------
+
+To depend on this project when using the CMake build system, add the following
+in your CMake build script::
+
+   add_subdirectory("/path/to/bitter" bitter)
+   target_link_libraries(<my_target> steinwurf::bitter)
+
+Where ``<my_target>`` is replaced by your target.
 
 
 License

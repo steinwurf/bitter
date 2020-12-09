@@ -5,7 +5,7 @@
 #include <bitter/lsb0_writer.hpp>
 
 #include <cstdint>
-#include <cassert>
+#include <iostream>
 
 int main()
 {
@@ -21,7 +21,14 @@ int main()
     writer.field<3>(larger_value);
 
     auto data = writer.data();
-    assert(data == 0x8028041U);
+    if (data == 0x8028041U)
+    {
+        std::cout << "Success" << std::endl;
+    }
+    else
+    {
+        std::cout << "Unexpected output!" << std::endl;
+    }
 
     return 0;
 }

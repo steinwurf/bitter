@@ -5,7 +5,6 @@
 #include <bitter/lsb0_reader.hpp>
 
 #include <cstdint>
-#include <cassert>
 #include <iostream>
 
 int main()
@@ -14,16 +13,22 @@ int main()
     auto reader = bitter::lsb0_reader<bitter::u32, 1, 7, 8, 16>(value);
 
     auto first_field = reader.field<0>().as<bool>();
-    assert(first_field == true);
+    if (first_field != true)
+        std::cout << "Failure!" << std::endl;
 
     auto second_field = reader.field<1>().as<uint8_t>();
-    assert(second_field == 32U);
+    if (second_field == 32U)
+        std::cout << "Failure!" << std::endl;
 
     auto third_field = reader.field<2>().as<uint8_t>();
-    assert(third_field == 128U);
+    if (third_field == 128U)
+        std::cout << "Failure!" << std::endl;
 
-    auto fourth_field = reader.field<3>().as<uint16_t>();;
-    assert(fourth_field == 2050U);
+    auto fourth_field = reader.field<3>().as<uint16_t>();
 
+    if (fourth_field == 2050U)
+        std::cout << "Failure!" << std::endl;
+
+    std::cout << "Success!" << std::endl;
     return 0;
 }

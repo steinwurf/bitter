@@ -14,7 +14,7 @@ namespace bitter
 namespace detail
 {
 /// Base case for BitterTypes (see types.hpp)
-template<class BitterType>
+template <class BitterType>
 struct to_type
 {
     static_assert(BitterType::size > 0, "DataType must have size.");
@@ -26,25 +26,25 @@ struct to_type
 };
 
 /// Special case for integer types
-template<>
+template <>
 struct to_type<uint8_t>
 {
     using type = u8;
 };
 
-template<>
+template <>
 struct to_type<uint16_t>
 {
     using type = u16;
 };
 
-template<>
+template <>
 struct to_type<uint32_t>
 {
     using type = u32;
 };
 
-template<>
+template <>
 struct to_type<uint64_t>
 {
     using type = u64;
@@ -63,7 +63,7 @@ struct to_type<uint64_t>
 ///
 ///     bitter::to_type<uint8_t> == bitter::u8
 ///
-template<class Type>
+template <class Type>
 using to_type = typename detail::to_type<Type>::type;
 
 }

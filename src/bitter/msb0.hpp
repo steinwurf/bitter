@@ -41,34 +41,22 @@ struct msb0
     /// field sizes once we reach the index we are interested in we
     /// sum the remaining sizes.
     ///
-    template<uint32_t Index, std::size_t... Sizes>
+    template <uint32_t Index, std::size_t... Sizes>
     static std::size_t field_offset()
     {
         return count_to_field_offset<Index, 0, Sizes...>();
     }
 
 private:
-
-    template
-    <
-        std::size_t Index,
-        std::size_t Counter,
-        std::size_t Size0
-    >
+    template <std::size_t Index, std::size_t Counter, std::size_t Size0>
     static std::size_t count_to_field_offset()
     {
         static_assert(Index == Counter, "");
         return 0;
     }
 
-    template
-    <
-        std::size_t Index,
-        std::size_t Counter,
-        std::size_t Size0,
-        std::size_t Size1,
-        std::size_t... Sizes
-    >
+    template <std::size_t Index, std::size_t Counter, std::size_t Size0,
+              std::size_t Size1, std::size_t... Sizes>
     static std::size_t count_to_field_offset()
     {
         if (Index == Counter)
@@ -78,10 +66,7 @@ private:
         else
         {
             return count_to_field_offset<
-                   Index,
-                   Counter + (Counter < Index ? 1 : 0),
-                   Size1,
-                   Sizes...>();
+                Index, Counter + (Counter < Index ? 1 : 0), Size1, Sizes...>();
         }
     }
 };

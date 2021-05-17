@@ -6,22 +6,17 @@
 
 #include "field_mask.hpp"
 
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
-#include <cassert>
 
 namespace bitter
 {
 /// @brief function for accessing a field based on
 ///        the provided index
 /// @param value is the data give to the reader at initialization
-template
-<
-    typename DataType,
-    typename BitNumbering,
-    std::size_t Index,
-    std::size_t... Sizes
->
+template <typename DataType, typename BitNumbering, std::size_t Index,
+          std::size_t... Sizes>
 typename DataType::type field_get(typename DataType::type value)
 {
     std::size_t offset = BitNumbering::template field_offset<Index, Sizes...>();

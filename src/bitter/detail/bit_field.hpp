@@ -6,41 +6,39 @@
 
 #include "size_in_bits.hpp"
 
-#include <cstddef>
-#include <type_traits>
-#include <cstdint>
 #include <cassert>
+#include <cstddef>
+#include <cstdint>
+#include <type_traits>
 
 namespace bitter
 {
 /// @brief Small class used for wrapping a single bit field and allow it to be
 /// read in a convenient way.
-template<typename DataType, std::size_t Size>
+template <typename DataType, std::size_t Size>
 class bit_field
 {
 public:
-
     /// Constructor
     /// @param value is the value of the bit we are wrapping
-    bit_field(DataType value) :
-        m_value(value)
+    bit_field(DataType value) : m_value(value)
     {
         static_assert(Size > 0, "A bit field cannot have a size of zero bits");
     }
 
     /// @return The bit field value cast to the type of ReturnType
-    template<typename ReturnType>
+    template <typename ReturnType>
     ReturnType as() const
     {
         // Check if the size provide can fit into ReturnType
-        static_assert(Size <= size_in_bits<ReturnType>(), "There are not "
+        static_assert(Size <= size_in_bits<ReturnType>(),
+                      "There are not "
                       "enough bits in ReturnType to represent this bit field");
 
-        return (ReturnType) m_value;
+        return (ReturnType)m_value;
     }
 
 private:
-
     /// The value representing this bitfield
     DataType m_value;
 };

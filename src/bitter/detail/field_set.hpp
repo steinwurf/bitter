@@ -4,8 +4,8 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 #pragma once
 
-#include <cstddef>
 #include <cassert>
+#include <cstddef>
 #include <cstdint>
 #include <type_traits>
 
@@ -18,13 +18,8 @@ namespace bitter
 /// @brief set the value in a bitfield based on the index
 /// @param bitfield is the data of the writer
 /// @param value is the data we want to write to the bitfield
-template
-<
-    typename DataType,
-    typename BitNumbering,
-    std::size_t Index,
-    std::size_t... Sizes
->
+template <typename DataType, typename BitNumbering, std::size_t Index,
+          std::size_t... Sizes>
 typename DataType::type field_set(typename DataType::type bitfield,
                                   typename DataType::type value)
 {

@@ -7,9 +7,9 @@
 #include <bitter/msb0_writer.hpp>
 
 #include <cstdint>
-#include <vector>
-#include <iostream>
 #include <gtest/gtest.h>
+#include <iostream>
+#include <vector>
 
 TEST(test_bit_writer, write_integer)
 {
@@ -156,7 +156,6 @@ TEST(test_bit_writer, write_bit_3)
         EXPECT_EQ(value, 0x2222222244444444U);
     }
 }
-
 
 TEST(test_bit_writer, write_bit_4)
 {

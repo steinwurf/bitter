@@ -14,7 +14,6 @@ TEST(test_sum_sizes, sum_sizes)
     EXPECT_EQ(1U, (bitter::sum_sizes<1>()));
 }
 
-
 TEST(test_sum_sizes, sum_sizes1)
 {
     EXPECT_EQ(8U, (bitter::sum_sizes<1, 3, 4>()));

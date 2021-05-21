@@ -10,7 +10,7 @@
 #include <gtest/gtest.h>
 
 // Small Helper
-template<class DataType, class BitterType>
+template <class DataType, class BitterType>
 using same = std::is_same<bitter::to_type<DataType>, BitterType>;
 
 TEST(test_to_type, to_type)

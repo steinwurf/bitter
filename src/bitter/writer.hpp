@@ -26,7 +26,7 @@ template <typename Type, typename BitNumbering, std::size_t... Sizes>
 class writer
 {
 public:
-    // Get the bitter type
+    /// Get the bitter type
     using bitter_type = to_type<Type>;
 
     /// Constructor

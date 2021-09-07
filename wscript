@@ -1,32 +1,59 @@
 #! /usr/bin/env python
 # encoding: utf-8
 
-APPNAME = 'bitter'
-VERSION = '7.0.0'
+import os
+
+APPNAME = "bitter"
+VERSION = "7.0.0"
+
 
 def options(opt):
 
     opt.add_option(
-        '--test_filter', default=None, action='store',
-        help='Compiles all tests that include the substring specified.'
-             'Wildcards allowed. (Used with --run_tests)')
+        "--test_filter",
+        default=None,
+        action="store",
+        help="Compiles all tests that include the substring specified."
+        "Wildcards allowed. (Used with --run_tests)",
+    )
+
 
 def build(bld):
 
     bld.env.append_unique(
-        'DEFINES_STEINWURF_VERSION',
-        'STEINWURF_BITTER_VERSION="{}"'.format(
-            VERSION))
+        "DEFINES_STEINWURF_VERSION", 'STEINWURF_BITTER_VERSION="{}"'.format(VERSION)
+    )
 
-    bld(name='bitter_includes',
-        includes='./src',
-        export_includes='./src')
+    bld(name="bitter_includes", includes="./src", export_includes="./src")
 
     if bld.is_toplevel():
 
         # Only build tests when executed from the top-level wscript,
         # i.e. not when included as a dependency
-        bld.recurse('test')
+        bld.recurse("test")
 
-        bld.recurse('examples/simple_writer')
-        bld.recurse('examples/simple_reader')
+        bld.recurse("examples/simple_writer")
+        bld.recurse("examples/simple_reader")
+
+
+def docs(ctx):
+    """Build the documentation in a virtualenv"""
+
+    with ctx.create_virtualenv() as venv:
+
+        # To update the requirements.txt just delete it - a fresh one
+        # will be generated from test/requirements.in
+        if not os.path.isfile("docs/requirements.txt"):
+            venv.run("python -m pip install pip-tools")
+            venv.run("pip-compile docs/requirements.in")
+
+        venv.run("python -m pip install -r docs/requirements.txt")
+
+        build_path = os.path.join(ctx.path.abspath(), "build", "site", "docs")
+
+        venv.run(
+            "giit clean . --build_path {}".format(build_path), cwd=ctx.path.abspath()
+        )
+        venv.run(
+            "giit sphinx . --build_path {}".format(build_path), cwd=ctx.path.abspath()
+        )

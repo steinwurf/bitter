@@ -12,34 +12,45 @@ namespace bitter
 /// @brief Calculates the bit shift offset into a value given that bitter
 ///        is configured in LSB 0 numbering mode (see README.rst for more
 ///        information).
+
+/// The basic implementation in LSB 0 mode works according to the
+/// following observation.
+///
+/// If we want to access a given field at index X then we need to
+/// shift right past the fields at index X-1, ..., 0 etc.
+///
+/// Example:
+///
+/// field index: 3     2         1         0
+///
+/// field size:  1     2         3         2
+///
+/// bit index:   7   6   5   4   3   2   1   0
+///
+///            +---+-------+-----------+-------+
+///
+///            | 0 | 1   0 | 1   1   1 | 0   0 |
+///
+///            +---+-------+-----------+-------+
+///
+///                                          ^
+///
+///                                          |
+///
+///               least significant +--------+
+///
+///               bit
+///
+/// Say we want to access field index 2, then we need to shift it
+/// right past field 1 and 0. They have size 3+2 = 5 bits.
+///
+/// We do this by implementing a counter which iterates through the
+/// field sizes accumulating the sizes until we reach the index we are
+/// interested in.
+///
 struct lsb0
 {
-    /// The basic implementation in LSB 0 mode works according to the
-    /// following observation.
-    ///
-    /// If we want to access a given field at index X then we need to
-    /// shift right past the fields at index X-1, ..., 0 etc.
-    ///
-    /// Example:
-    ///
-    /// field index: 3     2         1         0
-    /// field size:  1     2         3         2
-    /// bit index:   7   6   5   4   3   2   1   0
-    ///            +---+-------+-----------+-------+
-    ///            | 0 | 1   0 | 1   1   1 | 0   0 |
-    ///            +---+-------+-----------+-------+
-    ///                                          ^
-    ///                                          |
-    ///               least significant +--------+
-    ///               bit
-    ///
-    /// Say we want to access field index 2, then we need to shift it
-    /// right past field 1 and 0. They have size 3+2 = 5 bits.
-    ///
-    /// We do this by implementing a counter which iterates through the
-    /// field sizes accumulating the sizes until we reach the index we are
-    /// interested in.
-    ///
+    /// @return The offset of the field
     template <std::size_t Index, std::size_t... Sizes>
     static std::size_t field_offset()
     {

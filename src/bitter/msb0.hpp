@@ -14,33 +14,43 @@ namespace bitter
 /// @brief Calculates the bit shift offset into a value given that bitter
 ///        is configured in MSB 0 numbering mode (see README.rst for more
 ///        information).
+
+/// The basic implementation in MSB 0 mode works according to the
+/// following observation.
+///
+/// If we want to access a given field at index X then we need to
+/// shift right past the fields at X+1, X+2, ... etc.
+///
+/// Example:
+///
+/// field index: 0     1         2         3
+///
+/// field size:  1     2         3         2
+///
+/// bit index:   0   1   2   3   4   5   6   7
+///
+///            +---+-------+-----------+-------+
+///
+///            | 0 | 1   0 | 1   1   1 | 0   0 |
+///
+///            +---+-------+-----------+-------+
+///
+///              ^
+///
+///              |             most significant
+///
+///              +-----------+ bit
+///
+/// Say we want to access field index 1, then we need to shift it
+/// right past field 2 and 3. They have size 3+2 = 5 bits.
+///
+/// We do this by implementing a counter which iterates through the
+/// field sizes once we reach the index we are interested in we
+/// sum the remaining sizes.
+///
 struct msb0
 {
-    /// The basic implementation in MSB 0 mode works according to the
-    /// following observation.
-    ///
-    /// If we want to access a given field at index X then we need to
-    /// shift right past the fields at X+1, X+2, ... etc.
-    ///
-    /// Example:
-    ///
-    /// field index: 0     1         2         3
-    /// field size:  1     2         3         2
-    /// bit index:   0   1   2   3   4   5   6   7
-    ///            +---+-------+-----------+-------+
-    ///            | 0 | 1   0 | 1   1   1 | 0   0 |
-    ///            +---+-------+-----------+-------+
-    ///              ^
-    ///              |             most significant
-    ///              +-----------+ bit
-    ///
-    /// Say we want to access field index 1, then we need to shift it
-    /// right past field 2 and 3. They have size 3+2 = 5 bits.
-    ///
-    /// We do this by implementing a counter which iterates through the
-    /// field sizes once we reach the index we are interested in we
-    /// sum the remaining sizes.
-    ///
+    /// @return The offset of the field
     template <uint32_t Index, std::size_t... Sizes>
     static std::size_t field_offset()
     {

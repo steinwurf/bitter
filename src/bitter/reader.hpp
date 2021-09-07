@@ -29,7 +29,7 @@ template <typename Type, typename BitNumbering, std::size_t... Sizes>
 class reader
 {
 public:
-    // Get the bitter type
+    /// Get the bitter type
     using bitter_type = to_type<Type>;
 
     /// Small alias for the bit_field

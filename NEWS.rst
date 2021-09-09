@@ -6,7 +6,7 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Minor: Updated waf.
 
 7.0.0
 -----

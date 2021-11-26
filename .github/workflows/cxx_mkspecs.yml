@@ -58,34 +58,6 @@ jobs:
       - name: Waf Test
         run: python3 waf --run_tests
 
-  cross-compile-raspberry-pi:
-    strategy:
-      fail-fast: false
-    runs-on: [self-hosted, docker, builder]
-    name: Raspberry Pi 3 Build
-    container:
-      image: ghcr.io/steinwurf/gcc-8.3.0-raspberrypi-armv7:1.0.0
-      options: --user 0:0
-      volumes:
-        - /home/buildbot/.ssh:/root/.ssh
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
-      - name: Waf Configure
-        run: CXX=arm-linux-gnueabihf-g++ LD=$CXX python3 waf configure --git_protocol=git@ ${{ matrix.config.cxx_mkspec }} $EXTRA_RESOLVE_OPTIONS
-      - name: Waf Build
-        run: |
-          echo "::add-matcher::.github/gcc-problem-matcher.json"
-          python3 waf
-      - name: Upload bourne_tests Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: raspberry_bourne_tests
-          path: |
-            build/linux/test
-            !build/linux/test/**/**.*
-          retention-days: 1
-
   # Build performed on runner using make specs
   cxx_mkspec:
     strategy:

@@ -1,4 +1,4 @@
-name: No Assertions
+name: Linux Cmake
 on:
   workflow_dispatch:
     inputs:
@@ -12,9 +12,8 @@ on:
 env:
   EXTRA_RESOLVE_OPTIONS: ${{ github.event.inputs.extra_resolve_options }}
 jobs:
-  ndebug:
-    name: No Assertions
-    uses: steinwurf/nodebug-action/.github/workflows/action.yml@1.0.0
+  Linux-cmake:
+    name: Linux Cmake
+    uses: steinwurf/linux-cmake-action/.github/workflows/action.yml@1.0.0
     with:
       extra_resolve_options: $EXTRA_RESOLVE_OPTIONS
-
